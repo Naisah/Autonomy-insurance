@@ -1,0 +1,284 @@
+<!-- Autonomy Insurance — web/client-login -->
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In — Autonomy Insurance</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'mapua-red': '#D52B1E',
+        'deep-red': '#A81F16',
+        'mapua-gold': '#F2B705',
+        'charcoal': '#4B4B4D',
+        'mid-gray': '#8A8B8D',
+        'light-gray': '#D9D9DA',
+        'warm-white': '#FAF7F2',
+        'pure-white': '#FFFFFF',
+        'primary': '#D52B1E',
+        'on-primary': '#FFFFFF',
+        'primary-hover': '#A81F16',
+        'primary-container': '#FFEDEA',
+        'on-primary-container': '#410000',
+        'secondary': '#F2B705',
+        'on-secondary': '#251A00',
+        'secondary-container': '#FFEFD4',
+        'on-secondary-container': '#3F2E00',
+        'surface': '#FAF7F2',
+        'on-surface': '#4B4B4D',
+        'on-surface-strong': '#1B1B1D',
+        'on-surface-muted': '#5E5E60',
+        'surface-card': '#FFFFFF',
+        'surface-dark': '#4B4B4D',
+        'on-surface-dark': '#FAF7F2',
+        'outline': '#D9D9DA',
+        'success': '#15803D',
+        'on-success': '#FFFFFF',
+        'warning': '#B45309',
+        'on-warning': '#FFFFFF',
+        'error': '#BA1A1A',
+        'on-error': '#FFFFFF',
+      },
+      borderRadius: {
+        'sm': '8px',
+        'DEFAULT': '16px',
+        'md': '20px',
+        'lg': '24px',
+        'xl': '32px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '64px',
+        'section-lg': '96px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Hanken Grotesk"', 'sans-serif'],
+        'headline': ['"Hanken Grotesk"', 'sans-serif'],
+        'title': ['"DM Sans"', 'sans-serif'],
+        'body': ['"DM Sans"', 'sans-serif'],
+        'label': ['"DM Sans"', 'sans-serif'],
+        'mono': ['"DM Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-xl': ['84px', { lineHeight: '84px', letterSpacing: '-3.2px', fontWeight: '800' }],
+        'display-xl-mobile': ['32px', { lineHeight: '36px', letterSpacing: '-1.0px', fontWeight: '800' }],
+        'display-lg': ['64px', { lineHeight: '68px', letterSpacing: '-2.4px', fontWeight: '800' }],
+        'display-lg-mobile': ['30px', { lineHeight: '34px', letterSpacing: '-0.8px', fontWeight: '800' }],
+        'display-md': ['48px', { lineHeight: '52px', letterSpacing: '-1.6px', fontWeight: '800' }],
+        'display-md-mobile': ['28px', { lineHeight: '32px', letterSpacing: '-0.6px', fontWeight: '800' }],
+        'headline-lg': ['36px', { lineHeight: '42px', letterSpacing: '-1.0px', fontWeight: '700' }],
+        'headline-lg-mobile': ['24px', { lineHeight: '28px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'headline-md': ['24px', { lineHeight: '30px', letterSpacing: '-0.4px', fontWeight: '700' }],
+        'title-lg': ['20px', { lineHeight: '26px', letterSpacing: '-0.2px', fontWeight: '700' }],
+        'title-md': ['16px', { lineHeight: '22px', letterSpacing: '0px', fontWeight: '700' }],
+        'body-lg': ['18px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-md': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-sm': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0.1px', fontWeight: '700' }],
+        'label-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.4px', fontWeight: '600' }],
+        'mono-md': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '500' }],
+      },
+      transitionDuration: {
+        'state-change': '150ms',
+        'card-lift': '240ms',
+        'surface-enter': '320ms',
+        'surface-exit': '180ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'card-lift': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'cubic-bezier(0.2, 0, 0, 1)',
+        'card-lift': 'cubic-bezier(0.22, 1, 0.36, 1)',
+        'surface-enter': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-exit': 'cubic-bezier(0.3, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@500&amp;family=DM+Sans:wght@400;600;700&amp;family=Hanken+Grotesk:wght@700;800&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    .material-symbols-outlined, .material-symbols-rounded, .material-symbols-sharp, .material-icons {
+      display: inline-block; width: 1em; height: 1em; line-height: 1 !important;
+      box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body antialiased">
+  <div class="min-h-[1024px] grid grid-cols-1 lg:grid-cols-12" data-stitch-vh="min-h-[1024px]===min-h-screen">
+
+    <!-- Left Split: Pixel-Mosaic Brand Panel -->
+    <aside class="lg:col-span-5 bg-surface-dark text-on-surface-dark p-gutter-xl md:p-12 flex flex-col justify-between gap-gutter-xl relative overflow-hidden">
+      <!-- Pixel-Mosaic Dispersion -->
+      <div class="grid grid-cols-6 gap-2 absolute top-8 right-8 opacity-85 pointer-events-none" aria-hidden="true">
+        <span class="w-5 h-5 bg-mapua-red"></span>
+        <span class="w-5 h-5 bg-mapua-gold"></span>
+        <span class="w-5 h-5 bg-pure-white opacity-80"></span>
+        <span class="w-5 h-5 bg-mapua-red opacity-60"></span>
+        <span class="w-5 h-5 bg-mapua-gold"></span>
+        <span class="w-5 h-5 bg-pure-white"></span>
+
+        <span class="w-5 h-5 bg-transparent"></span>
+        <span class="w-5 h-5 bg-pure-white opacity-40"></span>
+        <span class="w-5 h-5 bg-mapua-red"></span>
+        <span class="w-5 h-5 bg-mapua-gold opacity-80"></span>
+        <span class="w-5 h-5 bg-light-gray opacity-50"></span>
+        <span class="w-5 h-5 bg-mapua-red"></span>
+
+        <span class="w-5 h-5 bg-transparent"></span>
+        <span class="w-5 h-5 bg-transparent"></span>
+        <span class="w-5 h-5 bg-mapua-gold opacity-50"></span>
+        <span class="w-5 h-5 bg-pure-white opacity-60"></span>
+        <span class="w-5 h-5 bg-mapua-red opacity-70"></span>
+        <span class="w-5 h-5 bg-mapua-gold opacity-90"></span>
+      </div>
+
+      <!-- Brand Mark -->
+      <a href="../insuria-landing/InsuriaLanding.html" class="flex items-center gap-gutter-sm self-start relative z-10">
+        <div class="grid grid-cols-3 gap-0.5 p-1 bg-surface-card rounded-sm" aria-hidden="true">
+          <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+          <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+          <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+          <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+          <span class="w-2.5 h-2.5 bg-pure-white"></span>
+          <span class="w-2.5 h-2.5 bg-light-gray"></span>
+          <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+          <span class="w-2.5 h-2.5 bg-light-gray"></span>
+          <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+        </div>
+        <span class="font-headline text-headline-md text-pure-white tracking-tight">Autonomy Insurance</span>
+      </a>
+
+      <div class="flex flex-col gap-gutter-md relative z-10 my-auto py-gutter-xl">
+        <h1 class="font-display text-display-md-mobile md:text-display-md text-pure-white text-balance">
+          Welcome back to your coverage.
+        </h1>
+        <p class="font-body text-body-lg text-light-gray max-w-md">
+          Check your active policy, message your assigned advisor, or track your daily step rewards—all synced across web and mobile.
+        </p>
+      </div>
+
+      <!-- Reassurance Card -->
+      <div class="bg-surface-card text-on-surface rounded-xl p-gutter-md flex items-center gap-gutter-md relative z-10">
+        <img src="https://lh3.googleusercontent.com/aida/ALJJyrCcIVIRZ7uESG4o0sYPrwZPpnYbVp9t8qEma-oKt9m0nDcfu5K0NhJmOABDoVtAhGy3giyTvNCblxNUDcyLXSpxBUBI4fwu1hzOim5tLVzb4fBJ7CF56g7k0IA-Wt1p2Kf60KTcHx0Sc3QvisaJgL7OGZHZK7M0ozed6OfjKb0FV_-ZaKvRcLgvZLr39EzyDORj2kbDE18G9zpz5mW0cmFd44rAQVrCXWhwSmmERkO6mawo" alt="Maya Santos" class="w-12 h-12 rounded-full object-cover border-2 border-secondary shrink-0">
+        <div>
+          <div class="font-title text-title-md text-on-surface-strong">Maya Santos is online</div>
+          <div class="font-body text-body-sm text-on-surface-muted">Your assigned advisor • Replies in ~1m</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Right Split: Login Form -->
+    <main class="lg:col-span-7 flex items-center justify-center p-gutter-lg md:p-16">
+      <div class="w-full max-w-md bg-surface-card rounded-xl border border-outline p-gutter-xl flex flex-col gap-gutter-lg">
+        <div>
+          <h2 class="font-headline text-headline-lg-mobile md:text-headline-lg text-on-surface-strong">Sign in to Autonomy Insurance</h2>
+          <p class="font-body text-body-md text-on-surface-muted mt-1">
+            New to Autonomy Insurance?
+            <a href="../client-register/ClientRegister.html" class="font-title text-primary hover:underline">Create an account</a>
+          </p>
+        </div>
+
+        <!-- Clear Inline Error Banner -->
+        <div id="login-error-banner" role="alert" class="bg-primary-container border border-error rounded-lg p-gutter-md flex items-start gap-gutter-sm">
+          <span class="material-symbols-outlined text-[20px] text-error shrink-0 mt-0.5" aria-hidden="true">error</span>
+          <div class="flex flex-col gap-0.5">
+            <span class="font-title text-title-md text-on-primary-container">Check your email or password</span>
+            <span class="font-body text-body-sm text-on-primary-container">That combination didn&#39;t match our records. Try again or reset your password.</span>
+          </div>
+        </div>
+
+        <form onsubmit="handleLogin(event)" class="flex flex-col gap-gutter-md" novalidate>
+          <!-- Email -->
+          <!-- COMPONENT: input-field-icon -->
+          <label data-component-id="input-field-icon" data-component-type="input-field" data-component-variant="with-icon" class="flex flex-col gap-gutter-xs w-full">
+            <span data-design-text-token="label-lg" class="font-label text-label-lg text-on-surface-strong">Email</span>
+            <div class="relative flex items-center">
+              <span class="material-symbols-outlined absolute left-4 text-on-surface-muted text-[20px]" aria-hidden="true">mail</span>
+              <input id="login-email" type="email" value="elena.rostova@insuria.co" placeholder="you@example.com" inputmode="email" aria-invalid="true" aria-describedby="login-email-error" class="w-full rounded-full bg-surface border border-error pl-11 pr-gutter-md py-3 font-body text-body-md text-on-surface-strong placeholder:text-on-surface-muted focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+            </div>
+            <span id="login-email-error" data-design-text-token="body-sm" class="font-body text-body-sm text-error">Verify the email address on your policy</span>
+          </label>
+
+          <!-- Password with Reveal Toggle -->
+          <label class="flex flex-col gap-gutter-xs w-full">
+            <span data-design-text-token="label-lg" class="font-label text-label-lg text-on-surface-strong">Password</span>
+            <div class="relative flex items-center">
+              <span class="material-symbols-outlined absolute left-4 text-on-surface-muted text-[20px]" aria-hidden="true">lock</span>
+              <input id="login-password" type="password" value="••••••••••" autocomplete="current-password" placeholder="Enter your password" class="w-full rounded-full bg-surface border border-outline pl-11 pr-12 py-3 font-body text-body-md text-on-surface-strong placeholder:text-on-surface-muted focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+              <button type="button" onclick="togglePassword(&#39;login-password&#39;, this)" aria-label="Show password" class="absolute right-3 p-1.5 rounded-full text-on-surface-muted hover:text-on-surface-strong">
+                <span class="material-symbols-outlined text-[20px]">visibility</span>
+              </button>
+            </div>
+          </label>
+
+          <!-- Remember me & Forgot password -->
+          <div class="flex items-center justify-between gap-gutter-sm py-1">
+            <label class="inline-flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" checked class="rounded-sm border-outline text-primary focus:ring-primary">
+              <span class="font-body text-body-sm text-on-surface-strong">Remember me</span>
+            </label>
+            <a href="#forgot" class="font-label text-label-lg text-primary hover:underline">Forgot password?</a>
+          </div>
+
+          <!-- COMPONENT: button-primary -->
+          <button data-component-id="button-primary" data-component-type="button" data-component-variant="primary" type="submit" class="w-full inline-flex items-center justify-center gap-gutter-sm px-gutter-lg py-3.5 rounded-full bg-primary text-on-primary hover:bg-primary-hover transition-colors duration-state-change focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
+            <span data-design-text-token="label-lg" class="font-label text-label-lg">Sign in to Autonomy Insurance</span>
+          </button>
+        </form>
+
+        <div class="pt-gutter-sm border-t border-outline text-center font-body text-body-sm text-on-surface-muted">
+          Web and mobile share the same Autonomy Insurance account.
+        </div>
+      </div>
+    </main>
+
+  </div>
+
+  <script>
+    function togglePassword(id, btn) {
+      const input = document.getElementById(id);
+      const icon = btn.querySelector('.material-symbols-outlined');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.textContent = 'visibility_off';
+        btn.setAttribute('aria-label', 'Hide password');
+      } else {
+        input.type = 'password';
+        icon.textContent = 'visibility';
+        btn.setAttribute('aria-label', 'Show password');
+      }
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email');
+      const banner = document.getElementById('login-error-banner');
+      if (email.value.includes('@') && document.getElementById('login-password').value.length >= 6) {
+        banner.classList.add('hidden');
+        email.removeAttribute('aria-invalid');
+        email.classList.remove('border-error');
+        email.classList.add('border-outline');
+        document.getElementById('login-email-error').classList.add('hidden');
+      }
+    }
+  </script>
+
+
+</body></html>

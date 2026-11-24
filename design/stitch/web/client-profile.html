@@ -1,0 +1,411 @@
+<!-- Autonomy Insurance — web/client-profile -->
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client Profile — Autonomy Insurance</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'mapua-red': '#D52B1E',
+        'deep-red': '#A81F16',
+        'mapua-gold': '#F2B705',
+        'charcoal': '#4B4B4D',
+        'mid-gray': '#8A8B8D',
+        'light-gray': '#D9D9DA',
+        'warm-white': '#FAF7F2',
+        'pure-white': '#FFFFFF',
+        'primary': '#D52B1E',
+        'on-primary': '#FFFFFF',
+        'primary-hover': '#A81F16',
+        'primary-container': '#FFEDEA',
+        'on-primary-container': '#410000',
+        'secondary': '#F2B705',
+        'on-secondary': '#251A00',
+        'secondary-container': '#FFEFD4',
+        'on-secondary-container': '#3F2E00',
+        'surface': '#FAF7F2',
+        'on-surface': '#4B4B4D',
+        'on-surface-strong': '#1B1B1D',
+        'on-surface-muted': '#5E5E60',
+        'surface-card': '#FFFFFF',
+        'surface-dark': '#4B4B4D',
+        'on-surface-dark': '#FAF7F2',
+        'outline': '#D9D9DA',
+        'success': '#15803D',
+        'on-success': '#FFFFFF',
+        'warning': '#B45309',
+        'on-warning': '#FFFFFF',
+        'error': '#BA1A1A',
+        'on-error': '#FFFFFF',
+      },
+      borderRadius: {
+        'sm': '8px',
+        'DEFAULT': '16px',
+        'md': '20px',
+        'lg': '24px',
+        'xl': '32px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '64px',
+        'section-lg': '96px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Hanken Grotesk"', 'sans-serif'],
+        'headline': ['"Hanken Grotesk"', 'sans-serif'],
+        'title': ['"DM Sans"', 'sans-serif'],
+        'body': ['"DM Sans"', 'sans-serif'],
+        'label': ['"DM Sans"', 'sans-serif'],
+        'mono': ['"DM Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-xl': ['84px', { lineHeight: '84px', letterSpacing: '-3.2px', fontWeight: '800' }],
+        'display-xl-mobile': ['32px', { lineHeight: '36px', letterSpacing: '-1.0px', fontWeight: '800' }],
+        'display-lg': ['64px', { lineHeight: '68px', letterSpacing: '-2.4px', fontWeight: '800' }],
+        'display-lg-mobile': ['30px', { lineHeight: '34px', letterSpacing: '-0.8px', fontWeight: '800' }],
+        'display-md': ['48px', { lineHeight: '52px', letterSpacing: '-1.6px', fontWeight: '800' }],
+        'display-md-mobile': ['28px', { lineHeight: '32px', letterSpacing: '-0.6px', fontWeight: '800' }],
+        'headline-lg': ['36px', { lineHeight: '42px', letterSpacing: '-1.0px', fontWeight: '700' }],
+        'headline-lg-mobile': ['24px', { lineHeight: '28px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'headline-md': ['24px', { lineHeight: '30px', letterSpacing: '-0.4px', fontWeight: '700' }],
+        'title-lg': ['20px', { lineHeight: '26px', letterSpacing: '-0.2px', fontWeight: '700' }],
+        'title-md': ['16px', { lineHeight: '22px', letterSpacing: '0px', fontWeight: '700' }],
+        'body-lg': ['18px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-md': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-sm': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0.1px', fontWeight: '700' }],
+        'label-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.4px', fontWeight: '600' }],
+        'mono-md': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '500' }],
+      },
+      transitionDuration: {
+        'state-change': '150ms',
+        'card-lift': '240ms',
+        'surface-enter': '320ms',
+        'surface-exit': '180ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'card-lift': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'cubic-bezier(0.2, 0, 0, 1)',
+        'card-lift': 'cubic-bezier(0.22, 1, 0.36, 1)',
+        'surface-enter': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-exit': 'cubic-bezier(0.3, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@500&amp;family=DM+Sans:wght@400;600;700&amp;family=Hanken+Grotesk:wght@700;800&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    .material-symbols-outlined, .material-symbols-rounded, .material-symbols-sharp, .material-icons {
+      display: inline-block; width: 1em; height: 1em; line-height: 1 !important;
+      box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body antialiased">
+  <div class="min-h-[1024px] flex flex-col" data-stitch-vh="min-h-[1024px]===min-h-screen">
+
+    <!-- Sticky Client Header (Profile Active) -->
+    <header class="sticky top-0 z-40 bg-surface-card border-b border-outline">
+      <div class="max-w-7xl mx-auto px-gutter-lg py-gutter-md flex items-center justify-between gap-gutter-lg">
+        <a href="../insuria-landing/InsuriaLanding.html" class="flex items-center gap-gutter-sm shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-full pr-2">
+          <div class="grid grid-cols-3 gap-0.5 p-1 bg-surface rounded-sm border border-outline" aria-hidden="true">
+            <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+            <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+            <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+            <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+            <span class="w-2.5 h-2.5 bg-pure-white"></span>
+            <span class="w-2.5 h-2.5 bg-light-gray"></span>
+            <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+            <span class="w-2.5 h-2.5 bg-light-gray"></span>
+            <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+          </div>
+          <span class="font-headline text-headline-md text-on-surface-strong tracking-tight">Autonomy Insurance</span>
+        </a>
+
+        <nav class="hidden md:flex items-center gap-gutter-sm" aria-label="Client navigation">
+          <a href="../client-dashboard-web/ClientDashboardWeb.html" class="px-4 py-2.5 min-h-[44px] inline-flex items-center rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg whitespace-nowrap">Home</a>
+          <a href="../client-agent-chat-web/ClientAgentChatWeb.html" class="px-4 py-2.5 min-h-[44px] inline-flex items-center rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg whitespace-nowrap">Chat</a>
+          <a href="../client-estimate-web/ClientEstimateWeb.html" class="px-4 py-2.5 min-h-[44px] inline-flex items-center rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg whitespace-nowrap">Estimate</a>
+          <a href="../client-claims-web/ClientClaimsWeb.html" class="px-4 py-2.5 min-h-[44px] inline-flex items-center rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg whitespace-nowrap">Claims</a>
+          <a href="#" aria-current="page" class="px-4 py-2.5 min-h-[44px] inline-flex items-center rounded-full bg-primary text-on-primary font-label text-label-lg whitespace-nowrap">Profile</a>
+        </nav>
+
+        <div class="flex items-center gap-gutter-sm shrink-0">
+          <img src="https://lh3.googleusercontent.com/aida/ALJJyrBNPH83PI6mgA_4_A_-foW_tP8Shd3dieHS0JLDlRimR18VKECaUMk7PVaU-Z7GJyIrjWRY1ek31arcAB9Z4oGf8o9KVXhvSJP8-vp0nwDMolpyXdM5T1H2GlXbP0_JUT7YN_z_qsHVe8Mkg4yNbSnVHT-N7yqVcyYK_oqkOulYBJwEqIpv9e5WeFH_xR8yQIFjbyWcxEKlYTY0PRU5s34gtCc2pdVP5Kl7GuRmnaROurgT-AdBwwI" alt="Elena Rostova" class="w-10 h-10 rounded-full object-cover border border-outline">
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto px-gutter-lg py-gutter-xl flex flex-col gap-gutter-xl">
+
+      <!-- Page Header + Save Button & Toast -->
+      <section class="flex flex-wrap items-center justify-between gap-gutter-md">
+        <div class="flex flex-col gap-gutter-xs">
+          <h1 class="font-display text-display-md-mobile md:text-display-md text-on-surface-strong">Your profile</h1>
+          <p class="font-body text-body-lg text-on-surface">Manage your contact details, notification preferences, and account security.</p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-gutter-sm">
+          <div id="save-toast" role="status" aria-live="polite" class="hidden px-4 py-2.5 rounded-full bg-success text-on-success font-label text-label-lg items-center gap-2 shadow-sm">
+            <span class="material-symbols-outlined text-[18px]" aria-hidden="true">check_circle</span>
+            <span id="save-toast-text">Profile changes saved.</span>
+          </div>
+          <button type="button" onclick="saveProfile()" class="min-h-[44px] px-6 py-2.5 rounded-full bg-primary text-on-primary hover:bg-primary-hover font-label text-label-lg whitespace-nowrap transition-colors">
+            Save changes
+          </button>
+        </div>
+      </section>
+
+      <!-- Main Grid: Left (Personal Details, Notifications, Security) + Right (My Agent Card, Connect Rewards App) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-xl items-start">
+
+        <!-- LEFT COLUMN (8 cols) -->
+        <div class="lg:col-span-8 flex flex-col gap-gutter-xl">
+
+          <!-- 1. Personal Details -->
+          <section class="bg-surface-card rounded-xl border border-outline p-gutter-xl flex flex-col gap-gutter-lg">
+            <div class="flex items-center justify-between gap-2">
+              <h2 class="font-headline text-headline-md text-on-surface-strong">Personal details</h2>
+              <span class="font-mono text-mono-md text-on-surface-muted">#INS-4829</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-gutter-md">
+              <label class="flex flex-col gap-gutter-xs">
+                <span class="font-label text-label-lg text-on-surface-strong">Full name</span>
+                <input type="text" value="Elena Rostova" class="min-h-[44px] rounded-full bg-surface border border-outline px-4 py-2.5 font-body text-body-md text-on-surface-strong focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+              </label>
+
+              <label class="flex flex-col gap-gutter-xs">
+                <span class="font-label text-label-lg text-on-surface-strong">Email address</span>
+                <input type="email" value="elena.rostova@email.com" class="min-h-[44px] rounded-full bg-surface border border-outline px-4 py-2.5 font-body text-body-md text-on-surface-strong focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+              </label>
+
+              <label class="flex flex-col gap-gutter-xs">
+                <span class="font-label text-label-lg text-on-surface-strong">Mobile number</span>
+                <input type="tel" value="+63 917 555 0148" class="min-h-[44px] rounded-full bg-surface border border-outline px-4 py-2.5 font-mono text-mono-md text-on-surface-strong focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+              </label>
+
+              <label class="flex flex-col gap-gutter-xs">
+                <span class="font-label text-label-lg text-on-surface-strong">Home address</span>
+                <input type="text" value="42 Katipunan Ave, Quezon City" class="min-h-[44px] rounded-full bg-surface border border-outline px-4 py-2.5 font-body text-body-md text-on-surface-strong focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+              </label>
+            </div>
+          </section>
+
+          <!-- 2. Notifications Toggles -->
+          <section class="bg-surface-card rounded-xl border border-outline p-gutter-xl flex flex-col gap-gutter-md">
+            <div>
+              <h2 class="font-headline text-headline-md text-on-surface-strong">Notifications</h2>
+              <p class="font-body text-body-sm text-on-surface-muted mt-1">Choose how we keep you updated about your policy and claims.</p>
+            </div>
+
+            <div class="divide-y divide-outline">
+              <div class="py-3.5 flex items-center justify-between gap-gutter-md">
+                <div>
+                  <div class="font-title text-title-md text-on-surface-strong">Claim status updates</div>
+                  <div class="font-body text-body-sm text-on-surface-muted">Email and SMS alerts when your claim moves to review or payout.</div>
+                </div>
+                <button type="button" role="switch" aria-checked="true" onclick="toggleSwitch(this)" class="w-12 h-7 rounded-full bg-primary p-1 transition-colors flex items-center justify-end shrink-0" aria-label="Toggle claim status updates">
+                  <span class="w-5 h-5 rounded-full bg-pure-white shadow-sm"></span>
+                </button>
+              </div>
+
+              <div class="py-3.5 flex items-center justify-between gap-gutter-md">
+                <div>
+                  <div class="font-title text-title-md text-on-surface-strong">Messages from Maya Santos</div>
+                  <div class="font-body text-body-sm text-on-surface-muted">Get notified right away when your advisor replies in chat.</div>
+                </div>
+                <button type="button" role="switch" aria-checked="true" onclick="toggleSwitch(this)" class="w-12 h-7 rounded-full bg-primary p-1 transition-colors flex items-center justify-end shrink-0" aria-label="Toggle messages from Maya Santos">
+                  <span class="w-5 h-5 rounded-full bg-pure-white shadow-sm"></span>
+                </button>
+              </div>
+
+              <div class="py-3.5 flex items-center justify-between gap-gutter-md">
+                <div>
+                  <div class="font-title text-title-md text-on-surface-strong">Policy renewal reminders</div>
+                  <div class="font-body text-body-sm text-on-surface-muted">Friendly reminders 14 days before your monthly due date.</div>
+                </div>
+                <button type="button" role="switch" aria-checked="false" onclick="toggleSwitch(this)" class="w-12 h-7 rounded-full bg-outline p-1 transition-colors flex items-center justify-start shrink-0" aria-label="Toggle policy renewal reminders">
+                  <span class="w-5 h-5 rounded-full bg-pure-white shadow-sm"></span>
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <!-- 3. Security -->
+          <section class="bg-surface-card rounded-xl border border-outline p-gutter-xl flex flex-col gap-gutter-md">
+            <h2 class="font-headline text-headline-md text-on-surface-strong">Security</h2>
+
+            <div class="divide-y divide-outline">
+              <!-- Change Password -->
+              <div class="py-3.5 flex flex-wrap items-center justify-between gap-gutter-md">
+                <div>
+                  <div class="font-title text-title-md text-on-surface-strong">Password</div>
+                  <div class="font-body text-body-sm text-on-surface-muted">Last changed 3 months ago</div>
+                </div>
+                <button type="button" onclick="openPasswordModal()" class="min-h-[44px] px-5 py-2.5 rounded-full bg-surface border border-outline hover:border-primary font-label text-label-lg text-on-surface-strong whitespace-nowrap transition-colors">
+                  Change password
+                </button>
+              </div>
+
+              <!-- Biometric Info Row -->
+              <div class="py-3.5 flex items-start gap-gutter-sm">
+                <span class="material-symbols-outlined text-[22px] text-primary shrink-0 mt-0.5" aria-hidden="true">fingerprint</span>
+                <div>
+                  <div class="font-title text-title-md text-on-surface-strong">Unlock with Face ID or fingerprint on mobile</div>
+                  <div class="font-body text-body-sm text-on-surface-muted">Biometric unlock is managed on your phone inside the Autonomy Insurance mobile app.</div>
+                </div>
+              </div>
+
+              <!-- Sign Out of All Devices -->
+              <div class="py-3.5 flex flex-wrap items-center justify-between gap-gutter-md">
+                <div>
+                  <div class="font-title text-title-md text-on-surface-strong">Active sessions</div>
+                  <div class="font-body text-body-sm text-on-surface-muted">Signed in on this browser and 1 mobile device.</div>
+                </div>
+                <button type="button" onclick="signOutAllDevices()" class="min-h-[44px] px-5 py-2.5 rounded-full bg-surface border border-outline hover:border-error text-error font-label text-label-lg whitespace-nowrap transition-colors">
+                  Sign out of all devices
+                </button>
+              </div>
+            </div>
+          </section>
+
+        </div>
+
+        <!-- RIGHT COLUMN (4 cols): My Agent Card + Connect Rewards App -->
+        <aside class="lg:col-span-4 flex flex-col gap-gutter-xl">
+
+          <!-- My Agent Card -->
+          <article class="bg-surface-card rounded-xl border border-outline p-gutter-xl flex flex-col gap-gutter-lg">
+            <h2 class="font-headline text-headline-md text-on-surface-strong">My agent</h2>
+
+            <div class="flex items-center gap-gutter-md">
+              <img src="https://lh3.googleusercontent.com/aida/ALJJyrCcIVIRZ7uESG4o0sYPrwZPpnYbVp9t8qEma-oKt9m0nDcfu5K0NhJmOABDoVtAhGy3giyTvNCblxNUDcyLXSpxBUBI4fwu1hzOim5tLVzb4fBJ7CF56g7k0IA-Wt1p2Kf60KTcHx0Sc3QvisaJgL7OGZHZK7M0ozed6OfjKb0FV_-ZaKvRcLgvZLr39EzyDORj2kbDE18G9zpz5mW0cmFd44rAQVrCXWhwSmmERkO6mawo" alt="Maya Santos" class="w-16 h-16 rounded-full object-cover border-2 border-secondary shrink-0">
+              <div>
+                <div class="font-title text-title-lg text-on-surface-strong">Maya Santos</div>
+                <div class="font-body text-body-sm text-on-surface-muted">Assigned Advisor • West Branch</div>
+                <div class="font-label text-label-sm text-success mt-1">Online now</div>
+              </div>
+            </div>
+
+            <p class="font-body text-body-sm text-on-surface">
+              Maya handles your 20-Year Term Life policy and is your direct contact for questions, updates, and claims.
+            </p>
+
+            <a href="../client-agent-chat-web/ClientAgentChatWeb.html" class="w-full min-h-[44px] inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-primary text-on-primary hover:bg-primary-hover font-label text-label-lg whitespace-nowrap transition-colors">
+              <span class="material-symbols-outlined text-[20px]" aria-hidden="true">chat</span>
+              <span>Chat with Maya</span>
+            </a>
+          </article>
+
+          <!-- Rewards Card: "Connect Rewards app" (Status Only) -->
+          <article class="bg-surface-card rounded-xl border border-outline p-gutter-xl flex flex-col gap-gutter-md">
+            <div class="flex items-center justify-between gap-2">
+              <h2 class="font-headline text-headline-md text-on-surface-strong">Connect Rewards app</h2>
+              <span class="px-2.5 py-0.5 rounded-full bg-success text-on-success font-label text-label-sm whitespace-nowrap">Connected</span>
+            </div>
+
+            <p class="font-body text-body-sm text-on-surface-muted">
+              Your Autonomy Insurance Rewards app is linked to this account. Open the Rewards app on your phone to view your goals or activity.
+            </p>
+          </article>
+
+        </aside>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- CHANGE PASSWORD MODAL -->
+  <div id="password-modal" role="dialog" aria-modal="true" aria-labelledby="password-modal-title" class="hidden fixed inset-0 z-50 flex items-center justify-center p-gutter-md bg-on-surface-strong/40">
+    <div class="bg-surface-card rounded-2xl border border-outline max-w-md w-full p-gutter-xl shadow-2xl flex flex-col gap-gutter-lg">
+      <div class="flex items-start justify-between gap-gutter-md">
+        <h2 id="password-modal-title" class="font-headline text-headline-md text-on-surface-strong">Change password</h2>
+        <button type="button" onclick="closePasswordModal()" aria-label="Close password modal" class="w-11 h-11 rounded-full hover:bg-surface flex items-center justify-center text-on-surface-muted shrink-0">
+          <span class="material-symbols-outlined text-[22px]" aria-hidden="true">close</span>
+        </button>
+      </div>
+
+      <form onsubmit="submitPasswordChange(event)" class="flex flex-col gap-gutter-md">
+        <label class="flex flex-col gap-gutter-xs">
+          <span class="font-label text-label-lg text-on-surface-strong">Current password</span>
+          <input type="password" required class="min-h-[44px] rounded-full bg-surface border border-outline px-4 py-2.5 font-body text-body-md text-on-surface-strong focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+        </label>
+        <label class="flex flex-col gap-gutter-xs">
+          <span class="font-label text-label-lg text-on-surface-strong">New password</span>
+          <input type="password" required minlength="8" class="min-h-[44px] rounded-full bg-surface border border-outline px-4 py-2.5 font-body text-body-md text-on-surface-strong focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+        </label>
+        <div class="flex items-center justify-end gap-gutter-sm pt-2">
+          <button type="button" onclick="closePasswordModal()" class="min-h-[44px] px-5 py-2.5 rounded-full bg-surface border border-outline hover:border-on-surface font-label text-label-lg text-on-surface-strong whitespace-nowrap">
+            Cancel
+          </button>
+          <button type="submit" class="min-h-[44px] px-6 py-2.5 rounded-full bg-primary text-on-primary hover:bg-primary-hover font-label text-label-lg whitespace-nowrap">
+            Update password
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function showToast(message) {
+      const toast = document.getElementById('save-toast');
+      document.getElementById('save-toast-text').textContent = message;
+      toast.classList.remove('hidden');
+      toast.classList.add('inline-flex');
+    }
+
+    function saveProfile() {
+      showToast('Profile changes saved.');
+    }
+
+    function toggleSwitch(btn) {
+      const checked = btn.getAttribute('aria-checked') === 'true';
+      const next = !checked;
+      btn.setAttribute('aria-checked', String(next));
+      btn.className = next
+        ? 'w-12 h-7 rounded-full bg-primary p-1 transition-colors flex items-center justify-end shrink-0'
+        : 'w-12 h-7 rounded-full bg-outline p-1 transition-colors flex items-center justify-start shrink-0';
+    }
+
+    function openPasswordModal() {
+      document.getElementById('password-modal').classList.remove('hidden');
+    }
+
+    function closePasswordModal() {
+      document.getElementById('password-modal').classList.add('hidden');
+    }
+
+    function submitPasswordChange(e) {
+      e.preventDefault();
+      e.target.reset();
+      closePasswordModal();
+      showToast('Password updated.');
+    }
+
+    function signOutAllDevices() {
+      showToast('Signed out of all other devices.');
+    }
+  </script>
+
+
+</body></html>

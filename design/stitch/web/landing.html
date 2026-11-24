@@ -1,0 +1,798 @@
+<!-- Autonomy Insurance — web/landing -->
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Autonomy Insurance — Life Insurance, With a Real Person on Your Side</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'mapua-red': '#D52B1E',
+        'deep-red': '#A81F16',
+        'mapua-gold': '#F2B705',
+        'charcoal': '#4B4B4D',
+        'mid-gray': '#8A8B8D',
+        'light-gray': '#D9D9DA',
+        'warm-white': '#FAF7F2',
+        'pure-white': '#FFFFFF',
+        'primary': '#D52B1E',
+        'on-primary': '#FFFFFF',
+        'primary-hover': '#A81F16',
+        'primary-container': '#FFEDEA',
+        'on-primary-container': '#410000',
+        'secondary': '#F2B705',
+        'on-secondary': '#251A00',
+        'secondary-container': '#FFEFD4',
+        'on-secondary-container': '#3F2E00',
+        'surface': '#FAF7F2',
+        'on-surface': '#4B4B4D',
+        'on-surface-strong': '#1B1B1D',
+        'on-surface-muted': '#5E5E60',
+        'surface-card': '#FFFFFF',
+        'surface-dark': '#4B4B4D',
+        'on-surface-dark': '#FAF7F2',
+        'outline': '#D9D9DA',
+        'success': '#15803D',
+        'on-success': '#FFFFFF',
+        'warning': '#B45309',
+        'on-warning': '#FFFFFF',
+        'error': '#BA1A1A',
+        'on-error': '#FFFFFF',
+      },
+      borderRadius: {
+        'sm': '8px',
+        'DEFAULT': '16px',
+        'md': '20px',
+        'lg': '24px',
+        'xl': '32px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '64px',
+        'section-lg': '96px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Hanken Grotesk"', 'sans-serif'],
+        'headline': ['"Hanken Grotesk"', 'sans-serif'],
+        'title': ['"DM Sans"', 'sans-serif'],
+        'body': ['"DM Sans"', 'sans-serif'],
+        'label': ['"DM Sans"', 'sans-serif'],
+        'mono': ['"DM Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-xl': ['84px', { lineHeight: '84px', letterSpacing: '-3.2px', fontWeight: '800' }],
+        'display-xl-mobile': ['32px', { lineHeight: '36px', letterSpacing: '-1.0px', fontWeight: '800' }],
+        'display-lg': ['64px', { lineHeight: '68px', letterSpacing: '-2.4px', fontWeight: '800' }],
+        'display-lg-mobile': ['30px', { lineHeight: '34px', letterSpacing: '-0.8px', fontWeight: '800' }],
+        'display-md': ['48px', { lineHeight: '52px', letterSpacing: '-1.6px', fontWeight: '800' }],
+        'display-md-mobile': ['28px', { lineHeight: '32px', letterSpacing: '-0.6px', fontWeight: '800' }],
+        'headline-lg': ['36px', { lineHeight: '42px', letterSpacing: '-1.0px', fontWeight: '700' }],
+        'headline-lg-mobile': ['24px', { lineHeight: '28px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'headline-md': ['24px', { lineHeight: '30px', letterSpacing: '-0.4px', fontWeight: '700' }],
+        'title-lg': ['20px', { lineHeight: '26px', letterSpacing: '-0.2px', fontWeight: '700' }],
+        'title-md': ['16px', { lineHeight: '22px', letterSpacing: '0px', fontWeight: '700' }],
+        'body-lg': ['18px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-md': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-sm': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0.1px', fontWeight: '700' }],
+        'label-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.4px', fontWeight: '600' }],
+        'mono-md': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '500' }],
+      },
+      transitionDuration: {
+        'state-change': '150ms',
+        'card-lift': '240ms',
+        'surface-enter': '320ms',
+        'surface-exit': '180ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'card-lift': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'cubic-bezier(0.2, 0, 0, 1)',
+        'card-lift': 'cubic-bezier(0.22, 1, 0.36, 1)',
+        'surface-enter': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-exit': 'cubic-bezier(0.3, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@500&amp;family=DM+Sans:wght@400;600;700&amp;family=Hanken+Grotesk:wght@700;800&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    .material-symbols-outlined, .material-symbols-rounded, .material-symbols-sharp, .material-icons {
+      display: inline-block; width: 1em; height: 1em; line-height: 1 !important;
+      box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle;
+    }
+    @keyframes marqueeScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .animate-marquee {
+      display: flex;
+      width: max-content;
+      animation: marqueeScroll 28s linear infinite;
+    }
+    .animate-marquee:hover {
+      animation-play-state: paused;
+    }
+    @keyframes phraseFade {
+      0% { opacity: 0; transform: translateY(8px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    .phrase-enter {
+      animation: phraseFade 320ms cubic-bezier(0.2, 0, 0, 1) forwards;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .animate-marquee { animation: none; }
+      .phrase-enter { animation: none; }
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body antialiased selection:bg-secondary selection:text-on-secondary">
+  <div class="min-h-[1024px] flex flex-col pb-24" data-stitch-vh="min-h-[1024px]===min-h-screen">
+
+    <!-- 1. STICKY NAV -->
+    <header class="sticky top-0 z-40 bg-surface border-b border-outline">
+      <div class="max-w-7xl mx-auto px-gutter-md md:px-gutter-lg py-gutter-md flex items-center justify-between gap-gutter-md">
+        <!-- Logo -->
+        <a href="#" class="flex items-center gap-gutter-sm shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-full pr-2">
+          <div class="grid grid-cols-3 gap-0.5 p-1 bg-surface-card rounded-sm border border-outline shrink-0" aria-hidden="true">
+            <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+            <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+            <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+            <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+            <span class="w-2.5 h-2.5 bg-pure-white"></span>
+            <span class="w-2.5 h-2.5 bg-light-gray"></span>
+            <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+            <span class="w-2.5 h-2.5 bg-light-gray"></span>
+            <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+          </div>
+          <span class="font-headline text-headline-md text-on-surface-strong tracking-tight">Autonomy Insurance</span>
+        </a>
+
+        <!-- Nav Links: Features, How it works, FAQ -->
+        <nav class="hidden md:flex items-center gap-gutter-xl" aria-label="Primary">
+          <a href="#features" class="font-label text-label-lg text-on-surface hover:text-primary transition-colors duration-state-change">Features</a>
+          <a href="#how-it-works" class="font-label text-label-lg text-on-surface hover:text-primary transition-colors duration-state-change">How it works</a>
+          <a href="#faq" class="font-label text-label-lg text-on-surface hover:text-primary transition-colors duration-state-change">FAQ</a>
+        </nav>
+
+        <!-- Actions: Login (ghost) + Get an estimate (red pill) -->
+        <div class="flex items-center gap-gutter-sm shrink-0">
+          <button type="button" onclick="document.getElementById(&#39;footer-portals&#39;).scrollIntoView({behavior:&#39;smooth&#39;})" class="hidden sm:inline-flex items-center justify-center px-gutter-md py-2.5 rounded-full bg-transparent text-on-surface-strong hover:bg-surface-card border border-transparent hover:border-outline transition-colors duration-state-change">
+            <span data-design-text-token="label-lg" class="font-label text-label-lg whitespace-nowrap">Login</span>
+          </button>
+
+          <!-- COMPONENT: button-primary -->
+          <button data-component-id="button-primary" data-component-type="button" data-component-variant="primary" type="button" onclick="document.getElementById(&#39;cta-cards&#39;).scrollIntoView({behavior:&#39;smooth&#39;})" class="inline-flex items-center justify-center gap-gutter-sm px-gutter-md md:px-gutter-lg py-2.5 md:py-3 rounded-full bg-primary text-on-primary hover:bg-primary-hover transition-colors duration-state-change ease-state-change focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 shrink-0">
+            <span data-design-text-token="label-lg" class="font-label text-label-lg whitespace-nowrap">Get an estimate</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-1">
+
+      <!-- 2. HERO: Oversized headline with rotating word + pixel-mosaic illustration & floating sticker cards -->
+      <section class="relative overflow-hidden pt-gutter-xl md:pt-section pb-gutter-xl">
+        <div class="max-w-7xl mx-auto px-gutter-md md:px-gutter-lg grid grid-cols-1 lg:grid-cols-12 gap-gutter-xl items-center">
+          <!-- Left Copy Column -->
+          <div class="lg:col-span-7 flex flex-col gap-gutter-lg">
+            <h1 class="font-display text-display-xl-mobile md:text-display-xl text-on-surface-strong text-balance">
+              Life insurance, with a
+              <span id="hero-rotating-word" class="text-primary phrase-enter">real person</span>
+              on your side.
+            </h1>
+
+            <p class="font-body text-body-lg text-on-surface max-w-prose text-pretty">
+              Get an honest estimate in under two minutes, chat directly with your dedicated agent, and earn real rewards for healthy daily habits.
+            </p>
+
+            <div class="flex flex-wrap items-center gap-gutter-md pt-gutter-xs">
+              <button type="button" onclick="document.getElementById(&#39;cta-cards&#39;).scrollIntoView({behavior:&#39;smooth&#39;})" class="inline-flex items-center justify-center gap-gutter-sm px-gutter-xl py-4 rounded-full bg-primary text-on-primary hover:bg-primary-hover transition-colors font-label text-label-lg">
+                <span>Get an estimate</span>
+                <span class="material-symbols-outlined text-[20px]" aria-hidden="true">arrow_forward</span>
+              </button>
+
+              <button type="button" onclick="openChatDemo()" class="inline-flex items-center gap-gutter-sm px-gutter-md py-3 rounded-full text-on-surface-strong hover:text-primary transition-colors font-label text-label-lg">
+                <span class="material-symbols-outlined text-[20px]" aria-hidden="true">chat_bubble</span>
+                <span class="underline underline-offset-4">Chat with an agent</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Right Visual Column: Pixel-Mosaic Illustration + Floating Sticker Cards -->
+          <div class="lg:col-span-5 relative py-gutter-lg">
+            <div class="relative bg-surface-card rounded-xl border border-outline p-gutter-xl overflow-hidden min-h-[380px] flex items-center justify-center">
+              <!-- Pixel-Mosaic Background Art -->
+              <div class="grid grid-cols-6 gap-2.5 opacity-95" aria-hidden="true">
+                <span class="w-10 h-10 bg-primary-container rounded-sm"></span>
+                <span class="w-10 h-10 bg-mapua-red rounded-sm"></span>
+                <span class="w-10 h-10 bg-mapua-gold rounded-sm"></span>
+                <span class="w-10 h-10 bg-light-gray rounded-sm opacity-40"></span>
+                <span class="w-10 h-10 bg-mapua-red rounded-sm opacity-80"></span>
+                <span class="w-10 h-10 bg-pure-white rounded-sm"></span>
+
+                <span class="w-10 h-10 bg-mapua-gold rounded-sm"></span>
+                <span class="w-10 h-10 bg-pure-white rounded-sm"></span>
+                <span class="w-10 h-10 bg-mapua-red rounded-sm"></span>
+                <span class="w-10 h-10 bg-mapua-gold rounded-sm"></span>
+                <span class="w-10 h-10 bg-surface rounded-sm"></span>
+                <span class="w-10 h-10 bg-mapua-red rounded-sm opacity-60"></span>
+
+                <span class="w-10 h-10 bg-light-gray rounded-sm opacity-50"></span>
+                <span class="w-10 h-10 bg-mapua-red rounded-sm"></span>
+                <span class="w-10 h-10 bg-secondary-container rounded-sm"></span>
+                <span class="w-10 h-10 bg-mapua-red rounded-sm"></span>
+                <span class="w-10 h-10 bg-mapua-gold rounded-sm"></span>
+                <span class="w-10 h-10 bg-light-gray rounded-sm opacity-30"></span>
+
+                <span class="w-10 h-10 bg-surface rounded-sm"></span>
+                <span class="w-10 h-10 bg-mapua-gold rounded-sm opacity-70"></span>
+                <span class="w-10 h-10 bg-mapua-red rounded-sm opacity-90"></span>
+                <span class="w-10 h-10 bg-pure-white rounded-sm"></span>
+                <span class="w-10 h-10 bg-mapua-gold rounded-sm opacity-50"></span>
+                <span class="w-10 h-10 bg-surface rounded-sm"></span>
+              </div>
+
+              <!-- Floating Sticker Card 1: Chat Bubble -->
+              <div class="absolute top-5 left-5 bg-surface-dark text-on-surface-dark rounded-lg p-3 shadow-lg flex items-center gap-2.5 max-w-[230px]">
+                <img src="https://lh3.googleusercontent.com/aida/ALJJyrCcIVIRZ7uESG4o0sYPrwZPpnYbVp9t8qEma-oKt9m0nDcfu5K0NhJmOABDoVtAhGy3giyTvNCblxNUDcyLXSpxBUBI4fwu1hzOim5tLVzb4fBJ7CF56g7k0IA-Wt1p2Kf60KTcHx0Sc3QvisaJgL7OGZHZK7M0ozed6OfjKb0FV_-ZaKvRcLgvZLr39EzyDORj2kbDE18G9zpz5mW0cmFd44rAQVrCXWhwSmmERkO6mawo" alt="Maya Santos" class="w-9 h-9 rounded-full object-cover border border-secondary shrink-0">
+                <div>
+                  <div class="font-label text-label-sm text-secondary">Maya • Your Agent</div>
+                  <div class="font-body text-body-sm text-pure-white">I&#39;ve got your quote ready!</div>
+                </div>
+              </div>
+
+              <!-- Floating Sticker Card 2: Premium Amount -->
+              <div class="absolute bottom-6 left-6 bg-surface-card border border-outline rounded-lg px-4 py-3 shadow-lg">
+                <div class="font-label text-label-sm text-on-surface-muted">Monthly Premium</div>
+                <div class="font-display text-headline-lg text-primary tabular-nums">₱1,850<span class="font-body text-body-sm text-on-surface-muted">/mo</span></div>
+              </div>
+
+              <!-- Floating Sticker Card 3: Step Counter -->
+              <div class="absolute bottom-8 right-5 bg-secondary text-on-secondary rounded-lg px-4 py-3 shadow-lg flex items-center gap-2">
+                <span class="material-symbols-outlined text-[22px]" aria-hidden="true">directions_walk</span>
+                <div>
+                  <div class="font-headline text-title-lg tabular-nums">9,420</div>
+                  <div class="font-label text-label-sm">Steps today</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. ROTATING TICKER: "We cover everything from YOUR ..." -->
+      <section class="py-gutter-xl border-y border-outline bg-surface-card">
+        <div class="max-w-7xl mx-auto px-gutter-md md:px-gutter-lg flex flex-col md:flex-row items-center justify-center gap-gutter-md text-center">
+          <span class="font-headline text-headline-lg-mobile md:text-headline-lg text-on-surface-strong">We cover everything from YOUR</span>
+          <span id="ticker-word" class="inline-flex items-center px-gutter-lg py-2 rounded-full bg-primary-container text-primary font-headline text-headline-lg-mobile md:text-headline-lg phrase-enter">
+            Family
+          </span>
+        </div>
+      </section>
+
+      <!-- 4. TWO LARGE CTA CARDS: "Get a policy estimate" (red) & "Chat with your agent" (gold) -->
+      <section id="cta-cards" class="py-section">
+        <div class="max-w-7xl mx-auto px-gutter-md md:px-gutter-lg grid grid-cols-1 lg:grid-cols-2 gap-gutter-lg items-stretch">
+          <!-- Card 1: Get a policy estimate (Red) -->
+          <article class="bg-primary text-on-primary rounded-xl p-gutter-xl flex flex-col justify-between gap-gutter-lg relative overflow-hidden">
+            <div class="flex flex-col gap-gutter-md">
+              <h2 class="font-display text-display-md-mobile md:text-display-md text-pure-white">Get a policy estimate</h2>
+              <p class="font-body text-body-lg text-on-primary max-w-md text-balance">
+                Slide your coverage amount and see your real monthly rate upfront—no medical jargon or surprise fees.
+              </p>
+
+              <!-- Interactive Slider Preview -->
+              <div class="bg-primary-hover rounded-lg p-gutter-md flex flex-col gap-gutter-sm mt-2">
+                <div class="flex items-center justify-between">
+                  <span id="cta-coverage" class="font-headline text-headline-md text-pure-white tabular-nums">₱2,000,000</span>
+                  <span id="cta-premium" class="font-headline text-headline-md text-secondary tabular-nums">₱1,850/mo</span>
+                </div>
+                <input type="range" min="500000" max="20000000" step="500000" value="2000000" aria-label="Coverage amount" oninput="updateCtaEstimate(this.value)" class="w-full accent-secondary cursor-pointer">
+              </div>
+            </div>
+
+            <footer class="pt-gutter-sm">
+              <button type="button" onclick="openChatDemo(&#39;estimate&#39;)" class="inline-flex items-center gap-gutter-sm px-gutter-lg py-3.5 rounded-full bg-pure-white text-on-surface-strong hover:bg-warm-white transition-colors font-label text-label-lg">
+                <span>Lock in this estimate</span>
+                <span class="material-symbols-outlined text-[20px]" aria-hidden="true">arrow_forward</span>
+              </button>
+            </footer>
+          </article>
+
+          <!-- Card 2: Chat with your agent (Gold) -->
+          <article class="bg-secondary text-on-secondary rounded-xl p-gutter-xl flex flex-col justify-between gap-gutter-lg relative overflow-hidden">
+            <div class="flex flex-col gap-gutter-md">
+              <div class="flex items-center justify-end gap-gutter-md">
+                <div class="flex items-center gap-2">
+                  <img src="https://lh3.googleusercontent.com/aida/ALJJyrCcIVIRZ7uESG4o0sYPrwZPpnYbVp9t8qEma-oKt9m0nDcfu5K0NhJmOABDoVtAhGy3giyTvNCblxNUDcyLXSpxBUBI4fwu1hzOim5tLVzb4fBJ7CF56g7k0IA-Wt1p2Kf60KTcHx0Sc3QvisaJgL7OGZHZK7M0ozed6OfjKb0FV_-ZaKvRcLgvZLr39EzyDORj2kbDE18G9zpz5mW0cmFd44rAQVrCXWhwSmmERkO6mawo" alt="Maya Santos" class="w-11 h-11 rounded-full object-cover border-2 border-surface-card">
+                  <span class="font-label text-label-sm text-on-secondary">Maya is online</span>
+                </div>
+              </div>
+              <h2 class="font-display text-display-md-mobile md:text-display-md text-on-secondary">Chat with your agent</h2>
+              <p class="font-body text-body-lg text-on-secondary max-w-md">
+                Skip call centers forever. Message your dedicated Autonomy Insurance advisor directly for quotes, policy tweaks, or claims support.
+              </p>
+            </div>
+
+            <footer class="pt-gutter-sm">
+              <button type="button" onclick="openChatDemo()" class="inline-flex items-center gap-gutter-sm px-gutter-lg py-3.5 rounded-full bg-surface-dark text-pure-white hover:opacity-90 transition-opacity font-label text-label-lg">
+                <span class="material-symbols-outlined text-[20px]" aria-hidden="true">chat_bubble</span>
+                <span>Start live chat</span>
+              </button>
+            </footer>
+          </article>
+        </div>
+      </section>
+
+      <!-- 5. MARQUEE OF PARTNER/PRESS LOGO PLACEHOLDERS -->
+      <section class="py-gutter-lg overflow-hidden border-y border-outline bg-surface-card" aria-label="Featured in">
+        <div class="animate-marquee flex items-center gap-gutter-xl">
+          <div class="flex items-center gap-gutter-xl px-gutter-lg">
+            <span class="font-headline text-headline-md text-on-surface-muted tracking-tight">Forbes</span>
+            <span class="w-2.5 h-2.5 bg-mapua-red" aria-hidden="true"></span>
+            <span class="font-headline text-headline-md text-on-surface-muted tracking-tight">Bloomberg</span>
+            <span class="w-2.5 h-2.5 bg-mapua-gold" aria-hidden="true"></span>
+            <span class="font-headline text-headline-md text-on-surface-muted tracking-tight">Fast Company</span>
+            <span class="w-2.5 h-2.5 bg-mapua-red" aria-hidden="true"></span>
+            <span class="font-headline text-headline-md text-on-surface-muted tracking-tight">TechCrunch</span>
+            <span class="w-2.5 h-2.5 bg-mapua-gold" aria-hidden="true"></span>
+            <span class="font-headline text-headline-md text-on-surface-muted tracking-tight">Wired</span>
+            <span class="w-2.5 h-2.5 bg-mapua-red" aria-hidden="true"></span>
+            <span class="font-headline text-headline-md text-on-surface-muted tracking-tight">Business Insider</span>
+            <span class="w-2.5 h-2.5 bg-mapua-gold" aria-hidden="true"></span>
+          </div>
+          <div class="flex items-center gap-gutter-xl px-gutter-lg" aria-hidden="true">
+            <span class="font-headline text-headline-md text-on-surface-muted tracking-tight">Forbes</span>
+            <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+            <span class="font-headline text-headline-md text-on-surface-muted tracking-tight">Bloomberg</span>
+            <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+            <span class="font-headline text-headline-md text-on-surface-muted tracking-tight">Fast Company</span>
+            <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+            <span class="font-headline text-headline-md text-on-surface-muted tracking-tight">TechCrunch</span>
+            <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+            <span class="font-headline text-headline-md text-on-surface-muted tracking-tight">Wired</span>
+            <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+            <span class="font-headline text-headline-md text-on-surface-muted tracking-tight">Business Insider</span>
+            <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. BENTO STATS GRID WITH GIANT NUMERALS -->
+      <section id="features" class="py-section">
+        <div class="max-w-7xl mx-auto px-gutter-md md:px-gutter-lg">
+          <div class="max-w-2xl mb-gutter-xl">
+            <h2 class="font-display text-display-md-mobile md:text-display-md text-on-surface-strong text-balance mb-gutter-sm">Built around real people, not fine print.</h2>
+            <p class="font-body text-body-lg text-on-surface">Four pillars that make Autonomy Insurance feel effortless from day one.</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter-lg">
+            <div class="md:col-span-7 bg-surface-card rounded-xl border border-outline p-gutter-xl flex flex-col justify-between gap-gutter-md min-h-[200px]">
+              <div class="font-display text-display-xl-mobile md:text-display-xl text-on-surface-strong tabular-nums">1:1</div>
+              <p class="font-body text-body-md text-on-surface">One dedicated advisor assigned to you—never a random call-center queue.</p>
+            </div>
+
+            <div class="md:col-span-5 bg-primary text-on-primary rounded-xl p-gutter-xl flex flex-col justify-between gap-gutter-md min-h-[200px]">
+              <div class="font-display text-display-xl-mobile md:text-display-xl tabular-nums">90s</div>
+              <p class="font-body text-body-md text-on-primary">Transparent monthly pricing before you share any personal paperwork.</p>
+            </div>
+
+            <div class="md:col-span-5 bg-surface-dark text-on-surface-dark rounded-xl p-gutter-xl flex flex-col justify-between gap-gutter-md min-h-[200px]">
+              <div class="font-display text-display-xl-mobile md:text-display-xl text-pure-white tabular-nums">24/7</div>
+              <p class="font-body text-body-md text-light-gray">Smart assistant answers quick questions anytime and hands off seamlessly to your agent.</p>
+            </div>
+
+            <div class="md:col-span-7 bg-secondary text-on-secondary rounded-xl p-gutter-xl flex flex-col justify-between gap-gutter-md min-h-[200px]">
+              <div class="font-display text-display-xl-mobile md:text-display-xl tabular-nums">+₱12,000</div>
+              <p class="font-body text-body-md">Annual premium credits and partner perks earned simply by hitting daily step goals.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. "MEET CHAT WITH AGENT": Phone mockup + AI handoff explainer -->
+      <section id="how-it-works" class="py-section bg-surface-card border-y border-outline">
+        <div class="max-w-7xl mx-auto px-gutter-md md:px-gutter-lg grid grid-cols-1 lg:grid-cols-12 gap-gutter-xl items-center">
+          <!-- Phone Mockup -->
+          <div class="lg:col-span-5 flex justify-center">
+            <div class="w-full max-w-sm bg-surface rounded-xl border-4 border-surface-dark p-gutter-md shadow-xl flex flex-col gap-gutter-md">
+              <!-- Phone Header -->
+              <div class="flex items-center justify-between pb-gutter-sm border-b border-outline">
+                <div class="flex items-center gap-2.5">
+                  <img src="https://lh3.googleusercontent.com/aida/ALJJyrCcIVIRZ7uESG4o0sYPrwZPpnYbVp9t8qEma-oKt9m0nDcfu5K0NhJmOABDoVtAhGy3giyTvNCblxNUDcyLXSpxBUBI4fwu1hzOim5tLVzb4fBJ7CF56g7k0IA-Wt1p2Kf60KTcHx0Sc3QvisaJgL7OGZHZK7M0ozed6OfjKb0FV_-ZaKvRcLgvZLr39EzyDORj2kbDE18G9zpz5mW0cmFd44rAQVrCXWhwSmmERkO6mawo" alt="Maya Santos" class="w-10 h-10 rounded-full object-cover">
+                  <div>
+                    <div class="font-title text-title-md text-on-surface-strong">Maya Santos</div>
+                    <div class="font-label text-label-sm text-success">Online • Assigned Agent</div>
+                  </div>
+                </div>
+                <span class="px-2.5 py-0.5 rounded-full bg-secondary text-on-secondary font-label text-label-sm">Live</span>
+              </div>
+
+              <!-- AI Handoff Chip -->
+              <div class="bg-secondary-container border border-secondary rounded-lg p-2.5 font-body text-body-sm text-on-secondary-container">
+                AI Assistant summarized your ₱2M estimate for Maya.
+              </div>
+
+              <!-- Messages -->
+              <div class="flex flex-col gap-gutter-sm">
+                <div class="bg-surface-card border border-outline rounded-lg p-3 max-w-[85%]">
+                  <p class="font-body text-body-sm text-on-surface-strong">Hi Elena! Ready to lock in your ₱1,850/mo Term Life rate?</p>
+                </div>
+                <div class="bg-surface-dark text-on-surface-dark rounded-lg p-3 max-w-[85%] self-end">
+                  <p class="font-body text-body-sm text-on-surface-dark">Yes! Can I add my daughter as a beneficiary?</p>
+                </div>
+                <div class="bg-surface-card border border-outline rounded-lg p-3 max-w-[85%]">
+                  <p class="font-body text-body-sm text-on-surface-strong">Done! I updated it on your draft—tap below to review.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Explainer Copy -->
+          <div class="lg:col-span-7 flex flex-col gap-gutter-lg">
+            <h2 class="font-display text-display-md-mobile md:text-display-md text-on-surface-strong text-balance">
+              Smart AI prep. Real human care.
+            </h2>
+            <p class="font-body text-body-lg text-on-surface max-w-prose">
+              Our AI chatbot answers policy questions 24/7 and organizes your estimate—but it never replaces your agent. The moment you want human judgment, it hands the full context straight to your assigned advisor in one tap.
+            </p>
+            <div class="flex flex-wrap gap-gutter-md">
+              <button type="button" onclick="openChatDemo()" class="inline-flex items-center gap-gutter-sm px-gutter-lg py-3.5 rounded-full bg-primary text-on-primary hover:bg-primary-hover transition-colors font-label text-label-lg">
+                <span class="material-symbols-outlined text-[20px]" aria-hidden="true">chat_bubble</span>
+                <span>Try Chat with Agent</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. "HEALTHY HABITS, REAL REWARDS": Step-count visual leading into Rewards app -->
+      <section class="py-section">
+        <div class="max-w-7xl mx-auto px-gutter-md md:px-gutter-lg">
+          <div class="bg-secondary-container border border-secondary rounded-xl p-gutter-xl grid grid-cols-1 lg:grid-cols-12 gap-gutter-xl items-center">
+            <div class="lg:col-span-7 flex flex-col gap-gutter-md">
+              <h2 class="font-display text-display-md-mobile md:text-display-md text-on-secondary-container text-balance">
+                Healthy habits, real rewards.
+              </h2>
+              <p class="font-body text-body-lg text-on-secondary-container max-w-prose">
+                Connect your daily steps in our companion Rewards app. Hit your weekly movement streaks to unlock automatic monthly premium credits and coffee perks.
+              </p>
+              <div class="pt-gutter-xs">
+                <button type="button" onclick="openChatDemo(&#39;rewards&#39;)" class="inline-flex items-center gap-gutter-sm px-gutter-lg py-3.5 rounded-full bg-surface-dark text-pure-white hover:opacity-90 transition-opacity font-label text-label-lg">
+                  <span class="material-symbols-outlined text-[20px]" aria-hidden="true">directions_walk</span>
+                  <span>Explore Step Rewards</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="lg:col-span-5">
+              <div class="relative bg-surface-card rounded-xl border border-outline p-gutter-lg flex flex-col gap-gutter-md">
+                <img src="https://lh3.googleusercontent.com/aida/ALJJyrCUMRAMqhm4riV-toHSZRAL_SBKh8g57i05xrxrIp1yc7oW3DMBaMLgrEx_4cGDtLyVoCe6coFCJ2ATQmB_E8OX4hUF3Ci-Fy75kNbUXoa6jVxSS3QAAVTzkKYUTuDVjxcYIsU-aoNYO81ZzzmKLhmWTn1vDHcuJiSjapnKqTuT419dklHfXjFID6jXGU3ActAbFCNUVx1MrkVOMY5VKw8U3BQaTe_vYvDO5dD9E0e6Qns9cPeSq84dHQ" alt="Gold sneaker sticker" class="w-16 h-16 rounded-lg object-cover border-2 border-surface-card shadow-md absolute -top-6 -right-4 rotate-6">
+                <div class="flex items-center justify-between">
+                  <span class="font-label text-label-sm text-on-surface-muted">Today&#39;s Step Goal</span>
+                  <span class="px-2.5 py-0.5 rounded-full bg-secondary text-on-secondary font-label text-label-sm">Gold Streak</span>
+                </div>
+                <div class="font-display text-display-lg-mobile md:text-display-lg text-on-surface-strong tabular-nums">8,940</div>
+                <div class="w-full h-3 bg-surface rounded-full overflow-hidden border border-outline">
+                  <div class="h-full bg-primary rounded-full w-4/5"></div>
+                </div>
+                <div class="flex items-center justify-between font-body text-body-sm text-on-surface-muted">
+                  <span>Goal: 10,000 steps</span>
+                  <span class="font-title text-primary">+₱1,000 credit unlocked</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 9. TESTIMONIAL CAROUSEL (placeholder client names) -->
+      <section class="py-section bg-surface-card border-y border-outline">
+        <div class="max-w-7xl mx-auto px-gutter-md md:px-gutter-lg">
+          <div class="flex items-center justify-between gap-gutter-md mb-gutter-xl">
+            <h2 class="font-display text-display-md-mobile md:text-display-md text-on-surface-strong min-w-0 text-balance">Real stories from Autonomy Insurance members.</h2>
+            <div class="flex items-center gap-gutter-sm shrink-0">
+              <button type="button" onclick="shiftTestimonials(-1)" aria-label="Previous testimonial" class="w-11 h-11 rounded-full bg-surface border border-outline hover:border-on-surface flex items-center justify-center transition-colors">
+                <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+              </button>
+              <button type="button" onclick="shiftTestimonials(1)" aria-label="Next testimonial" class="w-11 h-11 rounded-full bg-surface border border-outline hover:border-on-surface flex items-center justify-center transition-colors">
+                <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+              </button>
+            </div>
+          </div>
+
+          <div id="testimonial-track" class="grid grid-cols-1 md:grid-cols-3 gap-gutter-lg">
+            <article class="bg-surface rounded-xl border border-outline p-gutter-xl flex flex-col justify-between gap-gutter-lg">
+              <p class="font-body text-body-lg text-on-surface-strong">&#34;I messaged my agent in the app and updated our beneficiaries in four minutes flat. Zero paperwork.&#34;</p>
+              <div class="flex items-center gap-gutter-md">
+                <img src="https://lh3.googleusercontent.com/aida/ALJJyrAK5weizwxGLq5H5N4tS9wGHs_eYwSlaCt1WlyaOFg969fAzE4AO-KIoH38JbWAXDiAAUCwrFAQT5IqFFsO1Plz-DG9fDQPAmYiE4eeP6Ymk8PfW181DQ_BccPHasGo0WGxNIzH0HOCIq7VAh9_dzgJUcrUai_OyWANX6TxfQ0nx8z4bjg1-TafpxZxe_ey1Tf73llnt8vGQnpau2RFSgx6Dc4JP9C31aOxiVb4ZZIJoCbtmkw" alt="Leo Mendoza" class="w-12 h-12 rounded-full object-cover">
+                <div>
+                  <div class="font-title text-title-md text-on-surface-strong">Leo Mendoza</div>
+                  <div class="font-body text-body-sm text-on-surface-muted">₱3M Term Life</div>
+                </div>
+              </div>
+            </article>
+
+            <article class="bg-surface rounded-xl border border-outline p-gutter-xl flex flex-col justify-between gap-gutter-lg">
+              <p class="font-body text-body-lg text-on-surface-strong">&#34;The AI bot helped me test three coverage sliders at midnight, then handed the summary straight to my agent.&#34;</p>
+              <div class="flex items-center gap-gutter-md">
+                <img src="https://lh3.googleusercontent.com/aida/ALJJyrBNPH83PI6mgA_4_A_-foW_tP8Shd3dieHS0JLDlRimR18VKECaUMk7PVaU-Z7GJyIrjWRY1ek31arcAB9Z4oGf8o9KVXhvSJP8-vp0nwDMolpyXdM5T1H2GlXbP0_JUT7YN_z_qsHVe8Mkg4yNbSnVHT-N7yqVcyYK_oqkOulYBJwEqIpv9e5WeFH_xR8yQIFjbyWcxEKlYTY0PRU5s34gtCc2pdVP5Kl7GuRmnaROurgT-AdBwwI" alt="Nadia Chen" class="w-12 h-12 rounded-full object-cover">
+                <div>
+                  <div class="font-title text-title-md text-on-surface-strong">Nadia Chen</div>
+                  <div class="font-body text-body-sm text-on-surface-muted">₱2M Term + Rewards</div>
+                </div>
+              </div>
+            </article>
+
+            <article class="bg-surface rounded-xl border border-outline p-gutter-xl flex flex-col justify-between gap-gutter-lg">
+              <p class="font-body text-body-lg text-on-surface-strong">&#34;Hitting 10,000 steps knocks ₱1,000 off my monthly bill. Best insurance experience I have ever used.&#34;</p>
+              <div class="flex items-center gap-gutter-md">
+                <div class="w-12 h-12 rounded-full bg-secondary text-on-secondary flex items-center justify-center font-headline text-title-lg">JR</div>
+                <div>
+                  <div class="font-title text-title-md text-on-surface-strong">Jordan Reyes</div>
+                  <div class="font-body text-body-sm text-on-surface-muted">Gold Tier Walker</div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10. FAQ ACCORDION WITH TABS "Policies" AND "Claims" -->
+      <section id="faq" class="py-section">
+        <div class="max-w-4xl mx-auto px-gutter-md md:px-gutter-lg">
+          <div class="text-center mb-gutter-xl">
+            <h2 class="font-display text-display-md-mobile md:text-display-md text-on-surface-strong mb-gutter-sm">Questions, answered plainly.</h2>
+            <p class="font-body text-body-lg text-on-surface-muted">Switch between Policies and Claims, or ask your agent directly.</p>
+          </div>
+
+          <div class="flex justify-center gap-gutter-sm mb-gutter-xl" role="tablist" aria-label="FAQ categories">
+            <button type="button" role="tab" aria-selected="true" onclick="switchFaqTab(&#39;policies&#39;, this)" class="faq-tab px-gutter-xl py-2.5 rounded-full bg-primary text-on-primary font-label text-label-lg transition-colors">Policies</button>
+            <button type="button" role="tab" aria-selected="false" onclick="switchFaqTab(&#39;claims&#39;, this)" class="faq-tab px-gutter-xl py-2.5 rounded-full bg-surface-card border border-outline text-on-surface-strong font-label text-label-lg hover:border-on-surface transition-colors">Claims</button>
+          </div>
+
+          <!-- Policies Tab -->
+          <div id="faq-policies" class="faq-panel flex flex-col gap-gutter-md">
+            <details name="faq-p" open class="group bg-surface-card rounded-lg border border-outline p-gutter-lg">
+              <summary class="flex items-center justify-between gap-gutter-md cursor-pointer list-none">
+                <span class="font-title text-title-md text-on-surface-strong">How quickly can I get an estimate and activate a policy?</span>
+                <span class="material-symbols-outlined text-on-surface-muted group-open:rotate-180 transition-transform" aria-hidden="true">expand_more</span>
+              </summary>
+              <p class="font-body text-body-md text-on-surface pt-gutter-md">You can calculate an instant estimate in under 2 minutes and activate coverage the same day with your assigned agent.</p>
+            </details>
+            <details name="faq-p" class="group bg-surface-card rounded-lg border border-outline p-gutter-lg">
+              <summary class="flex items-center justify-between gap-gutter-md cursor-pointer list-none">
+                <span class="font-title text-title-md text-on-surface-strong">Does the AI chatbot replace my human agent?</span>
+                <span class="material-symbols-outlined text-on-surface-muted group-open:rotate-180 transition-transform" aria-hidden="true">expand_more</span>
+              </summary>
+              <p class="font-body text-body-md text-on-surface pt-gutter-md">Never. The AI chatbot answers quick questions and preps your details, then hands off seamlessly to your dedicated human advisor.</p>
+            </details>
+          </div>
+
+          <!-- Claims Tab -->
+          <div id="faq-claims" class="faq-panel hidden flex-col gap-gutter-md">
+            <details name="faq-c" open class="group bg-surface-card rounded-lg border border-outline p-gutter-lg">
+              <summary class="flex items-center justify-between gap-gutter-md cursor-pointer list-none">
+                <span class="font-title text-title-md text-on-surface-strong">How do I file a claim with Autonomy Insurance?</span>
+                <span class="material-symbols-outlined text-on-surface-muted group-open:rotate-180 transition-transform" aria-hidden="true">expand_more</span>
+              </summary>
+              <p class="font-body text-body-md text-on-surface pt-gutter-md">Open Claims in your web or mobile account—or message your assigned agent directly—and track every review milestone live.</p>
+            </details>
+            <details name="faq-c" class="group bg-surface-card rounded-lg border border-outline p-gutter-lg">
+              <summary class="flex items-center justify-between gap-gutter-md cursor-pointer list-none">
+                <span class="font-title text-title-md text-on-surface-strong">How fast are approved claims paid out?</span>
+                <span class="material-symbols-outlined text-on-surface-muted group-open:rotate-180 transition-transform" aria-hidden="true">expand_more</span>
+              </summary>
+              <p class="font-body text-body-md text-on-surface pt-gutter-md">98% of verified claims are paid out within 48 hours with zero hidden processing fees.</p>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- 11. GIANT CLOSING CTA BAND -->
+      <section class="py-section">
+        <div class="max-w-7xl mx-auto px-gutter-md md:px-gutter-lg">
+          <div class="relative overflow-hidden bg-surface-dark text-on-surface-dark rounded-xl p-gutter-xl md:p-16 text-center flex flex-col items-center gap-gutter-lg">
+            <div class="grid grid-cols-5 gap-2 absolute top-6 left-6 opacity-40 pointer-events-none" aria-hidden="true">
+              <span class="w-4 h-4 bg-mapua-red"></span>
+              <span class="w-4 h-4 bg-mapua-gold"></span>
+              <span class="w-4 h-4 bg-pure-white"></span>
+              <span class="w-4 h-4 bg-transparent"></span>
+              <span class="w-4 h-4 bg-mapua-red"></span>
+              <span class="w-4 h-4 bg-mapua-gold"></span>
+              <span class="w-4 h-4 bg-pure-white"></span>
+              <span class="w-4 h-4 bg-transparent"></span>
+              <span class="w-4 h-4 bg-mapua-red"></span>
+              <span class="w-4 h-4 bg-transparent"></span>
+            </div>
+
+            <h2 class="font-display text-display-lg-mobile md:text-display-lg text-pure-white max-w-3xl text-balance">
+              Cover what matters. Talk to a human today.
+            </h2>
+            <p class="font-body text-body-lg text-light-gray max-w-xl">
+              Get your instant policy estimate or start a real-time chat with your assigned Autonomy Insurance agent.
+            </p>
+            <div class="flex flex-wrap justify-center gap-gutter-md pt-gutter-sm">
+              <button type="button" onclick="document.getElementById(&#39;cta-cards&#39;).scrollIntoView({behavior:&#39;smooth&#39;})" class="inline-flex items-center gap-gutter-sm px-gutter-xl py-4 rounded-full bg-primary text-on-primary hover:bg-primary-hover transition-colors font-label text-label-lg">
+                <span>Get an estimate</span>
+              </button>
+              <button type="button" onclick="openChatDemo()" class="inline-flex items-center gap-gutter-sm px-gutter-xl py-4 rounded-full bg-pure-white text-on-surface-strong hover:bg-warm-white transition-colors font-label text-label-lg">
+                <span class="material-symbols-outlined text-[20px]" aria-hidden="true">chat_bubble</span>
+                <span>Chat with Agent</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- LARGE FOOTER -->
+    <footer id="footer-portals" class="bg-surface-card border-t border-outline pt-section pb-gutter-xl">
+      <div class="max-w-7xl mx-auto px-gutter-md md:px-gutter-lg flex flex-col gap-gutter-xl">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter-xl">
+          <div class="md:col-span-5 flex flex-col gap-gutter-md">
+            <div class="font-display text-display-lg-mobile md:text-display-lg text-on-surface-strong tracking-tight">Autonomy Insurance.</div>
+            <p class="font-body text-body-md text-on-surface-muted max-w-sm">
+              Life insurance with a real person on your side—synced across web, mobile, and our step-based Rewards app.
+            </p>
+          </div>
+
+          <div class="md:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-gutter-lg">
+            <div class="flex flex-col gap-gutter-sm">
+              <h3 class="font-title text-title-md text-on-surface-strong">Platform</h3>
+              <a href="#features" class="font-body text-body-sm text-on-surface-muted hover:text-primary">Features</a>
+              <a href="#how-it-works" class="font-body text-body-sm text-on-surface-muted hover:text-primary">How it works</a>
+              <a href="#cta-cards" class="font-body text-body-sm text-on-surface-muted hover:text-primary">Policy Estimate</a>
+              <a href="#faq" class="font-body text-body-sm text-on-surface-muted hover:text-primary">FAQ</a>
+            </div>
+
+            <div class="flex flex-col gap-gutter-sm">
+              <h3 class="font-title text-title-md text-on-surface-strong">Account Portals</h3>
+              <a href="#" class="font-body text-body-sm text-on-surface-muted hover:text-primary">Client Login</a>
+              <a href="#" class="font-body text-body-sm text-on-surface-muted hover:text-primary">Agent Desk</a>
+              <a href="#" class="font-body text-body-sm text-on-surface-muted hover:text-primary">Manager Portal</a>
+              <a href="#" class="font-body text-body-sm text-on-surface-muted hover:text-primary">Admin Console</a>
+            </div>
+
+            <div class="flex flex-col gap-gutter-sm">
+              <h3 class="font-title text-title-md text-on-surface-strong">Trust &amp; Privacy</h3>
+              <a href="#faq" class="font-body text-body-sm text-on-surface-muted hover:text-primary">Chat Privacy</a>
+              <a href="#faq" class="font-body text-body-sm text-on-surface-muted hover:text-primary">AI Handoff Policy</a>
+              <a href="#faq" class="font-body text-body-sm text-on-surface-muted hover:text-primary">48h Claims</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-gutter-lg border-t border-outline flex flex-wrap items-center justify-between gap-gutter-md font-body text-body-sm text-on-surface-muted">
+          <span>© 2026 Autonomy Insurance Inc.</span>
+          <span>Admin &gt; Manager &gt; Agent &gt; Client</span>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Interactive Live Chat Drawer -->
+  <div id="chat-drawer" class="hidden fixed bottom-6 right-6 z-50 w-96 max-w-[calc(100vw-2rem)] bg-surface-card rounded-xl border border-outline shadow-2xl p-gutter-lg flex-col gap-gutter-md">
+    <div class="flex items-center justify-between gap-gutter-sm">
+      <div class="flex items-center gap-gutter-sm">
+        <img src="https://lh3.googleusercontent.com/aida/ALJJyrCcIVIRZ7uESG4o0sYPrwZPpnYbVp9t8qEma-oKt9m0nDcfu5K0NhJmOABDoVtAhGy3giyTvNCblxNUDcyLXSpxBUBI4fwu1hzOim5tLVzb4fBJ7CF56g7k0IA-Wt1p2Kf60KTcHx0Sc3QvisaJgL7OGZHZK7M0ozed6OfjKb0FV_-ZaKvRcLgvZLr39EzyDORj2kbDE18G9zpz5mW0cmFd44rAQVrCXWhwSmmERkO6mawo" alt="Maya Santos" class="w-10 h-10 rounded-full object-cover">
+        <div>
+          <div class="font-title text-title-md text-on-surface-strong">Maya Santos</div>
+          <div class="font-label text-label-sm text-success">Online • Assigned Agent</div>
+        </div>
+      </div>
+      <button type="button" onclick="closeChatDemo()" aria-label="Close chat preview" class="w-9 h-9 rounded-full hover:bg-surface flex items-center justify-center">
+        <span class="material-symbols-outlined text-[20px]">close</span>
+      </button>
+    </div>
+    <div class="bg-surface rounded-lg p-gutter-md font-body text-body-sm text-on-surface">
+      <p id="chat-drawer-msg">Hi! I&#39;m Maya, your assigned Autonomy Insurance advisor. Want to lock in your ₱2,000,000 estimate or ask a quick question?</p>
+    </div>
+    <div class="flex gap-gutter-sm">
+      <input type="text" placeholder="Message Maya..." class="flex-1 rounded-full border border-outline px-gutter-md py-2 font-body text-body-sm focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+      <button type="button" onclick="sendDrawerMsg()" class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center hover:bg-primary-hover">
+        <span class="material-symbols-outlined text-[18px]">arrow_upward</span>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const heroWords = ['real person', 'human advisor', 'dedicated agent'];
+    let heroIdx = 0;
+    setInterval(() => {
+      heroIdx = (heroIdx + 1) % heroWords.length;
+      const el = document.getElementById('hero-rotating-word');
+      if (el) {
+        el.classList.remove('phrase-enter');
+        void el.offsetWidth;
+        el.textContent = heroWords[heroIdx];
+        el.classList.add('phrase-enter');
+      }
+    }, 3000);
+
+    const tickerWords = ['Family', 'Future', 'Health', 'Home', 'Peace of mind'];
+    let tickerIdx = 0;
+    setInterval(() => {
+      tickerIdx = (tickerIdx + 1) % tickerWords.length;
+      const el = document.getElementById('ticker-word');
+      if (el) {
+        el.classList.remove('phrase-enter');
+        void el.offsetWidth;
+        el.textContent = tickerWords[tickerIdx];
+        el.classList.add('phrase-enter');
+      }
+    }, 2200);
+
+    function updateCtaEstimate(val) {
+      const num = Number(val);
+      document.getElementById('cta-coverage').textContent = '₱' + num.toLocaleString('en-US');
+      const monthly = Math.max(650, Math.round((num / 2000000) * 1850));
+      document.getElementById('cta-premium').textContent = '₱' + monthly.toLocaleString('en-US') + '/mo';
+    }
+
+    function switchFaqTab(tab, btn) {
+      document.querySelectorAll('.faq-panel').forEach(p => { p.classList.add('hidden'); p.classList.remove('flex'); });
+      const active = document.getElementById('faq-' + tab);
+      if (active) { active.classList.remove('hidden'); active.classList.add('flex'); }
+      document.querySelectorAll('.faq-tab').forEach(b => {
+        b.classList.remove('bg-primary', 'text-on-primary');
+        b.classList.add('bg-surface-card', 'border', 'border-outline', 'text-on-surface-strong');
+        b.setAttribute('aria-selected', 'false');
+      });
+      btn.classList.remove('bg-surface-card', 'border', 'border-outline', 'text-on-surface-strong');
+      btn.classList.add('bg-primary', 'text-on-primary');
+      btn.setAttribute('aria-selected', 'true');
+    }
+
+    function openChatDemo(context) {
+      const drawer = document.getElementById('chat-drawer');
+      const msg = document.getElementById('chat-drawer-msg');
+      if (context === 'estimate') {
+        const cov = document.getElementById('cta-coverage').textContent;
+        msg.textContent = `Hi! I'm Maya. I see you're looking at ${cov} in Term Life coverage—ready to lock in that rate together?`;
+      } else if (context === 'rewards') {
+        msg.textContent = `Hi! I'm Maya. Ask me how linking your daily steps in the Rewards app saves up to ₱12,000/yr on your policy.`;
+      }
+      drawer.classList.remove('hidden');
+      drawer.classList.add('flex');
+    }
+
+    function closeChatDemo() {
+      const drawer = document.getElementById('chat-drawer');
+      drawer.classList.add('hidden');
+      drawer.classList.remove('flex');
+    }
+
+    function sendDrawerMsg() {
+      document.getElementById('chat-drawer-msg').textContent = "Message sent to Maya! She's reviewing your policy details now.";
+    }
+
+    function shiftTestimonials(dir) {
+      const track = document.getElementById('testimonial-track');
+      if (dir > 0) track.appendChild(track.firstElementChild);
+      else track.insertBefore(track.lastElementChild, track.firstElementChild);
+    }
+  </script>
+
+
+</body></html>

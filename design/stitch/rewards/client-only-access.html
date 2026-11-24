@@ -1,0 +1,193 @@
+<!-- Autonomy Insurance — rewards/client-only-access -->
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Autonomy Insurance Rewards — Client-Only Access</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'mapua-red': '#D52B1E',
+        'deep-red': '#A81F16',
+        'mapua-gold': '#F2B705',
+        'charcoal': '#4B4B4D',
+        'mid-gray': '#8A8B8D',
+        'light-gray': '#D9D9DA',
+        'warm-white': '#FAF7F2',
+        'pure-white': '#FFFFFF',
+        'primary': '#D52B1E',
+        'on-primary': '#FFFFFF',
+        'primary-hover': '#A81F16',
+        'primary-container': '#FFEDEA',
+        'on-primary-container': '#410000',
+        'secondary': '#F2B705',
+        'on-secondary': '#251A00',
+        'secondary-container': '#FFEFD4',
+        'on-secondary-container': '#3F2E00',
+        'surface': '#FAF7F2',
+        'on-surface': '#4B4B4D',
+        'on-surface-strong': '#1B1B1D',
+        'on-surface-muted': '#5E5E60',
+        'surface-card': '#FFFFFF',
+        'surface-dark': '#4B4B4D',
+        'on-surface-dark': '#FAF7F2',
+        'outline': '#D9D9DA',
+        'success': '#15803D',
+        'on-success': '#FFFFFF',
+        'warning': '#B45309',
+        'on-warning': '#FFFFFF',
+        'error': '#BA1A1A',
+        'on-error': '#FFFFFF',
+      },
+      borderRadius: {
+        'sm': '8px',
+        'DEFAULT': '16px',
+        'md': '20px',
+        'lg': '24px',
+        'xl': '32px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '64px',
+        'section-lg': '96px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Hanken Grotesk"', 'sans-serif'],
+        'headline': ['"Hanken Grotesk"', 'sans-serif'],
+        'title': ['"DM Sans"', 'sans-serif'],
+        'body': ['"DM Sans"', 'sans-serif'],
+        'label': ['"DM Sans"', 'sans-serif'],
+        'mono': ['"DM Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-xl': ['84px', { lineHeight: '84px', letterSpacing: '-3.2px', fontWeight: '800' }],
+        'display-xl-mobile': ['32px', { lineHeight: '36px', letterSpacing: '-1.0px', fontWeight: '800' }],
+        'display-lg': ['64px', { lineHeight: '68px', letterSpacing: '-2.4px', fontWeight: '800' }],
+        'display-lg-mobile': ['30px', { lineHeight: '34px', letterSpacing: '-0.8px', fontWeight: '800' }],
+        'display-md': ['48px', { lineHeight: '52px', letterSpacing: '-1.6px', fontWeight: '800' }],
+        'display-md-mobile': ['28px', { lineHeight: '32px', letterSpacing: '-0.6px', fontWeight: '800' }],
+        'headline-lg': ['36px', { lineHeight: '42px', letterSpacing: '-1.0px', fontWeight: '700' }],
+        'headline-lg-mobile': ['24px', { lineHeight: '28px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'headline-md': ['24px', { lineHeight: '30px', letterSpacing: '-0.4px', fontWeight: '700' }],
+        'title-lg': ['20px', { lineHeight: '26px', letterSpacing: '-0.2px', fontWeight: '700' }],
+        'title-md': ['16px', { lineHeight: '22px', letterSpacing: '0px', fontWeight: '700' }],
+        'body-lg': ['18px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-md': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-sm': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0.1px', fontWeight: '700' }],
+        'label-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.4px', fontWeight: '600' }],
+        'mono-md': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '500' }],
+      },
+      transitionDuration: {
+        'state-change': '150ms',
+        'card-lift': '240ms',
+        'surface-enter': '320ms',
+        'surface-exit': '180ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'card-lift': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'cubic-bezier(0.2, 0, 0, 1)',
+        'card-lift': 'cubic-bezier(0.22, 1, 0.36, 1)',
+        'surface-enter': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-exit': 'cubic-bezier(0.3, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@500&amp;family=DM+Sans:wght@400;600;700&amp;family=Hanken+Grotesk:wght@700;800&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    .material-symbols-outlined, .material-symbols-rounded, .material-symbols-sharp, .material-icons {
+      display: inline-block; width: 1em; height: 1em; line-height: 1 !important;
+      box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body antialiased">
+  <div class="min-h-[884px] flex flex-col max-w-md mx-auto bg-surface" data-stitch-vh="min-h-[884px]===min-h-screen">
+
+    <!-- Top Brand Header -->
+    <header class="px-gutter-md py-gutter-md flex items-center justify-between border-b border-outline">
+      <div class="flex items-center gap-gutter-sm">
+        <div class="grid grid-cols-3 gap-0.5 p-1 bg-secondary-container rounded-sm border border-secondary" aria-hidden="true">
+          <span class="w-2 h-2 bg-secondary"></span>
+          <span class="w-2 h-2 bg-secondary"></span>
+          <span class="w-2 h-2 bg-primary"></span>
+          <span class="w-2 h-2 bg-secondary"></span>
+          <span class="w-2 h-2 bg-pure-white"></span>
+          <span class="w-2 h-2 bg-secondary"></span>
+          <span class="w-2 h-2 bg-primary"></span>
+          <span class="w-2 h-2 bg-secondary"></span>
+          <span class="w-2 h-2 bg-secondary"></span>
+        </div>
+        <span class="font-headline text-title-lg text-on-surface-strong">Autonomy Insurance</span>
+        <span class="px-2.5 py-0.5 rounded-full bg-secondary text-on-secondary font-label text-label-sm">Rewards</span>
+      </div>
+      <span class="px-2.5 py-0.5 rounded-full bg-primary-container text-on-primary-container font-label text-label-sm">Restricted</span>
+    </header>
+
+    <!-- Centered Client-Only Gate -->
+    <main class="flex-1 px-gutter-md py-gutter-xl flex flex-col items-center justify-center gap-gutter-lg text-center">
+
+      <!-- Pixel-Mosaic Lock Emblem -->
+      <div class="relative w-24 h-24 rounded-xl bg-secondary-container border-2 border-secondary flex items-center justify-center">
+        <span class="material-symbols-outlined text-display-md-mobile text-on-secondary-container" style="font-variation-settings: &#39;FILL&#39; 1;" aria-hidden="true">lock</span>
+        <div class="absolute -top-2 -right-2 grid grid-cols-2 gap-0.5" aria-hidden="true">
+          <span class="w-2.5 h-2.5 bg-primary rounded-sm"></span>
+          <span class="w-2.5 h-2.5 bg-secondary rounded-sm"></span>
+          <span class="w-2.5 h-2.5 bg-secondary rounded-sm"></span>
+          <span class="w-2.5 h-2.5 bg-pure-white rounded-sm"></span>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-gutter-xs max-w-xs">
+        <h1 class="font-display text-display-lg-mobile text-on-surface-strong text-balance">This app is for clients only</h1>
+        <p class="font-body text-body-md text-on-surface text-pretty">
+          You are currently signed in with a staff role (Agent, Manager, or Admin). Autonomy Insurance Rewards and step data are only available to client policyholders.
+        </p>
+      </div>
+
+      <!-- Detected Non-Client Session -->
+      <div class="w-full bg-surface-card rounded-xl border border-outline p-gutter-md flex items-center gap-gutter-sm text-left">
+        <img src="https://lh3.googleusercontent.com/aida/ALJJyrCcIVIRZ7uESG4o0sYPrwZPpnYbVp9t8qEma-oKt9m0nDcfu5K0NhJmOABDoVtAhGy3giyTvNCblxNUDcyLXSpxBUBI4fwu1hzOim5tLVzb4fBJ7CF56g7k0IA-Wt1p2Kf60KTcHx0Sc3QvisaJgL7OGZHZK7M0ozed6OfjKb0FV_-ZaKvRcLgvZLr39EzyDORj2kbDE18G9zpz5mW0cmFd44rAQVrCXWhwSmmERkO6mawo" alt="Maya Santos" class="w-11 h-11 rounded-full object-cover border border-outline shrink-0">
+        <div class="min-w-0 flex-1">
+          <div class="font-title text-title-md text-on-surface-strong truncate">Maya Santos</div>
+          <div class="font-body text-body-sm text-on-surface-muted">Licensed Agent • #AGT-104</div>
+        </div>
+        <span class="px-2.5 py-0.5 rounded-full bg-primary-container text-on-primary-container font-label text-label-sm shrink-0">Agent</span>
+      </div>
+
+      <div class="w-full flex flex-col gap-gutter-sm">
+        <a href="../rewards-sign-in/RewardsSignIn.html" class="w-full inline-flex items-center justify-center gap-gutter-sm px-gutter-lg py-3.5 rounded-full bg-secondary text-on-secondary hover:opacity-90 transition-opacity duration-state-change ease-state-change focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary">
+          <span class="material-symbols-outlined text-title-md" aria-hidden="true">switch_account</span>
+          <span class="font-label text-label-lg">Switch to a Client account</span>
+        </a>
+
+        <a href="../agent-dashboard/AgentDashboard.html" class="w-full inline-flex items-center justify-center gap-gutter-sm px-gutter-lg py-3 rounded-full bg-surface-card text-on-surface-strong border border-outline hover:border-on-surface transition-colors duration-state-change ease-state-change focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+          <span class="font-label text-label-lg">Return to Autonomy Insurance</span>
+        </a>
+      </div>
+
+    </main>
+
+  </div>
+
+
+</body></html>

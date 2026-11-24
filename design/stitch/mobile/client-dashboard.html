@@ -1,0 +1,256 @@
+<!-- Autonomy Insurance — mobile/client-dashboard -->
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client Dashboard — Autonomy Insurance Mobile</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'mapua-red': '#D52B1E',
+        'deep-red': '#A81F16',
+        'mapua-gold': '#F2B705',
+        'charcoal': '#4B4B4D',
+        'mid-gray': '#8A8B8D',
+        'light-gray': '#D9D9DA',
+        'warm-white': '#FAF7F2',
+        'pure-white': '#FFFFFF',
+        'primary': '#D52B1E',
+        'on-primary': '#FFFFFF',
+        'primary-hover': '#A81F16',
+        'primary-container': '#FFEDEA',
+        'on-primary-container': '#410000',
+        'secondary': '#F2B705',
+        'on-secondary': '#251A00',
+        'secondary-container': '#FFEFD4',
+        'on-secondary-container': '#3F2E00',
+        'surface': '#FAF7F2',
+        'on-surface': '#4B4B4D',
+        'on-surface-strong': '#1B1B1D',
+        'on-surface-muted': '#5E5E60',
+        'surface-card': '#FFFFFF',
+        'surface-dark': '#4B4B4D',
+        'on-surface-dark': '#FAF7F2',
+        'outline': '#D9D9DA',
+        'success': '#15803D',
+        'on-success': '#FFFFFF',
+        'warning': '#B45309',
+        'on-warning': '#FFFFFF',
+        'error': '#BA1A1A',
+        'on-error': '#FFFFFF',
+      },
+      borderRadius: {
+        'sm': '8px',
+        'DEFAULT': '16px',
+        'md': '20px',
+        'lg': '24px',
+        'xl': '32px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '64px',
+        'section-lg': '96px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Hanken Grotesk"', 'sans-serif'],
+        'headline': ['"Hanken Grotesk"', 'sans-serif'],
+        'title': ['"DM Sans"', 'sans-serif'],
+        'body': ['"DM Sans"', 'sans-serif'],
+        'label': ['"DM Sans"', 'sans-serif'],
+        'mono': ['"DM Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-xl': ['84px', { lineHeight: '84px', letterSpacing: '-3.2px', fontWeight: '800' }],
+        'display-xl-mobile': ['32px', { lineHeight: '36px', letterSpacing: '-1.0px', fontWeight: '800' }],
+        'display-lg': ['64px', { lineHeight: '68px', letterSpacing: '-2.4px', fontWeight: '800' }],
+        'display-lg-mobile': ['30px', { lineHeight: '34px', letterSpacing: '-0.8px', fontWeight: '800' }],
+        'display-md': ['48px', { lineHeight: '52px', letterSpacing: '-1.6px', fontWeight: '800' }],
+        'display-md-mobile': ['28px', { lineHeight: '32px', letterSpacing: '-0.6px', fontWeight: '800' }],
+        'headline-lg': ['36px', { lineHeight: '42px', letterSpacing: '-1.0px', fontWeight: '700' }],
+        'headline-lg-mobile': ['24px', { lineHeight: '28px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'headline-md': ['24px', { lineHeight: '30px', letterSpacing: '-0.4px', fontWeight: '700' }],
+        'title-lg': ['20px', { lineHeight: '26px', letterSpacing: '-0.2px', fontWeight: '700' }],
+        'title-md': ['16px', { lineHeight: '22px', letterSpacing: '0px', fontWeight: '700' }],
+        'body-lg': ['18px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-md': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-sm': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0.1px', fontWeight: '700' }],
+        'label-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.4px', fontWeight: '600' }],
+        'mono-md': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '500' }],
+      },
+      transitionDuration: {
+        'state-change': '150ms',
+        'card-lift': '240ms',
+        'surface-enter': '320ms',
+        'surface-exit': '180ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'card-lift': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'cubic-bezier(0.2, 0, 0, 1)',
+        'card-lift': 'cubic-bezier(0.22, 1, 0.36, 1)',
+        'surface-enter': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-exit': 'cubic-bezier(0.3, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@500&amp;family=DM+Sans:wght@400;600;700&amp;family=Hanken+Grotesk:wght@700;800&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    .material-symbols-outlined, .material-symbols-rounded, .material-symbols-sharp, .material-icons {
+      display: inline-block; width: 1em; height: 1em; line-height: 1 !important;
+      box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body antialiased">
+  <div class="min-h-[884px] flex flex-col max-w-md mx-auto bg-surface" data-stitch-vh="min-h-[884px]===min-h-screen">
+
+    <!-- Sticky Mobile Header -->
+    <header class="sticky top-0 z-30 bg-surface border-b border-outline px-gutter-md py-3 flex items-center justify-between gap-gutter-sm">
+      <div class="flex items-center gap-gutter-sm">
+        <div class="grid grid-cols-3 gap-0.5 p-1 bg-surface-card rounded-sm border border-outline" aria-hidden="true">
+          <span class="w-2 h-2 bg-mapua-red"></span>
+          <span class="w-2 h-2 bg-mapua-gold"></span>
+          <span class="w-2 h-2 bg-mapua-red"></span>
+          <span class="w-2 h-2 bg-mapua-gold"></span>
+          <span class="w-2 h-2 bg-pure-white"></span>
+          <span class="w-2 h-2 bg-light-gray"></span>
+          <span class="w-2 h-2 bg-mapua-red"></span>
+          <span class="w-2 h-2 bg-light-gray"></span>
+          <span class="w-2 h-2 bg-mapua-gold"></span>
+        </div>
+        <span class="font-headline text-title-lg text-on-surface-strong">Autonomy Insurance</span>
+      </div>
+      <img src="https://lh3.googleusercontent.com/aida/ALJJyrBNPH83PI6mgA_4_A_-foW_tP8Shd3dieHS0JLDlRimR18VKECaUMk7PVaU-Z7GJyIrjWRY1ek31arcAB9Z4oGf8o9KVXhvSJP8-vp0nwDMolpyXdM5T1H2GlXbP0_JUT7YN_z_qsHVe8Mkg4yNbSnVHT-N7yqVcyYK_oqkOulYBJwEqIpv9e5WeFH_xR8yQIFjbyWcxEKlYTY0PRU5s34gtCc2pdVP5Kl7GuRmnaROurgT-AdBwwI" alt="Elena Rostova" class="w-9 h-9 rounded-full object-cover border border-outline">
+    </header>
+
+    <!-- Main Scrollable Content -->
+    <main class="flex-1 px-gutter-md py-gutter-md flex flex-col gap-gutter-md">
+
+      <!-- Greeting -->
+      <section class="flex flex-col gap-1">
+        <h1 class="font-display text-display-lg-mobile text-on-surface-strong">Good morning, Elena.</h1>
+      </section>
+
+      <!-- "Your agent" Card -->
+      <article class="bg-surface-dark text-on-surface-dark rounded-xl p-gutter-md flex items-center justify-between gap-gutter-sm">
+        <div class="flex items-center gap-gutter-sm min-w-0">
+          <div class="relative shrink-0">
+            <img src="https://lh3.googleusercontent.com/aida/ALJJyrCcIVIRZ7uESG4o0sYPrwZPpnYbVp9t8qEma-oKt9m0nDcfu5K0NhJmOABDoVtAhGy3giyTvNCblxNUDcyLXSpxBUBI4fwu1hzOim5tLVzb4fBJ7CF56g7k0IA-Wt1p2Kf60KTcHx0Sc3QvisaJgL7OGZHZK7M0ozed6OfjKb0FV_-ZaKvRcLgvZLr39EzyDORj2kbDE18G9zpz5mW0cmFd44rAQVrCXWhwSmmERkO6mawo" alt="Maya Santos" class="w-12 h-12 rounded-full object-cover border-2 border-secondary">
+            <span class="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-success ring-2 ring-surface-dark" aria-label="Online"></span>
+          </div>
+          <div class="min-w-0">
+            <h2 class="font-title text-title-md text-pure-white truncate">Maya Santos</h2>
+            <p class="font-body text-body-sm text-light-gray">Online now</p>
+          </div>
+        </div>
+
+        <a href="../client-agent-chat/ClientAgentChat.html" class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-primary text-on-primary hover:bg-primary-hover font-label text-label-lg shrink-0 whitespace-nowrap">
+          <span class="material-symbols-outlined text-[18px]" aria-hidden="true">chat_bubble</span>
+          <span>Chat now</span>
+        </a>
+      </article>
+
+      <!-- Bento 1: Active Policy Summary -->
+      <article class="bg-surface-card rounded-xl border border-outline p-gutter-lg flex flex-col gap-gutter-md">
+        <div class="flex items-center justify-between">
+          <span class="px-2.5 py-0.5 rounded-full bg-success text-on-success font-label text-label-sm">Active Policy</span>
+          <span class="font-mono text-mono-md text-on-surface-muted tabular-nums">Due Dec 1</span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-gutter-md">
+          <div>
+            <div class="font-label text-label-sm text-on-surface-muted">Coverage</div>
+            <div class="font-display text-headline-lg-mobile text-on-surface-strong tabular-nums">₱2,000,000</div>
+          </div>
+          <div>
+            <div class="font-label text-label-sm text-on-surface-muted">Premium</div>
+            <div class="font-display text-headline-lg-mobile text-primary tabular-nums">₱1,850<span class="font-body text-body-sm text-on-surface-muted">/mo</span></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Bento 2: Continue your estimate -->
+      <article class="bg-primary text-on-primary rounded-xl p-gutter-lg flex flex-col gap-gutter-sm">
+        <div class="flex items-center justify-between gap-gutter-sm">
+          <h2 class="font-headline text-headline-lg-mobile text-pure-white">Continue your estimate</h2>
+          <span class="font-headline text-title-lg text-pure-white tabular-nums shrink-0">₱2,640/mo</span>
+        </div>
+        <p class="font-body text-body-sm text-on-primary">Draft for ₱3,000,000 Term Life coverage is ready.</p>
+        <button type="button" class="self-start mt-1 inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-pure-white text-on-surface-strong font-label text-label-lg">
+          <span>Resume</span>
+          <span class="material-symbols-outlined text-[18px]" aria-hidden="true">arrow_forward</span>
+        </button>
+      </article>
+
+      <!-- Bento 3 & 4 Row -->
+      <div class="grid grid-cols-1 gap-gutter-md">
+        <!-- Recent Claim Status -->
+        <article class="bg-surface-card rounded-xl border border-outline p-gutter-lg flex items-center justify-between gap-gutter-md">
+          <div>
+            <div class="font-display text-display-md-mobile text-on-surface-strong tabular-nums">₱45,000</div>
+            <span class="font-body text-body-sm text-on-surface-muted">Wellness Rider • Nov 20</span>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-secondary text-on-secondary font-label text-label-sm shrink-0">In Review</span>
+        </article>
+
+        <!-- AI Assistant Shortcut -->
+        <article class="bg-secondary-container border border-secondary rounded-xl p-gutter-lg flex items-center justify-between gap-gutter-md">
+          <div>
+            <h2 class="font-title text-title-md text-on-secondary-container">Ask a quick question</h2>
+            <p class="font-body text-body-sm text-on-secondary-container text-balance">Preps notes for Maya—never replaces her.</p>
+          </div>
+          <a href="../client-agent-chat/ClientAgentChat.html" aria-label="Open AI Assistant" class="w-11 h-11 rounded-full bg-surface-dark text-pure-white flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-[20px]">auto_awesome</span>
+          </a>
+        </article>
+      </div>
+
+    </main>
+
+    <!-- Sticky Mobile Bottom Tab Bar: Home, Chat, Estimate, Claims, Profile -->
+    <nav class="sticky bottom-0 z-30 bg-surface-card border-t border-outline grid grid-cols-5 py-2 px-1" aria-label="Mobile navigation">
+      <a href="#" aria-current="page" class="flex flex-col items-center gap-0.5 text-primary py-1">
+        <span class="material-symbols-outlined text-[22px]" style="font-variation-settings: &#39;FILL&#39; 1;" aria-hidden="true">home</span>
+        <span class="font-label text-label-sm">Home</span>
+      </a>
+      <a href="../client-agent-chat/ClientAgentChat.html" class="flex flex-col items-center gap-0.5 text-on-surface-muted hover:text-on-surface-strong py-1">
+        <span class="material-symbols-outlined text-[22px]" aria-hidden="true">chat_bubble</span>
+        <span class="font-label text-label-sm">Chat</span>
+      </a>
+      <a href="#estimate" class="flex flex-col items-center gap-0.5 text-on-surface-muted hover:text-on-surface-strong py-1">
+        <span class="material-symbols-outlined text-[22px]" aria-hidden="true">calculate</span>
+        <span class="font-label text-label-sm">Estimate</span>
+      </a>
+      <a href="#claims" class="flex flex-col items-center gap-0.5 text-on-surface-muted hover:text-on-surface-strong py-1">
+        <span class="material-symbols-outlined text-[22px]" aria-hidden="true">description</span>
+        <span class="font-label text-label-sm">Claims</span>
+      </a>
+      <a href="#profile" class="flex flex-col items-center gap-0.5 text-on-surface-muted hover:text-on-surface-strong py-1">
+        <span class="material-symbols-outlined text-[22px]" aria-hidden="true">person</span>
+        <span class="font-label text-label-sm">Profile</span>
+      </a>
+    </nav>
+
+  </div>
+
+
+</body></html>

@@ -1,0 +1,280 @@
+<!-- Autonomy Insurance — mobile/client-profile -->
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile — Autonomy Insurance</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'mapua-red': '#D52B1E',
+        'deep-red': '#A81F16',
+        'mapua-gold': '#F2B705',
+        'charcoal': '#4B4B4D',
+        'mid-gray': '#8A8B8D',
+        'light-gray': '#D9D9DA',
+        'warm-white': '#FAF7F2',
+        'pure-white': '#FFFFFF',
+        'primary': '#D52B1E',
+        'on-primary': '#FFFFFF',
+        'primary-hover': '#A81F16',
+        'primary-container': '#FFEDEA',
+        'on-primary-container': '#410000',
+        'secondary': '#F2B705',
+        'on-secondary': '#251A00',
+        'secondary-container': '#FFEFD4',
+        'on-secondary-container': '#3F2E00',
+        'surface': '#FAF7F2',
+        'on-surface': '#4B4B4D',
+        'on-surface-strong': '#1B1B1D',
+        'on-surface-muted': '#5E5E60',
+        'surface-card': '#FFFFFF',
+        'surface-dark': '#4B4B4D',
+        'on-surface-dark': '#FAF7F2',
+        'outline': '#D9D9DA',
+        'success': '#15803D',
+        'on-success': '#FFFFFF',
+        'warning': '#B45309',
+        'on-warning': '#FFFFFF',
+        'error': '#BA1A1A',
+        'on-error': '#FFFFFF',
+      },
+      borderRadius: {
+        'sm': '8px',
+        'DEFAULT': '16px',
+        'md': '20px',
+        'lg': '24px',
+        'xl': '32px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '64px',
+        'section-lg': '96px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Hanken Grotesk"', 'sans-serif'],
+        'headline': ['"Hanken Grotesk"', 'sans-serif'],
+        'title': ['"DM Sans"', 'sans-serif'],
+        'body': ['"DM Sans"', 'sans-serif'],
+        'label': ['"DM Sans"', 'sans-serif'],
+        'mono': ['"DM Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-xl': ['84px', { lineHeight: '84px', letterSpacing: '-3.2px', fontWeight: '800' }],
+        'display-xl-mobile': ['32px', { lineHeight: '36px', letterSpacing: '-1.0px', fontWeight: '800' }],
+        'display-lg': ['64px', { lineHeight: '68px', letterSpacing: '-2.4px', fontWeight: '800' }],
+        'display-lg-mobile': ['30px', { lineHeight: '34px', letterSpacing: '-0.8px', fontWeight: '800' }],
+        'display-md': ['48px', { lineHeight: '52px', letterSpacing: '-1.6px', fontWeight: '800' }],
+        'display-md-mobile': ['28px', { lineHeight: '32px', letterSpacing: '-0.6px', fontWeight: '800' }],
+        'headline-lg': ['36px', { lineHeight: '42px', letterSpacing: '-1.0px', fontWeight: '700' }],
+        'headline-lg-mobile': ['24px', { lineHeight: '28px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'headline-md': ['24px', { lineHeight: '30px', letterSpacing: '-0.4px', fontWeight: '700' }],
+        'title-lg': ['20px', { lineHeight: '26px', letterSpacing: '-0.2px', fontWeight: '700' }],
+        'title-md': ['16px', { lineHeight: '22px', letterSpacing: '0px', fontWeight: '700' }],
+        'body-lg': ['18px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-md': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-sm': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0.1px', fontWeight: '700' }],
+        'label-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.4px', fontWeight: '600' }],
+        'mono-md': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '500' }],
+      },
+      transitionDuration: {
+        'state-change': '150ms',
+        'card-lift': '240ms',
+        'surface-enter': '320ms',
+        'surface-exit': '180ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'card-lift': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'cubic-bezier(0.2, 0, 0, 1)',
+        'card-lift': 'cubic-bezier(0.22, 1, 0.36, 1)',
+        'surface-enter': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-exit': 'cubic-bezier(0.3, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@500&amp;family=DM+Sans:wght@400;600;700&amp;family=Hanken+Grotesk:wght@700;800&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    .material-symbols-outlined, .material-symbols-rounded, .material-symbols-sharp, .material-icons {
+      display: inline-block; width: 1em; height: 1em; line-height: 1 !important;
+      box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body antialiased">
+  <div class="max-w-[390px] min-h-[844px] mx-auto bg-surface flex flex-col">
+
+    <!-- Top Mobile Header -->
+    <header class="sticky top-0 z-30 bg-surface-card border-b border-outline px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="grid grid-cols-3 gap-0.5 p-1 bg-surface rounded-sm border border-outline" aria-hidden="true">
+          <span class="w-2 h-2 bg-mapua-red"></span>
+          <span class="w-2 h-2 bg-mapua-gold"></span>
+          <span class="w-2 h-2 bg-mapua-red"></span>
+          <span class="w-2 h-2 bg-mapua-gold"></span>
+          <span class="w-2 h-2 bg-pure-white"></span>
+          <span class="w-2 h-2 bg-light-gray"></span>
+          <span class="w-2 h-2 bg-mapua-red"></span>
+          <span class="w-2 h-2 bg-light-gray"></span>
+          <span class="w-2 h-2 bg-mapua-gold"></span>
+        </div>
+        <span class="font-headline text-title-lg text-on-surface-strong">Profile</span>
+      </div>
+      <span class="font-mono text-mono-md text-on-surface-muted">#INS-4829</span>
+    </header>
+
+    <main class="flex-1 px-4 py-5 flex flex-col gap-5">
+
+      <!-- Feedback Toast -->
+      <div id="profile-mobile-toast" role="status" aria-live="polite" class="hidden px-4 py-2.5 rounded-xl bg-success text-on-success font-label text-label-sm items-center gap-2">
+        <span class="material-symbols-outlined text-[18px]" aria-hidden="true">check_circle</span>
+        <span id="profile-mobile-toast-text">Updated.</span>
+      </div>
+
+      <!-- Client Identity Card -->
+      <section class="bg-surface-card rounded-2xl border border-outline p-4 flex items-center gap-3.5">
+        <img src="https://lh3.googleusercontent.com/aida/ALJJyrBNPH83PI6mgA_4_A_-foW_tP8Shd3dieHS0JLDlRimR18VKECaUMk7PVaU-Z7GJyIrjWRY1ek31arcAB9Z4oGf8o9KVXhvSJP8-vp0nwDMolpyXdM5T1H2GlXbP0_JUT7YN_z_qsHVe8Mkg4yNbSnVHT-N7yqVcyYK_oqkOulYBJwEqIpv9e5WeFH_xR8yQIFjbyWcxEKlYTY0PRU5s34gtCc2pdVP5Kl7GuRmnaROurgT-AdBwwI" alt="Elena Rostova" class="w-14 h-14 rounded-full object-cover border-2 border-secondary shrink-0">
+        <div class="min-w-0">
+          <h1 class="font-headline text-headline-md text-on-surface-strong truncate">Elena Rostova</h1>
+          <p class="font-body text-body-sm text-on-surface-muted truncate">elena.rostova@email.com</p>
+        </div>
+      </section>
+
+      <!-- Account & Preferences Rows -->
+      <section class="bg-surface-card rounded-2xl border border-outline overflow-hidden divide-y divide-outline">
+        <!-- Personal details -->
+        <button type="button" onclick="showToast(&#39;Personal details are up to date.&#39;)" class="w-full min-h-[56px] px-4 py-3 flex items-center justify-between gap-3 text-left hover:bg-surface transition-colors">
+          <div class="flex items-center gap-3 min-w-0">
+            <span class="material-symbols-outlined text-[20px] text-on-surface-muted shrink-0" aria-hidden="true">badge</span>
+            <div class="min-w-0">
+              <div class="font-title text-title-md text-on-surface-strong">Personal details</div>
+              <div class="font-body text-body-sm text-on-surface-muted truncate">Phone, address, emergency contact</div>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-[20px] text-on-surface-muted shrink-0" aria-hidden="true">chevron_right</span>
+        </button>
+
+        <!-- My agent -->
+        <a href="../client-agent-chat/ClientAgentChat.html" class="w-full min-h-[56px] px-4 py-3 flex items-center justify-between gap-3 hover:bg-surface transition-colors">
+          <div class="flex items-center gap-3 min-w-0">
+            <img src="https://lh3.googleusercontent.com/aida/ALJJyrCcIVIRZ7uESG4o0sYPrwZPpnYbVp9t8qEma-oKt9m0nDcfu5K0NhJmOABDoVtAhGy3giyTvNCblxNUDcyLXSpxBUBI4fwu1hzOim5tLVzb4fBJ7CF56g7k0IA-Wt1p2Kf60KTcHx0Sc3QvisaJgL7OGZHZK7M0ozed6OfjKb0FV_-ZaKvRcLgvZLr39EzyDORj2kbDE18G9zpz5mW0cmFd44rAQVrCXWhwSmmERkO6mawo" alt="Maya Santos" class="w-8 h-8 rounded-full object-cover border border-outline shrink-0">
+            <div class="min-w-0">
+              <div class="font-title text-title-md text-on-surface-strong">My agent</div>
+              <div class="font-body text-body-sm text-on-surface-muted truncate">Maya Santos • Online now</div>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-[20px] text-on-surface-muted shrink-0" aria-hidden="true">chevron_right</span>
+        </a>
+
+        <!-- Notifications -->
+        <button type="button" onclick="showToast(&#39;Claim and message notifications are enabled.&#39;)" class="w-full min-h-[56px] px-4 py-3 flex items-center justify-between gap-3 text-left hover:bg-surface transition-colors">
+          <div class="flex items-center gap-3 min-w-0">
+            <span class="material-symbols-outlined text-[20px] text-on-surface-muted shrink-0" aria-hidden="true">notifications</span>
+            <div class="min-w-0">
+              <div class="font-title text-title-md text-on-surface-strong">Notifications</div>
+              <div class="font-body text-body-sm text-on-surface-muted truncate">Claim updates and chat alerts</div>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-[20px] text-on-surface-muted shrink-0" aria-hidden="true">chevron_right</span>
+        </button>
+
+        <!-- Unlock with Face ID or fingerprint toggle -->
+        <div class="min-h-[56px] px-4 py-3 flex items-center justify-between gap-3">
+          <div class="flex items-center gap-3 min-w-0">
+            <span class="material-symbols-outlined text-[20px] text-primary shrink-0" aria-hidden="true">fingerprint</span>
+            <div class="min-w-0">
+              <div class="font-title text-title-md text-on-surface-strong">Unlock with Face ID or fingerprint</div>
+              <div class="font-body text-body-sm text-on-surface-muted">Quick sign-in on this device</div>
+            </div>
+          </div>
+          <button type="button" role="switch" aria-checked="true" onclick="toggleBiometric(this)" aria-label="Toggle Face ID or fingerprint unlock" class="w-12 h-7 rounded-full bg-primary p-1 transition-colors flex items-center justify-end shrink-0">
+            <span class="w-5 h-5 rounded-full bg-pure-white shadow-sm"></span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Rewards App Link Card -->
+      <section class="bg-secondary-container border border-secondary rounded-2xl p-4 flex items-center justify-between gap-3">
+        <div class="min-w-0">
+          <div class="font-title text-title-md text-on-secondary-container">Autonomy Rewards</div>
+          <div class="font-body text-body-sm text-on-secondary-container">Connected • Track goals and perks</div>
+        </div>
+        <a href="../rewards-home/RewardsHome.html" class="min-h-[44px] px-4 py-2 inline-flex items-center rounded-full bg-surface-card border border-outline hover:border-on-surface font-label text-label-sm text-on-surface-strong whitespace-nowrap shrink-0">
+          Open Rewards
+        </a>
+      </section>
+
+      <!-- Sign Out -->
+      <a href="../client-login-mobile/ClientLoginMobile.html" class="w-full min-h-[48px] inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-surface-card border border-outline hover:border-error text-error font-label text-label-lg whitespace-nowrap transition-colors">
+        <span class="material-symbols-outlined text-[20px]" aria-hidden="true">logout</span>
+        <span>Sign out</span>
+      </a>
+
+    </main>
+
+    <!-- Mobile Bottom Tab Bar (Profile Active) -->
+    <nav aria-label="Mobile navigation" class="mt-auto w-full z-30 bg-surface-card border-t border-outline px-2 py-1.5 grid grid-cols-5">
+      <a href="../client-dashboard-mobile/ClientDashboardMobile.html" class="flex flex-col items-center gap-0.5 text-on-surface-muted hover:text-on-surface-strong py-1">
+        <span class="material-symbols-outlined text-[22px]" aria-hidden="true">home</span>
+        <span class="font-label text-label-sm">Home</span>
+      </a>
+      <a href="../client-agent-chat/ClientAgentChat.html" class="flex flex-col items-center gap-0.5 text-on-surface-muted hover:text-on-surface-strong py-1">
+        <span class="material-symbols-outlined text-[22px]" aria-hidden="true">chat_bubble</span>
+        <span class="font-label text-label-sm">Chat</span>
+      </a>
+      <a href="../client-estimate-mobile/ClientEstimateMobile.html" class="flex flex-col items-center gap-0.5 text-on-surface-muted hover:text-on-surface-strong py-1">
+        <span class="material-symbols-outlined text-[22px]" aria-hidden="true">calculate</span>
+        <span class="font-label text-label-sm">Estimate</span>
+      </a>
+      <a href="../client-claims-mobile/ClientClaimsMobile.html" class="flex flex-col items-center gap-0.5 text-on-surface-muted hover:text-on-surface-strong py-1">
+        <span class="material-symbols-outlined text-[22px]" aria-hidden="true">description</span>
+        <span class="font-label text-label-sm">Claims</span>
+      </a>
+      <a href="#" aria-current="page" class="flex flex-col items-center gap-0.5 text-primary py-1">
+        <span class="material-symbols-outlined text-[22px]" aria-hidden="true">person</span>
+        <span class="font-label text-label-sm">Profile</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <script>
+    function showToast(msg) {
+      const toast = document.getElementById('profile-mobile-toast');
+      document.getElementById('profile-mobile-toast-text').textContent = msg;
+      toast.classList.remove('hidden');
+      toast.classList.add('flex');
+    }
+
+    function toggleBiometric(btn) {
+      const checked = btn.getAttribute('aria-checked') === 'true';
+      const next = !checked;
+      btn.setAttribute('aria-checked', String(next));
+      btn.className = next
+        ? 'w-12 h-7 rounded-full bg-primary p-1 transition-colors flex items-center justify-end shrink-0'
+        : 'w-12 h-7 rounded-full bg-outline p-1 transition-colors flex items-center justify-start shrink-0';
+      showToast(next ? 'Face ID or fingerprint unlock enabled.' : 'Biometric unlock turned off.');
+    }
+  </script>
+
+
+</body></html>

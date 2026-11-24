@@ -1,0 +1,245 @@
+<!-- Autonomy Insurance — mobile/agent-chat -->
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat with Elena Rostova — Autonomy Insurance</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'mapua-red': '#D52B1E',
+        'deep-red': '#A81F16',
+        'mapua-gold': '#F2B705',
+        'charcoal': '#4B4B4D',
+        'mid-gray': '#8A8B8D',
+        'light-gray': '#D9D9DA',
+        'warm-white': '#FAF7F2',
+        'pure-white': '#FFFFFF',
+        'primary': '#D52B1E',
+        'on-primary': '#FFFFFF',
+        'primary-hover': '#A81F16',
+        'primary-container': '#FFEDEA',
+        'on-primary-container': '#410000',
+        'secondary': '#F2B705',
+        'on-secondary': '#251A00',
+        'secondary-container': '#FFEFD4',
+        'on-secondary-container': '#3F2E00',
+        'surface': '#FAF7F2',
+        'on-surface': '#4B4B4D',
+        'on-surface-strong': '#1B1B1D',
+        'on-surface-muted': '#5E5E60',
+        'surface-card': '#FFFFFF',
+        'surface-dark': '#4B4B4D',
+        'on-surface-dark': '#FAF7F2',
+        'outline': '#D9D9DA',
+        'success': '#15803D',
+        'on-success': '#FFFFFF',
+        'warning': '#B45309',
+        'on-warning': '#FFFFFF',
+        'error': '#BA1A1A',
+        'on-error': '#FFFFFF',
+      },
+      borderRadius: {
+        'sm': '8px',
+        'DEFAULT': '16px',
+        'md': '20px',
+        'lg': '24px',
+        'xl': '32px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '64px',
+        'section-lg': '96px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Hanken Grotesk"', 'sans-serif'],
+        'headline': ['"Hanken Grotesk"', 'sans-serif'],
+        'title': ['"DM Sans"', 'sans-serif'],
+        'body': ['"DM Sans"', 'sans-serif'],
+        'label': ['"DM Sans"', 'sans-serif'],
+        'mono': ['"DM Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-xl': ['84px', { lineHeight: '84px', letterSpacing: '-3.2px', fontWeight: '800' }],
+        'display-xl-mobile': ['32px', { lineHeight: '36px', letterSpacing: '-1.0px', fontWeight: '800' }],
+        'display-lg': ['64px', { lineHeight: '68px', letterSpacing: '-2.4px', fontWeight: '800' }],
+        'display-lg-mobile': ['30px', { lineHeight: '34px', letterSpacing: '-0.8px', fontWeight: '800' }],
+        'display-md': ['48px', { lineHeight: '52px', letterSpacing: '-1.6px', fontWeight: '800' }],
+        'display-md-mobile': ['28px', { lineHeight: '32px', letterSpacing: '-0.6px', fontWeight: '800' }],
+        'headline-lg': ['36px', { lineHeight: '42px', letterSpacing: '-1.0px', fontWeight: '700' }],
+        'headline-lg-mobile': ['24px', { lineHeight: '28px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'headline-md': ['24px', { lineHeight: '30px', letterSpacing: '-0.4px', fontWeight: '700' }],
+        'title-lg': ['20px', { lineHeight: '26px', letterSpacing: '-0.2px', fontWeight: '700' }],
+        'title-md': ['16px', { lineHeight: '22px', letterSpacing: '0px', fontWeight: '700' }],
+        'body-lg': ['18px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-md': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-sm': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0.1px', fontWeight: '700' }],
+        'label-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.4px', fontWeight: '600' }],
+        'mono-md': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '500' }],
+      },
+      transitionDuration: {
+        'state-change': '150ms',
+        'card-lift': '240ms',
+        'surface-enter': '320ms',
+        'surface-exit': '180ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'card-lift': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'cubic-bezier(0.2, 0, 0, 1)',
+        'card-lift': 'cubic-bezier(0.22, 1, 0.36, 1)',
+        'surface-enter': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-exit': 'cubic-bezier(0.3, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@500&amp;family=DM+Sans:wght@400;600;700&amp;family=Hanken+Grotesk:wght@700;800&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    .material-symbols-outlined, .material-symbols-rounded, .material-symbols-sharp, .material-icons {
+      display: inline-block; width: 1em; height: 1em; line-height: 1 !important;
+      box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body antialiased">
+  <div class="max-w-[390px] min-h-[844px] mx-auto bg-surface flex flex-col relative">
+
+    <!-- Top Chat Header with "Escalate to manager" Menu Action -->
+    <header class="sticky top-0 z-30 bg-surface-card border-b border-outline px-3 py-2.5 flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2 min-w-0">
+        <a href="../agent-home-mobile/AgentHomeMobile.html" aria-label="Back to Agent Home" class="w-11 h-11 -ml-1 rounded-full hover:bg-surface flex items-center justify-center text-on-surface-strong shrink-0">
+          <span class="material-symbols-outlined text-[22px]" aria-hidden="true">arrow_back</span>
+        </a>
+        <img src="https://lh3.googleusercontent.com/aida/ALJJyrBNPH83PI6mgA_4_A_-foW_tP8Shd3dieHS0JLDlRimR18VKECaUMk7PVaU-Z7GJyIrjWRY1ek31arcAB9Z4oGf8o9KVXhvSJP8-vp0nwDMolpyXdM5T1H2GlXbP0_JUT7YN_z_qsHVe8Mkg4yNbSnVHT-N7yqVcyYK_oqkOulYBJwEqIpv9e5WeFH_xR8yQIFjbyWcxEKlYTY0PRU5s34gtCc2pdVP5Kl7GuRmnaROurgT-AdBwwI" alt="Elena Rostova" class="w-9 h-9 rounded-full object-cover border border-outline shrink-0">
+        <div class="min-w-0">
+          <h1 class="font-title text-title-md text-on-surface-strong truncate">Elena Rostova</h1>
+          <p class="font-body text-body-sm text-on-surface-muted truncate">#INS-4829 • Online</p>
+        </div>
+      </div>
+
+      <div class="relative shrink-0">
+        <button type="button" onclick="toggleMenu()" aria-label="Chat actions" aria-expanded="false" id="menu-btn" class="w-11 h-11 rounded-full hover:bg-surface flex items-center justify-center text-on-surface-strong">
+          <span class="material-symbols-outlined text-[22px]" aria-hidden="true">more_vert</span>
+        </button>
+
+        <!-- Dropdown Menu with "Escalate to manager" -->
+        <div id="chat-action-menu" class="hidden absolute right-0 top-12 w-52 bg-surface-card rounded-2xl border border-outline shadow-xl p-1.5 z-40">
+          <button type="button" onclick="escalateToManager()" class="w-full min-h-[44px] px-3.5 py-2.5 rounded-xl hover:bg-secondary-container text-left flex items-center gap-2.5 font-label text-label-lg text-on-surface-strong whitespace-nowrap">
+            <span class="material-symbols-outlined text-[18px] text-warning" aria-hidden="true">escalator_warning</span>
+            <span>Escalate to manager</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Escalation Feedback Banner -->
+    <div id="escalate-banner" role="status" aria-live="polite" class="hidden mx-4 mt-3 px-3.5 py-2.5 rounded-xl bg-secondary-container border border-secondary font-body text-body-sm text-on-secondary-container">
+      Escalated to David Vance (Branch Manager). Only this thread is shared.
+    </div>
+
+    <!-- Chat Thread -->
+    <main id="agent-chat-thread" class="flex-1 px-4 py-4 flex flex-col gap-3">
+      <div class="self-center px-3 py-1 rounded-full bg-surface-card border border-outline font-label text-label-sm text-on-surface-muted">
+        Today
+      </div>
+
+      <div class="max-w-[82%] self-start flex flex-col gap-1">
+        <div class="px-4 py-3 rounded-2xl rounded-bl-sm bg-surface-card border border-outline font-body text-body-md text-on-surface-strong">
+          Hi Maya! I uploaded my attending physician’s note for #CLM-1042.
+        </div>
+        <span class="font-mono text-mono-md text-on-surface-muted px-1">10:15 AM</span>
+      </div>
+
+      <div class="max-w-[82%] self-end flex flex-col items-end gap-1">
+        <div class="px-4 py-3 rounded-2xl rounded-br-sm bg-primary text-on-primary font-body text-body-md">
+          Thanks Elena! Got it—I’m reviewing the itemized lines right now.
+        </div>
+        <span class="font-mono text-mono-md text-on-surface-muted px-1">10:20 AM</span>
+      </div>
+
+      <div class="max-w-[82%] self-start flex flex-col gap-1">
+        <div class="px-4 py-3 rounded-2xl rounded-bl-sm bg-surface-card border border-outline font-body text-body-md text-on-surface-strong">
+          Also, my bank transfer is delayed 5 days because I switched branches. Could I get an extended grace window?
+        </div>
+        <span class="font-mono text-mono-md text-on-surface-muted px-1">10:22 AM</span>
+      </div>
+    </main>
+
+    <!-- Message Composer -->
+    <form onsubmit="sendAgentMsg(event)" class="px-3 py-2.5 bg-surface-card border-t border-outline flex items-center gap-2">
+      <input id="agent-msg-input" type="text" placeholder="Message Elena..." class="flex-1 min-h-[44px] rounded-full bg-surface border border-outline px-4 py-2 font-body text-body-md text-on-surface-strong placeholder:text-on-surface-muted focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+      <button type="submit" aria-label="Send message" class="w-11 h-11 rounded-full bg-primary text-on-primary hover:bg-primary-hover flex items-center justify-center shrink-0">
+        <span class="material-symbols-outlined text-[20px]" aria-hidden="true">arrow_upward</span>
+      </button>
+    </form>
+
+    <!-- Agent Mobile Bottom Tab Bar (Chats Active) -->
+    <nav aria-label="Agent mobile navigation" class="mt-auto w-full z-30 bg-surface-card border-t border-outline px-2 py-1.5 grid grid-cols-4">
+      <a href="../agent-home-mobile/AgentHomeMobile.html" class="flex flex-col items-center gap-0.5 text-on-surface-muted hover:text-on-surface-strong py-1">
+        <span class="material-symbols-outlined text-[22px]" aria-hidden="true">group</span>
+        <span class="font-label text-label-sm">Clients</span>
+      </a>
+      <a href="../agent-review-estimate-mobile/AgentReviewEstimateMobile.html" class="flex flex-col items-center gap-0.5 text-on-surface-muted hover:text-on-surface-strong py-1">
+        <span class="material-symbols-outlined text-[22px]" aria-hidden="true">calculate</span>
+        <span class="font-label text-label-sm">Estimates</span>
+      </a>
+      <a href="#" aria-current="page" class="flex flex-col items-center gap-0.5 text-primary py-1">
+        <span class="material-symbols-outlined text-[22px]" aria-hidden="true">chat_bubble</span>
+        <span class="font-label text-label-sm">Chats</span>
+      </a>
+      <a href="../agent-claims-web/AgentClaimsWeb.html" class="flex flex-col items-center gap-0.5 text-on-surface-muted hover:text-on-surface-strong py-1">
+        <span class="material-symbols-outlined text-[22px]" aria-hidden="true">description</span>
+        <span class="font-label text-label-sm">Claims</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('chat-action-menu');
+      const btn = document.getElementById('menu-btn');
+      const open = menu.classList.toggle('hidden');
+      btn.setAttribute('aria-expanded', String(!open));
+    }
+
+    function escalateToManager() {
+      document.getElementById('chat-action-menu').classList.add('hidden');
+      document.getElementById('escalate-banner').classList.remove('hidden');
+    }
+
+    function sendAgentMsg(e) {
+      e.preventDefault();
+      const input = document.getElementById('agent-msg-input');
+      const text = input.value.trim();
+      if (!text) return;
+      const thread = document.getElementById('agent-chat-thread');
+      const bubble = document.createElement('div');
+      bubble.className = 'max-w-[82%] self-end flex flex-col items-end gap-1';
+      bubble.innerHTML = `<div class="px-4 py-3 rounded-2xl rounded-br-sm bg-primary text-on-primary font-body text-body-md">${text}</div><span class="font-mono text-mono-md text-on-surface-muted px-1">Just now</span>`;
+      thread.appendChild(bubble);
+      input.value = '';
+    }
+  </script>
+
+
+</body></html>

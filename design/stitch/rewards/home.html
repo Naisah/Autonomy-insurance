@@ -1,0 +1,287 @@
+<!-- Autonomy Insurance — rewards/home -->
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Autonomy Insurance Rewards — Home</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'mapua-red': '#D52B1E',
+        'deep-red': '#A81F16',
+        'mapua-gold': '#F2B705',
+        'charcoal': '#4B4B4D',
+        'mid-gray': '#8A8B8D',
+        'light-gray': '#D9D9DA',
+        'warm-white': '#FAF7F2',
+        'pure-white': '#FFFFFF',
+        'primary': '#D52B1E',
+        'on-primary': '#FFFFFF',
+        'primary-hover': '#A81F16',
+        'primary-container': '#FFEDEA',
+        'on-primary-container': '#410000',
+        'secondary': '#F2B705',
+        'on-secondary': '#251A00',
+        'secondary-container': '#FFEFD4',
+        'on-secondary-container': '#3F2E00',
+        'surface': '#FAF7F2',
+        'on-surface': '#4B4B4D',
+        'on-surface-strong': '#1B1B1D',
+        'on-surface-muted': '#5E5E60',
+        'surface-card': '#FFFFFF',
+        'surface-dark': '#4B4B4D',
+        'on-surface-dark': '#FAF7F2',
+        'outline': '#D9D9DA',
+        'success': '#15803D',
+        'on-success': '#FFFFFF',
+        'warning': '#B45309',
+        'on-warning': '#FFFFFF',
+        'error': '#BA1A1A',
+        'on-error': '#FFFFFF',
+      },
+      borderRadius: {
+        'sm': '8px',
+        'DEFAULT': '16px',
+        'md': '20px',
+        'lg': '24px',
+        'xl': '32px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '64px',
+        'section-lg': '96px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Hanken Grotesk"', 'sans-serif'],
+        'headline': ['"Hanken Grotesk"', 'sans-serif'],
+        'title': ['"DM Sans"', 'sans-serif'],
+        'body': ['"DM Sans"', 'sans-serif'],
+        'label': ['"DM Sans"', 'sans-serif'],
+        'mono': ['"DM Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-xl': ['84px', { lineHeight: '84px', letterSpacing: '-3.2px', fontWeight: '800' }],
+        'display-xl-mobile': ['32px', { lineHeight: '36px', letterSpacing: '-1.0px', fontWeight: '800' }],
+        'display-lg': ['64px', { lineHeight: '68px', letterSpacing: '-2.4px', fontWeight: '800' }],
+        'display-lg-mobile': ['30px', { lineHeight: '34px', letterSpacing: '-0.8px', fontWeight: '800' }],
+        'display-md': ['48px', { lineHeight: '52px', letterSpacing: '-1.6px', fontWeight: '800' }],
+        'display-md-mobile': ['28px', { lineHeight: '32px', letterSpacing: '-0.6px', fontWeight: '800' }],
+        'headline-lg': ['36px', { lineHeight: '42px', letterSpacing: '-1.0px', fontWeight: '700' }],
+        'headline-lg-mobile': ['24px', { lineHeight: '28px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'headline-md': ['24px', { lineHeight: '30px', letterSpacing: '-0.4px', fontWeight: '700' }],
+        'title-lg': ['20px', { lineHeight: '26px', letterSpacing: '-0.2px', fontWeight: '700' }],
+        'title-md': ['16px', { lineHeight: '22px', letterSpacing: '0px', fontWeight: '700' }],
+        'body-lg': ['18px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-md': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-sm': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0.1px', fontWeight: '700' }],
+        'label-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.4px', fontWeight: '600' }],
+        'mono-md': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '500' }],
+      },
+      transitionDuration: {
+        'state-change': '150ms',
+        'card-lift': '240ms',
+        'surface-enter': '320ms',
+        'surface-exit': '180ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'card-lift': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'cubic-bezier(0.2, 0, 0, 1)',
+        'card-lift': 'cubic-bezier(0.22, 1, 0.36, 1)',
+        'surface-enter': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-exit': 'cubic-bezier(0.3, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@500&amp;family=DM+Sans:wght@400;600;700&amp;family=Hanken+Grotesk:wght@700;800&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    .material-symbols-outlined, .material-symbols-rounded, .material-symbols-sharp, .material-icons {
+      display: inline-block; width: 1em; height: 1em; line-height: 1 !important;
+      box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle;
+    }
+    @keyframes ringFill {
+      from { stroke-dashoffset: 565.48; }
+      to { stroke-dashoffset: 89.35; }
+    }
+    .step-ring-progress {
+      animation: ringFill 1.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body antialiased">
+  <div class="min-h-[884px] flex flex-col max-w-md mx-auto bg-surface" data-stitch-vh="min-h-[884px]===min-h-screen">
+
+    <!-- Sticky Gold-Forward Mobile Header -->
+    <header class="sticky top-0 z-30 bg-surface border-b border-outline px-gutter-md py-3 flex items-center justify-between gap-gutter-sm">
+      <div class="flex items-center gap-gutter-sm">
+        <div class="grid grid-cols-3 gap-0.5 p-1 bg-secondary-container rounded-sm border border-secondary" aria-hidden="true">
+          <span class="w-2 h-2 bg-secondary"></span>
+          <span class="w-2 h-2 bg-secondary"></span>
+          <span class="w-2 h-2 bg-primary"></span>
+          <span class="w-2 h-2 bg-secondary"></span>
+          <span class="w-2 h-2 bg-pure-white"></span>
+          <span class="w-2 h-2 bg-secondary"></span>
+          <span class="w-2 h-2 bg-primary"></span>
+          <span class="w-2 h-2 bg-secondary"></span>
+          <span class="w-2 h-2 bg-secondary"></span>
+        </div>
+        <span class="font-headline text-title-lg text-on-surface-strong">Autonomy Insurance</span>
+        <span class="px-2.5 py-0.5 rounded-full bg-secondary text-on-secondary font-label text-label-sm">Rewards</span>
+      </div>
+      <a href="../rewards-sign-in/RewardsSignIn.html" aria-label="Account sign-in">
+        <img src="https://lh3.googleusercontent.com/aida/ALJJyrBNPH83PI6mgA_4_A_-foW_tP8Shd3dieHS0JLDlRimR18VKECaUMk7PVaU-Z7GJyIrjWRY1ek31arcAB9Z4oGf8o9KVXhvSJP8-vp0nwDMolpyXdM5T1H2GlXbP0_JUT7YN_z_qsHVe8Mkg4yNbSnVHT-N7yqVcyYK_oqkOulYBJwEqIpv9e5WeFH_xR8yQIFjbyWcxEKlYTY0PRU5s34gtCc2pdVP5Kl7GuRmnaROurgT-AdBwwI" alt="Elena Rostova" class="w-9 h-9 rounded-full object-cover border-2 border-secondary">
+      </a>
+    </header>
+
+    <!-- Main Scrollable Content -->
+    <main class="flex-1 px-gutter-md py-gutter-md flex flex-col gap-gutter-md">
+
+      <!-- Greeting & Streak Pill -->
+      <section class="flex items-center justify-between gap-gutter-sm">
+        <div>
+          <h1 class="font-display text-display-md-mobile text-on-surface-strong">Keep moving, Elena!</h1>
+        </div>
+        <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary text-on-secondary shrink-0">
+          <span class="material-symbols-outlined text-title-md" style="font-variation-settings: &#39;FILL&#39; 1;" aria-hidden="true">local_fire_department</span>
+          <span class="font-label text-label-lg tabular-nums">14d streak</span>
+        </div>
+      </section>
+
+      <!-- Today's Steps Animated Ring Card -->
+      <section class="relative bg-surface-card rounded-xl border border-secondary p-gutter-lg flex flex-col items-center gap-gutter-md overflow-hidden">
+        <!-- Pixel-Mosaic Corner Accent -->
+        <div class="absolute top-3 right-3 grid grid-cols-3 gap-0.5" aria-hidden="true">
+          <span class="w-2 h-2 bg-secondary"></span>
+          <span class="w-2 h-2 bg-secondary-container"></span>
+          <span class="w-2 h-2 bg-primary"></span>
+          <span class="w-2 h-2 bg-secondary-container"></span>
+          <span class="w-2 h-2 bg-secondary"></span>
+          <span class="w-2 h-2 bg-secondary-container"></span>
+          <span class="w-2 h-2 bg-pure-white"></span>
+          <span class="w-2 h-2 bg-secondary-container"></span>
+          <span class="w-2 h-2 bg-secondary"></span>
+        </div>
+
+        <div class="relative w-52 h-52 flex items-center justify-center">
+          <svg viewBox="0 0 200 200" class="w-52 h-52 -rotate-90" aria-hidden="true">
+            <circle cx="100" cy="100" r="90" fill="none" stroke="#FFEFD4" stroke-width="16"></circle>
+            <circle id="steps-ring" cx="100" cy="100" r="90" fill="none" stroke="#F2B705" stroke-width="16" stroke-linecap="round" stroke-dasharray="565.48" stroke-dashoffset="89.35" class="step-ring-progress transition-all duration-surface-enter ease-surface-enter" style="transform-box: fill-box; transform-origin: center;"></circle>
+          </svg>
+          <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+            <span class="material-symbols-outlined text-on-secondary-container text-headline-md mb-1" aria-hidden="true">directions_walk</span>
+            <div id="step-count" class="font-display text-display-xl-mobile text-on-surface-strong tabular-nums">8,420</div>
+            <div class="font-label text-label-sm text-on-surface-muted tabular-nums">of 10,000 daily goal</div>
+          </div>
+        </div>
+
+        <!-- Goal & Quick Sync Row -->
+        <div class="w-full grid grid-cols-2 gap-gutter-sm">
+          <div class="bg-secondary-container rounded-lg p-3 flex flex-col gap-0.5">
+            <span class="font-label text-label-sm text-on-secondary-container">Daily step goal</span>
+            <span class="font-headline text-title-lg text-on-secondary-container tabular-nums">10,000</span>
+          </div>
+          <div class="bg-surface rounded-lg border border-outline p-3 flex flex-col gap-0.5">
+            <span class="font-label text-label-sm text-on-surface-muted">Remaining</span>
+            <span id="steps-remaining" class="font-headline text-title-lg text-on-surface-strong tabular-nums">1,580 steps</span>
+          </div>
+        </div>
+
+        <button type="button" onclick="addDemoSteps()" class="w-full inline-flex items-center justify-center gap-gutter-sm px-gutter-lg py-3 rounded-full bg-secondary text-on-secondary hover:opacity-90 active:scale-[0.98] transition-opacity duration-state-change ease-state-change focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary">
+          <span class="material-symbols-outlined text-title-md" aria-hidden="true">add_circle</span>
+          <span class="font-label text-label-lg">Log +500 steps</span>
+        </button>
+      </section>
+
+      <!-- Reward Progress Bar Card -->
+      <section class="bg-surface-dark text-on-surface-dark rounded-xl p-gutter-lg flex flex-col gap-gutter-sm">
+        <div class="flex items-center justify-between gap-gutter-sm">
+          <span class="px-2.5 py-0.5 rounded-full bg-secondary text-on-secondary font-label text-label-sm">Monthly Reward</span>
+          <span id="reward-pct" class="font-mono text-mono-md text-secondary tabular-nums">84%</span>
+        </div>
+        <h2 class="font-headline text-title-lg text-pure-white">₱1,000 Monthly Premium Credit</h2>
+        <div class="w-full h-3 rounded-full bg-surface-card overflow-hidden">
+          <div id="reward-bar" class="h-full bg-secondary rounded-full transition-all duration-surface-enter ease-surface-enter" style="width: 84%;"></div>
+        </div>
+        <p class="font-body text-body-sm text-light-gray">
+          Hit 10,000 steps for 16 more days this month to apply ₱1,000 off your Dec 1 premium.
+        </p>
+      </section>
+
+      <!-- Streak & Health Score Teaser Bento -->
+      <section class="grid grid-cols-2 gap-gutter-md">
+        <a href="../rewards-goals/RewardsGoals.html" class="bg-surface-card rounded-xl border border-outline p-gutter-md flex flex-col gap-2 hover:border-secondary transition-colors duration-state-change">
+          <div class="w-9 h-9 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center">
+            <span class="material-symbols-outlined text-title-md" style="font-variation-settings: &#39;FILL&#39; 1;" aria-hidden="true">emoji_events</span>
+          </div>
+          <span class="font-title text-title-md text-on-surface-strong">2 / 4 Milestones</span>
+          <span class="font-body text-body-sm text-on-surface-muted">View gold badges</span>
+        </a>
+
+        <a href="../rewards-health-score/RewardsHealthScore.html" class="bg-secondary-container rounded-xl border border-secondary p-gutter-md flex flex-col gap-2 hover:opacity-95 transition-opacity duration-state-change">
+          <div class="w-9 h-9 rounded-full bg-secondary text-on-secondary flex items-center justify-center">
+            <span class="material-symbols-outlined text-title-md" style="font-variation-settings: &#39;FILL&#39; 1;" aria-hidden="true">favorite</span>
+          </div>
+          <span class="font-title text-title-md text-on-secondary-container">Health Score: 88</span>
+          <span class="font-body text-body-sm text-on-secondary-container">Gold Tier active</span>
+        </a>
+      </section>
+
+    </main>
+
+    <!-- Sticky Mobile Bottom Tab Bar (Rewards Shell) -->
+    <nav aria-label="Rewards navigation" class="sticky bottom-0 z-30 bg-surface-card border-t border-outline px-gutter-md py-2 grid grid-cols-3 gap-1">
+      <a href="../rewards-home/RewardsHome.html" aria-current="page" class="flex flex-col items-center justify-center gap-0.5 py-1.5 rounded-lg bg-secondary-container text-on-secondary-container">
+        <span class="material-symbols-outlined text-title-lg" style="font-variation-settings: &#39;FILL&#39; 1;" aria-hidden="true">directions_walk</span>
+        <span class="font-label text-label-sm">Home</span>
+      </a>
+      <a href="../rewards-goals/RewardsGoals.html" class="flex flex-col items-center justify-center gap-0.5 py-1.5 rounded-lg text-on-surface-muted hover:text-on-surface-strong">
+        <span class="material-symbols-outlined text-title-lg" aria-hidden="true">emoji_events</span>
+        <span class="font-label text-label-sm">Goals</span>
+      </a>
+      <a href="../rewards-health-score/RewardsHealthScore.html" class="flex flex-col items-center justify-center gap-0.5 py-1.5 rounded-lg text-on-surface-muted hover:text-on-surface-strong">
+        <span class="material-symbols-outlined text-title-lg" aria-hidden="true">favorite</span>
+        <span class="font-label text-label-sm">Health</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <script>
+    var currentSteps = 8420;
+    var goalSteps = 10000;
+    var circumference = 565.48;
+
+    function addDemoSteps() {
+      currentSteps = Math.min(currentSteps + 500, 12000);
+      var pct = Math.min(Math.round((currentSteps / goalSteps) * 100), 100);
+      var offset = circumference - (circumference * Math.min(currentSteps / goalSteps, 1));
+      document.getElementById('step-count').textContent = currentSteps.toLocaleString();
+      document.getElementById('steps-ring').style.strokeDashoffset = offset.toFixed(2);
+      var rem = Math.max(goalSteps - currentSteps, 0);
+      document.getElementById('steps-remaining').textContent = rem === 0 ? 'Goal reached!' : rem.toLocaleString() + ' steps';
+      document.getElementById('reward-pct').textContent = pct + '%';
+      document.getElementById('reward-bar').style.width = pct + '%';
+    }
+  </script>
+
+
+</body></html>

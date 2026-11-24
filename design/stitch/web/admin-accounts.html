@@ -1,0 +1,456 @@
+<!-- Autonomy Insurance — web/admin-accounts -->
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Console, Accounts — Autonomy Insurance</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'mapua-red': '#D52B1E',
+        'deep-red': '#A81F16',
+        'mapua-gold': '#F2B705',
+        'charcoal': '#4B4B4D',
+        'mid-gray': '#8A8B8D',
+        'light-gray': '#D9D9DA',
+        'warm-white': '#FAF7F2',
+        'pure-white': '#FFFFFF',
+        'primary': '#D52B1E',
+        'on-primary': '#FFFFFF',
+        'primary-hover': '#A81F16',
+        'primary-container': '#FFEDEA',
+        'on-primary-container': '#410000',
+        'secondary': '#F2B705',
+        'on-secondary': '#251A00',
+        'secondary-container': '#FFEFD4',
+        'on-secondary-container': '#3F2E00',
+        'surface': '#FAF7F2',
+        'on-surface': '#4B4B4D',
+        'on-surface-strong': '#1B1B1D',
+        'on-surface-muted': '#5E5E60',
+        'surface-card': '#FFFFFF',
+        'surface-dark': '#4B4B4D',
+        'on-surface-dark': '#FAF7F2',
+        'outline': '#D9D9DA',
+        'success': '#15803D',
+        'on-success': '#FFFFFF',
+        'warning': '#B45309',
+        'on-warning': '#FFFFFF',
+        'error': '#BA1A1A',
+        'on-error': '#FFFFFF',
+      },
+      borderRadius: {
+        'sm': '8px',
+        'DEFAULT': '16px',
+        'md': '20px',
+        'lg': '24px',
+        'xl': '32px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '64px',
+        'section-lg': '96px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Hanken Grotesk"', 'sans-serif'],
+        'headline': ['"Hanken Grotesk"', 'sans-serif'],
+        'title': ['"DM Sans"', 'sans-serif'],
+        'body': ['"DM Sans"', 'sans-serif'],
+        'label': ['"DM Sans"', 'sans-serif'],
+        'mono': ['"DM Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-xl': ['84px', { lineHeight: '84px', letterSpacing: '-3.2px', fontWeight: '800' }],
+        'display-xl-mobile': ['32px', { lineHeight: '36px', letterSpacing: '-1.0px', fontWeight: '800' }],
+        'display-lg': ['64px', { lineHeight: '68px', letterSpacing: '-2.4px', fontWeight: '800' }],
+        'display-lg-mobile': ['30px', { lineHeight: '34px', letterSpacing: '-0.8px', fontWeight: '800' }],
+        'display-md': ['48px', { lineHeight: '52px', letterSpacing: '-1.6px', fontWeight: '800' }],
+        'display-md-mobile': ['28px', { lineHeight: '32px', letterSpacing: '-0.6px', fontWeight: '800' }],
+        'headline-lg': ['36px', { lineHeight: '42px', letterSpacing: '-1.0px', fontWeight: '700' }],
+        'headline-lg-mobile': ['24px', { lineHeight: '28px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'headline-md': ['24px', { lineHeight: '30px', letterSpacing: '-0.4px', fontWeight: '700' }],
+        'title-lg': ['20px', { lineHeight: '26px', letterSpacing: '-0.2px', fontWeight: '700' }],
+        'title-md': ['16px', { lineHeight: '22px', letterSpacing: '0px', fontWeight: '700' }],
+        'body-lg': ['18px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-md': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-sm': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0.1px', fontWeight: '700' }],
+        'label-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.4px', fontWeight: '600' }],
+        'mono-md': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '500' }],
+      },
+      transitionDuration: {
+        'state-change': '150ms',
+        'card-lift': '240ms',
+        'surface-enter': '320ms',
+        'surface-exit': '180ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'card-lift': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'cubic-bezier(0.2, 0, 0, 1)',
+        'card-lift': 'cubic-bezier(0.22, 1, 0.36, 1)',
+        'surface-enter': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-exit': 'cubic-bezier(0.3, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@500&amp;family=DM+Sans:wght@400;600;700&amp;family=Hanken+Grotesk:wght@700;800&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    .material-symbols-outlined, .material-symbols-rounded, .material-symbols-sharp, .material-icons {
+      display: inline-block; width: 1em; height: 1em; line-height: 1 !important;
+      box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body antialiased">
+  <div class="min-h-[1024px] flex flex-col" data-stitch-vh="min-h-[1024px]===min-h-screen">
+
+    <!-- Sticky Admin Header (Zero Chat Access) -->
+    <header class="sticky top-0 z-30 bg-surface-card border-b border-outline">
+      <div class="max-w-7xl mx-auto px-gutter-lg py-gutter-md flex items-center justify-between gap-gutter-lg">
+        <div class="flex items-center gap-gutter-md">
+          <a href="../insuria-landing/InsuriaLanding.html" class="flex items-center gap-gutter-sm shrink-0">
+            <div class="grid grid-cols-3 gap-0.5 p-1 bg-surface rounded-sm border border-outline" aria-hidden="true">
+              <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+              <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+              <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+              <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+              <span class="w-2.5 h-2.5 bg-pure-white"></span>
+              <span class="w-2.5 h-2.5 bg-light-gray"></span>
+              <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+              <span class="w-2.5 h-2.5 bg-light-gray"></span>
+              <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+            </div>
+            <span class="font-headline text-headline-md text-on-surface-strong tracking-tight">Autonomy Insurance</span>
+          </a>
+          <span class="px-3 py-1 rounded-full bg-surface-dark text-pure-white font-label text-label-sm whitespace-nowrap">Admin Console</span>
+        </div>
+
+        <nav class="hidden md:flex items-center gap-gutter-sm" aria-label="Admin navigation">
+          <a href="#" aria-current="page" class="px-4 py-2 rounded-full bg-primary text-on-primary font-label text-label-lg whitespace-nowrap">Accounts</a>
+          <a href="#roles" class="px-4 py-2 rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg whitespace-nowrap">Roles</a>
+          <a href="../admin-dashboard/AdminDashboard.html" class="px-4 py-2 rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg whitespace-nowrap">Reports</a>
+          <a href="#settings" class="px-4 py-2 rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg whitespace-nowrap">Settings</a>
+        </nav>
+
+        <div class="flex items-center gap-gutter-sm shrink-0">
+          <div class="hidden sm:block text-right">
+            <div class="font-title text-title-md text-on-surface-strong">Rachel Kim</div>
+            <div class="font-label text-label-sm text-on-surface-muted">System Admin</div>
+          </div>
+          <div class="w-10 h-10 rounded-full bg-surface-dark text-pure-white flex items-center justify-center font-headline text-title-md">RK</div>
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto px-gutter-lg py-gutter-xl flex flex-col gap-gutter-lg">
+
+      <!-- Page Header + Create Account CTA -->
+      <div class="flex flex-wrap items-end justify-between gap-gutter-md">
+        <div>
+          <h1 class="font-display text-display-md-mobile md:text-display-md text-on-surface-strong">Accounts</h1>
+          <p class="font-body text-body-md text-on-surface-muted mt-1">Manage user accounts, role permissions, and manager reporting lines across Autonomy Insurance.</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-gutter-sm">
+          <div id="feedback-toast" role="status" aria-live="polite" class="hidden px-4 py-2.5 rounded-full bg-success text-on-success font-label text-label-lg items-center gap-2 shadow-sm">
+            <span class="material-symbols-outlined text-[18px]" aria-hidden="true">check_circle</span>
+            <span id="feedback-toast-text">Account updated.</span>
+          </div>
+          <button type="button" onclick="openCreateModal()" class="inline-flex items-center gap-2 min-h-[44px] px-6 py-2.5 rounded-full bg-primary text-on-primary hover:bg-primary-hover font-label text-label-lg whitespace-nowrap transition-colors">
+            <span class="material-symbols-outlined text-[20px]" aria-hidden="true">person_add</span>
+            <span>Create account</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Grid: Users Table (8 cols) + Side Card Assign Agent to Manager (4 cols) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-xl items-start">
+
+        <!-- LEFT / MAIN: Table of Users -->
+        <section class="lg:col-span-8 bg-surface-card rounded-xl border border-outline overflow-hidden flex flex-col">
+          <div class="p-gutter-lg border-b border-outline flex flex-wrap items-center justify-between gap-gutter-md">
+            <div class="flex items-center gap-gutter-sm">
+              <h2 class="font-headline text-headline-md text-on-surface-strong">All accounts</h2>
+              <span id="accounts-count" class="px-3 py-1 rounded-full bg-surface border border-outline font-mono text-mono-md text-on-surface-strong tabular-nums">7 users</span>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-1.5" role="group" aria-label="Filter by role">
+              <button type="button" onclick="setRoleFilter(&#39;All&#39;)" data-role-filter="All" class="role-filter-btn px-3.5 py-1.5 rounded-full bg-primary text-on-primary font-label text-label-sm whitespace-nowrap">All</button>
+              <button type="button" onclick="setRoleFilter(&#39;Admin&#39;)" data-role-filter="Admin" class="role-filter-btn px-3.5 py-1.5 rounded-full bg-surface border border-outline text-on-surface font-label text-label-sm whitespace-nowrap hover:border-on-surface">Admin</button>
+              <button type="button" onclick="setRoleFilter(&#39;Manager&#39;)" data-role-filter="Manager" class="role-filter-btn px-3.5 py-1.5 rounded-full bg-surface border border-outline text-on-surface font-label text-label-sm whitespace-nowrap hover:border-on-surface">Manager</button>
+              <button type="button" onclick="setRoleFilter(&#39;Agent&#39;)" data-role-filter="Agent" class="role-filter-btn px-3.5 py-1.5 rounded-full bg-surface border border-outline text-on-surface font-label text-label-sm whitespace-nowrap hover:border-on-surface">Agent</button>
+              <button type="button" onclick="setRoleFilter(&#39;Client&#39;)" data-role-filter="Client" class="role-filter-btn px-3.5 py-1.5 rounded-full bg-surface border border-outline text-on-surface font-label text-label-sm whitespace-nowrap hover:border-on-surface">Client</button>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-outline bg-surface">
+                  <th class="py-3 px-4 font-label text-label-sm text-on-surface-muted uppercase tracking-wider">Name</th>
+                  <th class="py-3 px-4 font-label text-label-sm text-on-surface-muted uppercase tracking-wider">Role</th>
+                  <th class="py-3 px-4 font-label text-label-sm text-on-surface-muted uppercase tracking-wider">Reports to</th>
+                  <th class="py-3 px-4 font-label text-label-sm text-on-surface-muted uppercase tracking-wider">Status</th>
+                </tr>
+              </thead>
+              <tbody id="users-table-body" class="divide-y divide-outline">
+                <!-- Rendered by JS -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- RIGHT SIDE CARD: Assign Agent to Manager -->
+        <aside class="lg:col-span-4 bg-surface-card rounded-xl border border-outline p-gutter-xl flex flex-col gap-gutter-lg">
+          <div>
+            <h2 class="font-headline text-headline-md text-on-surface-strong">Assign agent to manager</h2>
+            <p class="font-body text-body-sm text-on-surface-muted mt-1">Update which branch manager oversees an advisor.</p>
+          </div>
+
+          <form onsubmit="handleAssignSubmit(event)" class="flex flex-col gap-gutter-md">
+            <label class="flex flex-col gap-gutter-xs">
+              <span class="font-label text-label-lg text-on-surface-strong">Agent</span>
+              <select id="assign-agent-select" class="min-h-[44px] rounded-full bg-surface border border-outline px-4 py-2.5 font-body text-body-md text-on-surface-strong focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+                <!-- Rendered by JS -->
+              </select>
+            </label>
+
+            <label class="flex flex-col gap-gutter-xs">
+              <span class="font-label text-label-lg text-on-surface-strong">Manager</span>
+              <select id="assign-manager-select" class="min-h-[44px] rounded-full bg-surface border border-outline px-4 py-2.5 font-body text-body-md text-on-surface-strong focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+                <!-- Rendered by JS -->
+              </select>
+            </label>
+
+            <button type="submit" class="w-full min-h-[44px] inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-surface border border-outline hover:border-primary font-label text-label-lg text-on-surface-strong whitespace-nowrap transition-colors">
+              <span class="material-symbols-outlined text-[20px]" aria-hidden="true">supervisor_account</span>
+              <span>Save assignment</span>
+            </button>
+          </form>
+
+          <div class="pt-gutter-md border-t border-outline flex items-start gap-2.5 text-on-surface-muted">
+            <span class="material-symbols-outlined text-[18px] shrink-0 mt-0.5 text-on-surface-strong" aria-hidden="true">shield_lock</span>
+            <p class="font-body text-body-sm">Admin accounts manage roles and reporting lines only and never have access to client-agent chat content.</p>
+          </div>
+        </aside>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- CREATE ACCOUNT MODAL -->
+  <div id="create-account-modal" role="dialog" aria-modal="true" aria-labelledby="create-modal-title" class="hidden fixed inset-0 z-50 flex items-center justify-center p-gutter-md bg-on-surface-strong/40">
+    <div class="bg-surface-card rounded-2xl border border-outline max-w-lg w-full p-gutter-xl shadow-2xl flex flex-col gap-gutter-lg">
+      <div class="flex items-start justify-between gap-gutter-md">
+        <div>
+          <h2 id="create-modal-title" class="font-headline text-headline-md text-on-surface-strong">Create account</h2>
+          <p class="font-body text-body-sm text-on-surface-muted mt-1">Provision a new Manager or Agent account for Autonomy Insurance.</p>
+        </div>
+        <button type="button" onclick="closeCreateModal()" aria-label="Close create account modal" class="w-11 h-11 rounded-full hover:bg-surface flex items-center justify-center text-on-surface-muted shrink-0">
+          <span class="material-symbols-outlined text-[22px]" aria-hidden="true">close</span>
+        </button>
+      </div>
+
+      <form onsubmit="handleCreateAccount(event)" class="flex flex-col gap-gutter-md">
+        <label class="flex flex-col gap-gutter-xs">
+          <span class="font-label text-label-lg text-on-surface-strong">Full name</span>
+          <input id="new-full-name" type="text" required placeholder="e.g. Marco Dela Cruz" class="min-h-[44px] rounded-full bg-surface border border-outline px-4 py-2.5 font-body text-body-md text-on-surface-strong placeholder:text-on-surface-muted focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+        </label>
+
+        <label class="flex flex-col gap-gutter-xs">
+          <span class="font-label text-label-lg text-on-surface-strong">Email</span>
+          <input id="new-email" type="email" required placeholder="name@autonomyinsurance.ph" class="min-h-[44px] rounded-full bg-surface border border-outline px-4 py-2.5 font-body text-body-md text-on-surface-strong placeholder:text-on-surface-muted focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+        </label>
+
+        <label class="flex flex-col gap-gutter-xs">
+          <span class="font-label text-label-lg text-on-surface-strong">Role</span>
+          <select id="new-role" onchange="toggleReportsToField()" class="min-h-[44px] rounded-full bg-surface border border-outline px-4 py-2.5 font-body text-body-md text-on-surface-strong focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+            <option value="Agent">Agent</option>
+            <option value="Manager">Manager</option>
+          </select>
+        </label>
+
+        <label id="new-reports-to-group" class="flex flex-col gap-gutter-xs">
+          <span class="font-label text-label-lg text-on-surface-strong">Reports to</span>
+          <select id="new-reports-to" class="min-h-[44px] rounded-full bg-surface border border-outline px-4 py-2.5 font-body text-body-md text-on-surface-strong focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+            <!-- Rendered by JS -->
+          </select>
+        </label>
+
+        <!-- Temporary Password Note -->
+        <div class="bg-secondary-container border border-secondary rounded-xl p-gutter-md flex items-start gap-gutter-sm">
+          <span class="material-symbols-outlined text-[20px] text-on-secondary-container shrink-0 mt-0.5" aria-hidden="true">key</span>
+          <p class="font-body text-body-sm text-on-secondary-container">
+            <strong class="font-title">Temporary password:</strong> A one-time temporary password will be emailed to the user. They must set a new password on their first sign-in.
+          </p>
+        </div>
+
+        <div class="flex items-center justify-end gap-gutter-sm pt-2">
+          <button type="button" onclick="closeCreateModal()" class="min-h-[44px] px-5 py-2.5 rounded-full bg-surface border border-outline hover:border-on-surface font-label text-label-lg text-on-surface-strong whitespace-nowrap">
+            Cancel
+          </button>
+          <button type="submit" class="min-h-[44px] px-6 py-2.5 rounded-full bg-primary text-on-primary hover:bg-primary-hover font-label text-label-lg whitespace-nowrap">
+            Create account
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const users = [
+      { name: 'Rachel Kim', email: 'rachel.kim@autonomyinsurance.ph', role: 'Admin', reportsTo: '—', status: 'Active' },
+      { name: 'David Vance', email: 'david.vance@autonomyinsurance.ph', role: 'Manager', reportsTo: '—', status: 'Active' },
+      { name: 'Claire Lim', email: 'claire.lim@autonomyinsurance.ph', role: 'Manager', reportsTo: '—', status: 'Active' },
+      { name: 'Maya Santos', email: 'maya.santos@autonomyinsurance.ph', role: 'Agent', reportsTo: 'David Vance', status: 'Active' },
+      { name: 'Carlos Rivera', email: 'carlos.rivera@autonomyinsurance.ph', role: 'Agent', reportsTo: 'David Vance', status: 'Active' },
+      { name: 'Hannah Park', email: 'hannah.park@autonomyinsurance.ph', role: 'Agent', reportsTo: 'Claire Lim', status: 'Active' },
+      { name: 'Elena Rostova', email: 'elena.rostova@email.com', role: 'Client', reportsTo: 'Maya Santos', status: 'Active' },
+      { name: 'Leo Mendoza', email: 'leo.mendoza@email.com', role: 'Client', reportsTo: 'Maya Santos', status: 'Active' }
+    ];
+
+    let activeRoleFilter = 'All';
+
+    const roleChipClass = {
+      'Admin': 'bg-surface-dark text-pure-white',
+      'Manager': 'bg-secondary text-on-secondary',
+      'Agent': 'bg-primary-container text-on-primary-container',
+      'Client': 'bg-surface border border-outline text-on-surface-strong'
+    };
+
+    const statusChipClass = {
+      'Active': 'bg-success text-on-success',
+      'Invited': 'bg-secondary-container text-on-secondary-container',
+      'Suspended': 'bg-error text-on-error'
+    };
+
+    function renderUsersTable() {
+      const tbody = document.getElementById('users-table-body');
+      const filtered = activeRoleFilter === 'All'
+        ? users
+        : users.filter(u => u.role === activeRoleFilter);
+
+      document.getElementById('accounts-count').textContent = `${filtered.length} ${filtered.length === 1 ? 'user' : 'users'}`;
+
+      tbody.innerHTML = filtered.map(u => `
+        <tr class="hover:bg-surface transition-colors">
+          <td class="py-3.5 px-4">
+            <div class="font-title text-title-md text-on-surface-strong">${u.name}</div>
+            <div class="font-body text-body-sm text-on-surface-muted">${u.email}</div>
+          </td>
+          <td class="py-3.5 px-4">
+            <span class="inline-block px-2.5 py-0.5 rounded-full font-label text-label-sm whitespace-nowrap ${roleChipClass[u.role]}">${u.role}</span>
+          </td>
+          <td class="py-3.5 px-4 font-body text-body-md text-on-surface">${u.reportsTo}</td>
+          <td class="py-3.5 px-4">
+            <span class="inline-block px-2.5 py-0.5 rounded-full font-label text-label-sm whitespace-nowrap ${statusChipClass[u.status]}">${u.status}</span>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function renderSelects() {
+      const agentOptions = users.filter(u => u.role === 'Agent')
+        .map(a => `<option value="${a.name}">${a.name} (${a.reportsTo})</option>`).join('');
+      const managerOptions = users.filter(u => u.role === 'Manager')
+        .map(m => `<option value="${m.name}">${m.name}</option>`).join('');
+
+      document.getElementById('assign-agent-select').innerHTML = agentOptions;
+      document.getElementById('assign-manager-select').innerHTML = managerOptions;
+      document.getElementById('new-reports-to').innerHTML = managerOptions;
+    }
+
+    function setRoleFilter(role) {
+      activeRoleFilter = role;
+      document.querySelectorAll('.role-filter-btn').forEach(btn => {
+        const isCurrent = btn.getAttribute('data-role-filter') === role;
+        btn.className = isCurrent
+          ? 'role-filter-btn px-3.5 py-1.5 rounded-full bg-primary text-on-primary font-label text-label-sm whitespace-nowrap'
+          : 'role-filter-btn px-3.5 py-1.5 rounded-full bg-surface border border-outline text-on-surface font-label text-label-sm whitespace-nowrap hover:border-on-surface';
+      });
+      renderUsersTable();
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('feedback-toast');
+      document.getElementById('feedback-toast-text').textContent = msg;
+      toast.classList.remove('hidden');
+      toast.classList.add('inline-flex');
+    }
+
+    function handleAssignSubmit(e) {
+      e.preventDefault();
+      const agentName = document.getElementById('assign-agent-select').value;
+      const managerName = document.getElementById('assign-manager-select').value;
+      const agent = users.find(u => u.name === agentName && u.role === 'Agent');
+      if (agent) {
+        agent.reportsTo = managerName;
+        renderUsersTable();
+        renderSelects();
+        showToast(`${agentName} now reports to ${managerName}.`);
+      }
+    }
+
+    function openCreateModal() {
+      document.getElementById('create-account-modal').classList.remove('hidden');
+      toggleReportsToField();
+    }
+
+    function closeCreateModal() {
+      document.getElementById('create-account-modal').classList.add('hidden');
+    }
+
+    function toggleReportsToField() {
+      const role = document.getElementById('new-role').value;
+      const group = document.getElementById('new-reports-to-group');
+      group.classList.toggle('hidden', role !== 'Agent');
+    }
+
+    function handleCreateAccount(e) {
+      e.preventDefault();
+      const name = document.getElementById('new-full-name').value.trim();
+      const email = document.getElementById('new-email').value.trim();
+      const role = document.getElementById('new-role').value;
+      const reportsTo = role === 'Agent' ? document.getElementById('new-reports-to').value : '—';
+
+      if (!name || !email) return;
+
+      users.unshift({
+        name,
+        email,
+        role,
+        reportsTo,
+        status: 'Invited'
+      });
+
+      e.target.reset();
+      closeCreateModal();
+      renderUsersTable();
+      renderSelects();
+      showToast(`Invited ${name} as ${role}. Temporary password sent.`);
+    }
+
+    renderUsersTable();
+    renderSelects();
+  </script>
+
+
+</body></html>

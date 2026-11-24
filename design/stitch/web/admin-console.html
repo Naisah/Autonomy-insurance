@@ -1,0 +1,434 @@
+<!-- Autonomy Insurance — Admin Console (Web) -->
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Console — Autonomy Insurance</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'mapua-red': '#D52B1E',
+        'deep-red': '#A81F16',
+        'mapua-gold': '#F2B705',
+        'charcoal': '#4B4B4D',
+        'mid-gray': '#8A8B8D',
+        'light-gray': '#D9D9DA',
+        'warm-white': '#FAF7F2',
+        'pure-white': '#FFFFFF',
+        'primary': '#D52B1E',
+        'on-primary': '#FFFFFF',
+        'primary-hover': '#A81F16',
+        'primary-container': '#FFEDEA',
+        'on-primary-container': '#410000',
+        'secondary': '#F2B705',
+        'on-secondary': '#251A00',
+        'secondary-container': '#FFEFD4',
+        'on-secondary-container': '#3F2E00',
+        'surface': '#FAF7F2',
+        'on-surface': '#4B4B4D',
+        'on-surface-strong': '#1B1B1D',
+        'on-surface-muted': '#5E5E60',
+        'surface-card': '#FFFFFF',
+        'surface-dark': '#4B4B4D',
+        'on-surface-dark': '#FAF7F2',
+        'outline': '#D9D9DA',
+        'success': '#15803D',
+        'on-success': '#FFFFFF',
+        'warning': '#B45309',
+        'on-warning': '#FFFFFF',
+        'error': '#BA1A1A',
+        'on-error': '#FFFFFF',
+      },
+      borderRadius: {
+        'sm': '8px',
+        'DEFAULT': '16px',
+        'md': '20px',
+        'lg': '24px',
+        'xl': '32px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '64px',
+        'section-lg': '96px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Hanken Grotesk"', 'sans-serif'],
+        'headline': ['"Hanken Grotesk"', 'sans-serif'],
+        'title': ['"DM Sans"', 'sans-serif'],
+        'body': ['"DM Sans"', 'sans-serif'],
+        'label': ['"DM Sans"', 'sans-serif'],
+        'mono': ['"DM Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-xl': ['84px', { lineHeight: '84px', letterSpacing: '-3.2px', fontWeight: '800' }],
+        'display-xl-mobile': ['32px', { lineHeight: '36px', letterSpacing: '-1.0px', fontWeight: '800' }],
+        'display-lg': ['64px', { lineHeight: '68px', letterSpacing: '-2.4px', fontWeight: '800' }],
+        'display-lg-mobile': ['30px', { lineHeight: '34px', letterSpacing: '-0.8px', fontWeight: '800' }],
+        'display-md': ['48px', { lineHeight: '52px', letterSpacing: '-1.6px', fontWeight: '800' }],
+        'display-md-mobile': ['28px', { lineHeight: '32px', letterSpacing: '-0.6px', fontWeight: '800' }],
+        'headline-lg': ['36px', { lineHeight: '42px', letterSpacing: '-1.0px', fontWeight: '700' }],
+        'headline-lg-mobile': ['24px', { lineHeight: '28px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'headline-md': ['24px', { lineHeight: '30px', letterSpacing: '-0.4px', fontWeight: '700' }],
+        'title-lg': ['20px', { lineHeight: '26px', letterSpacing: '-0.2px', fontWeight: '700' }],
+        'title-md': ['16px', { lineHeight: '22px', letterSpacing: '0px', fontWeight: '700' }],
+        'body-lg': ['18px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-md': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-sm': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0.1px', fontWeight: '700' }],
+        'label-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.4px', fontWeight: '600' }],
+        'mono-md': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '500' }],
+      },
+      transitionDuration: {
+        'state-change': '150ms',
+        'card-lift': '240ms',
+        'surface-enter': '320ms',
+        'surface-exit': '180ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'card-lift': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'cubic-bezier(0.2, 0, 0, 1)',
+        'card-lift': 'cubic-bezier(0.22, 1, 0.36, 1)',
+        'surface-enter': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-exit': 'cubic-bezier(0.3, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@500&amp;family=DM+Sans:wght@400;600;700&amp;family=Hanken+Grotesk:wght@700;800&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    .material-symbols-outlined, .material-symbols-rounded, .material-symbols-sharp, .material-icons {
+      display: inline-block; width: 1em; height: 1em; line-height: 1 !important;
+      box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body antialiased">
+  <div class="min-h-[1024px] flex flex-col" data-stitch-vh="min-h-[1024px]===min-h-screen">
+
+    <!-- Sticky Admin Header (Zero Chat Access) -->
+    <header class="sticky top-0 z-40 bg-surface-card border-b border-outline">
+      <div class="max-w-7xl mx-auto px-gutter-lg py-gutter-md flex items-center justify-between gap-gutter-lg">
+        <div class="flex items-center gap-gutter-md">
+          <a href="../insuria-landing/InsuriaLanding.html" class="flex items-center gap-gutter-sm shrink-0">
+            <div class="grid grid-cols-3 gap-0.5 p-1 bg-surface rounded-sm border border-outline" aria-hidden="true">
+              <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+              <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+              <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+              <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+              <span class="w-2.5 h-2.5 bg-pure-white"></span>
+              <span class="w-2.5 h-2.5 bg-light-gray"></span>
+              <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+              <span class="w-2.5 h-2.5 bg-light-gray"></span>
+              <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+            </div>
+            <span class="font-headline text-headline-md text-on-surface-strong tracking-tight">Autonomy Insurance</span>
+          </a>
+          <span class="px-3 py-1 rounded-full bg-surface-dark text-pure-white font-label text-label-sm">Admin Console</span>
+        </div>
+
+        <nav class="hidden md:flex items-center gap-gutter-sm" aria-label="Admin navigation">
+          <a href="#reports" class="px-4 py-2 rounded-full bg-primary text-on-primary font-label text-label-lg">Reports</a>
+          <a href="#accounts" class="px-4 py-2 rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg">Accounts &amp; Roles</a>
+          <a href="#assignments" class="px-4 py-2 rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg">Assignments</a>
+          <a href="#policy-settings" class="px-4 py-2 rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg">Policy Settings</a>
+        </nav>
+
+        <div class="flex items-center gap-gutter-sm">
+          <div class="hidden sm:block text-right">
+            <div class="font-title text-title-md text-on-surface-strong">Rachel Kim</div>
+            <div class="font-label text-label-sm text-on-surface-muted">System Admin</div>
+          </div>
+          <div class="w-10 h-10 rounded-full bg-surface-dark text-pure-white flex items-center justify-center font-headline text-title-md">RK</div>
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto px-gutter-lg py-gutter-xl flex flex-col gap-gutter-xl">
+
+      <!-- Page Header + Privacy Scope Badge -->
+      <div class="flex flex-wrap items-end justify-between gap-gutter-md">
+        <div>
+          <h1 class="font-display text-display-md-mobile md:text-display-md text-on-surface-strong">Platform overview &amp; governance</h1>
+        </div>
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface-card border border-outline font-body text-body-sm text-on-surface-muted">
+          <span class="material-symbols-outlined text-[18px] text-on-surface-strong" aria-hidden="true">shield_lock</span>
+          <span>Admins do not have access to client-agent chat content</span>
+        </div>
+      </div>
+
+      <!-- 1. SYSTEM-WIDE REPORT CHARTS (Accounts by Role, Policies, Claims) -->
+      <section id="reports" class="grid grid-cols-1 md:grid-cols-3 gap-gutter-lg items-stretch">
+
+        <!-- Chart 1: Accounts by Role -->
+        <article class="bg-surface-card rounded-xl border border-outline p-gutter-xl flex flex-col justify-between gap-gutter-md">
+          <div>
+            <span class="font-label text-label-sm text-on-surface-muted uppercase">Accounts by Role</span>
+            <div class="font-display text-display-md-mobile md:text-display-md text-on-surface-strong tabular-nums mt-1">42,398</div>
+          </div>
+          <div class="flex flex-col gap-gutter-sm">
+            <div class="flex flex-col gap-1">
+              <div class="flex justify-between font-body text-body-sm">
+                <span class="text-on-surface-strong">Clients</span>
+                <span class="font-mono text-mono-md tabular-nums">42,180</span>
+              </div>
+              <div class="w-full h-2.5 bg-surface rounded-full overflow-hidden">
+                <div class="h-full bg-primary rounded-full w-11/12"></div>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1">
+              <div class="flex justify-between font-body text-body-sm">
+                <span class="text-on-surface-strong">Agents</span>
+                <span class="font-mono text-mono-md tabular-nums">184</span>
+              </div>
+              <div class="w-full h-2.5 bg-surface rounded-full overflow-hidden">
+                <div class="h-full bg-secondary rounded-full w-2/5"></div>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1">
+              <div class="flex justify-between font-body text-body-sm">
+                <span class="text-on-surface-strong">Managers &amp; Admins</span>
+                <span class="font-mono text-mono-md tabular-nums">34</span>
+              </div>
+              <div class="w-full h-2.5 bg-surface rounded-full overflow-hidden">
+                <div class="h-full bg-surface-dark rounded-full w-1/6"></div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Chart 2: Active Policies -->
+        <article class="bg-surface-card rounded-xl border border-outline p-gutter-xl flex flex-col justify-between gap-gutter-md">
+          <div>
+            <span class="font-label text-label-sm text-on-surface-muted uppercase">Active Policies</span>
+            <div class="font-display text-display-md-mobile md:text-display-md text-primary tabular-nums mt-1">38,940</div>
+          </div>
+          <div class="flex flex-col gap-gutter-sm">
+            <div class="flex flex-col gap-1">
+              <div class="flex justify-between font-body text-body-sm">
+                <span class="text-on-surface-strong">Term Life</span>
+                <span class="font-mono text-mono-md tabular-nums">74%</span>
+              </div>
+              <div class="w-full h-2.5 bg-surface rounded-full overflow-hidden">
+                <div class="h-full bg-primary rounded-full w-3/4"></div>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1">
+              <div class="flex justify-between font-body text-body-sm">
+                <span class="text-on-surface-strong">Critical Care</span>
+                <span class="font-mono text-mono-md tabular-nums">26%</span>
+              </div>
+              <div class="w-full h-2.5 bg-surface rounded-full overflow-hidden">
+                <div class="h-full bg-secondary rounded-full w-1/4"></div>
+              </div>
+            </div>
+          </div>
+          <span class="font-body text-body-sm text-on-surface-muted">+6.4% active policy growth MoM</span>
+        </article>
+
+        <!-- Chart 3: Claims Resolution -->
+        <article class="bg-surface-dark text-on-surface-dark rounded-xl p-gutter-xl flex flex-col justify-between gap-gutter-md">
+          <div>
+            <span class="font-label text-label-sm text-secondary uppercase">System-Wide Claims</span>
+            <div class="font-display text-display-md-mobile md:text-display-md text-pure-white tabular-nums mt-1">98.2%</div>
+          </div>
+          <div class="grid grid-cols-2 gap-gutter-md py-gutter-sm border-y border-on-surface-muted">
+            <div>
+              <div class="font-label text-label-sm text-light-gray">Settled (30d)</div>
+              <div class="font-headline text-headline-md text-pure-white tabular-nums">1,420</div>
+            </div>
+            <div>
+              <div class="font-label text-label-sm text-light-gray">Avg payout</div>
+              <div class="font-headline text-headline-md text-secondary tabular-nums">38 hrs</div>
+            </div>
+          </div>
+          <span class="font-body text-body-sm text-light-gray">Zero unresolved SLA breaches</span>
+        </article>
+
+      </section>
+
+      <!-- 2. ACCOUNT MANAGEMENT TABLE WITH ROLE FILTER -->
+      <section id="accounts" class="bg-surface-card rounded-xl border border-outline p-gutter-xl flex flex-col gap-gutter-lg">
+        <div class="flex flex-wrap items-center justify-between gap-gutter-md">
+          <div>
+            <h2 class="font-headline text-headline-md text-on-surface-strong">Account management</h2>
+            <p class="font-body text-body-sm text-on-surface-muted">Filter by role across Client, Agent, Manager, and Admin accounts</p>
+          </div>
+
+          <div class="flex flex-wrap gap-gutter-xs" role="tablist" aria-label="Filter by role">
+            <button type="button" onclick="filterRole(&#39;all&#39;, this)" class="role-filter px-4 py-2 rounded-full bg-primary text-on-primary font-label text-label-sm">All</button>
+            <button type="button" onclick="filterRole(&#39;Client&#39;, this)" class="role-filter px-4 py-2 rounded-full bg-surface border border-outline font-label text-label-sm text-on-surface-strong">Client</button>
+            <button type="button" onclick="filterRole(&#39;Agent&#39;, this)" class="role-filter px-4 py-2 rounded-full bg-surface border border-outline font-label text-label-sm text-on-surface-strong">Agent</button>
+            <button type="button" onclick="filterRole(&#39;Manager&#39;, this)" class="role-filter px-4 py-2 rounded-full bg-surface border border-outline font-label text-label-sm text-on-surface-strong">Manager</button>
+            <button type="button" onclick="filterRole(&#39;Admin&#39;, this)" class="role-filter px-4 py-2 rounded-full bg-surface border border-outline font-label text-label-sm text-on-surface-strong">Admin</button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-outline font-label text-label-sm text-on-surface-muted uppercase">
+                <th class="py-3 pr-4">Name</th>
+                <th class="py-3 pr-4">Email</th>
+                <th class="py-3 pr-4">Role</th>
+                <th class="py-3 pr-4">Branch / Team</th>
+                <th class="py-3 text-right">Status</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-outline font-body text-body-md">
+              <tr class="acct-row" data-role="Client">
+                <td class="py-3.5 pr-4 font-title text-on-surface-strong">Elena Rostova</td>
+                <td class="py-3.5 pr-4 font-mono text-mono-md text-on-surface-muted">elena.rostova@insuria.co</td>
+                <td class="py-3.5 pr-4"><span class="px-3 py-1 rounded-full bg-surface border border-outline font-label text-label-sm">Client</span></td>
+                <td class="py-3.5 pr-4 text-on-surface">West Branch (Maya Santos)</td>
+                <td class="py-3.5 text-right"><span class="px-2.5 py-0.5 rounded-full bg-success text-on-success font-label text-label-sm">Active</span></td>
+              </tr>
+              <tr class="acct-row" data-role="Agent">
+                <td class="py-3.5 pr-4 font-title text-on-surface-strong">Maya Santos</td>
+                <td class="py-3.5 pr-4 font-mono text-mono-md text-on-surface-muted">maya.santos@insuria.co</td>
+                <td class="py-3.5 pr-4"><span class="px-3 py-1 rounded-full bg-secondary text-on-secondary font-label text-label-sm">Agent</span></td>
+                <td class="py-3.5 pr-4 text-on-surface">West Branch (David Vance)</td>
+                <td class="py-3.5 text-right"><span class="px-2.5 py-0.5 rounded-full bg-success text-on-success font-label text-label-sm">Active</span></td>
+              </tr>
+              <tr class="acct-row" data-role="Manager">
+                <td class="py-3.5 pr-4 font-title text-on-surface-strong">David Vance</td>
+                <td class="py-3.5 pr-4 font-mono text-mono-md text-on-surface-muted">david.vance@insuria.co</td>
+                <td class="py-3.5 pr-4"><span class="px-3 py-1 rounded-full bg-primary-container text-on-primary-container font-label text-label-sm">Manager</span></td>
+                <td class="py-3.5 pr-4 text-on-surface">West Branch</td>
+                <td class="py-3.5 text-right"><span class="px-2.5 py-0.5 rounded-full bg-success text-on-success font-label text-label-sm">Active</span></td>
+              </tr>
+              <tr class="acct-row" data-role="Admin">
+                <td class="py-3.5 pr-4 font-title text-on-surface-strong">Rachel Kim</td>
+                <td class="py-3.5 pr-4 font-mono text-mono-md text-on-surface-muted">rachel.kim@insuria.co</td>
+                <td class="py-3.5 pr-4"><span class="px-3 py-1 rounded-full bg-surface-dark text-pure-white font-label text-label-sm">Admin</span></td>
+                <td class="py-3.5 pr-4 text-on-surface">Global Operations</td>
+                <td class="py-3.5 text-right"><span class="px-2.5 py-0.5 rounded-full bg-success text-on-success font-label text-label-sm">Active</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 3. CREATE MANAGER/AGENT, 4. ASSIGN AGENTS TO MANAGERS, 5. POLICY SETTINGS -->
+      <section class="grid grid-cols-1 lg:grid-cols-3 gap-gutter-lg items-stretch">
+
+        <!-- Create Manager / Agent Account -->
+        <article class="bg-surface-card rounded-xl border border-outline p-gutter-xl flex flex-col justify-between gap-gutter-md">
+          <div class="flex flex-col gap-gutter-md">
+            <h2 class="font-headline text-headline-md text-on-surface-strong">Create manager / agent</h2>
+            <form onsubmit="handleAdminAction(event, &#39;create-msg&#39;, &#39;Account created and invite sent.&#39;)" class="flex flex-col gap-gutter-sm">
+              <label class="flex flex-col gap-1">
+                <span class="font-label text-label-sm text-on-surface-strong">Full name</span>
+                <input type="text" placeholder="Sofia Morales" class="rounded-full bg-surface border border-outline px-4 py-2.5 font-body text-body-sm focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+              </label>
+              <label class="flex flex-col gap-1">
+                <span class="font-label text-label-sm text-on-surface-strong">Work email</span>
+                <input type="email" placeholder="sofia.morales@insuria.co" class="rounded-full bg-surface border border-outline px-4 py-2.5 font-body text-body-sm focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+              </label>
+              <label class="flex flex-col gap-1">
+                <span class="font-label text-label-sm text-on-surface-strong">Role</span>
+                <select class="rounded-full bg-surface border border-outline px-4 py-2.5 font-body text-body-sm focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+                  <option>Agent</option>
+                  <option>Manager</option>
+                </select>
+              </label>
+              <button type="submit" class="mt-2 w-full py-3 rounded-full bg-primary text-on-primary hover:bg-primary-hover font-label text-label-lg transition-colors">Create account</button>
+            </form>
+          </div>
+          <p id="create-msg" class="hidden font-body text-body-sm text-success"></p>
+        </article>
+
+        <!-- Assign Agents to Managers -->
+        <article id="assignments" class="bg-surface-card rounded-xl border border-outline p-gutter-xl flex flex-col justify-between gap-gutter-md">
+          <div class="flex flex-col gap-gutter-md">
+            <h2 class="font-headline text-headline-md text-on-surface-strong">Assign agents to managers</h2>
+            <form onsubmit="handleAdminAction(event, &#39;assign-msg&#39;, &#39;Agent assigned to selected manager branch.&#39;)" class="flex flex-col gap-gutter-sm">
+              <label class="flex flex-col gap-1">
+                <span class="font-label text-label-sm text-on-surface-strong">Select Agent</span>
+                <select class="rounded-full bg-surface border border-outline px-4 py-2.5 font-body text-body-sm focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+                  <option>Maya Santos (West Branch)</option>
+                  <option>Carlos Rivera (West Branch)</option>
+                  <option>Hannah Park (East Branch)</option>
+                </select>
+              </label>
+              <label class="flex flex-col gap-1">
+                <span class="font-label text-label-sm text-on-surface-strong">Assign to Manager</span>
+                <select class="rounded-full bg-surface border border-outline px-4 py-2.5 font-body text-body-sm focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+                  <option>David Vance — West Branch</option>
+                  <option>Claire Bennett — East Branch</option>
+                </select>
+              </label>
+              <button type="submit" class="mt-2 w-full py-3 rounded-full bg-secondary text-on-secondary hover:opacity-90 font-label text-label-lg transition-opacity">Assign to manager</button>
+            </form>
+          </div>
+          <p id="assign-msg" class="hidden font-body text-body-sm text-success"></p>
+        </article>
+
+        <!-- Policy Settings Panel -->
+        <article id="policy-settings" class="bg-surface-card rounded-xl border border-outline p-gutter-xl flex flex-col justify-between gap-gutter-md">
+          <div class="flex flex-col gap-gutter-md">
+            <h2 class="font-headline text-headline-md text-on-surface-strong">Policy settings</h2>
+            <form onsubmit="handleAdminAction(event, &#39;policy-msg&#39;, &#39;Global policy rules updated.&#39;)" class="flex flex-col gap-gutter-sm">
+              <label class="flex flex-col gap-1">
+                <span class="font-label text-label-sm text-on-surface-strong">Max coverage limit</span>
+                <input type="text" value="₱20,000,000" class="rounded-full bg-surface border border-outline px-4 py-2.5 font-mono text-mono-md focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+              </label>
+              <label class="flex flex-col gap-1">
+                <span class="font-label text-label-sm text-on-surface-strong">Extended grace period</span>
+                <input type="text" value="30 days" class="rounded-full bg-surface border border-outline px-4 py-2.5 font-mono text-mono-md focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+              </label>
+              <label class="inline-flex items-center gap-2 py-1 cursor-pointer">
+                <input type="checkbox" checked class="rounded-sm border-outline text-primary focus:ring-primary">
+                <span class="font-body text-body-sm text-on-surface-strong">Auto-apply Step Rewards discount</span>
+              </label>
+              <button type="submit" class="mt-1 w-full py-3 rounded-full bg-surface-dark text-pure-white hover:opacity-90 font-label text-label-lg transition-opacity">Save policy settings</button>
+            </form>
+          </div>
+          <p id="policy-msg" class="hidden font-body text-body-sm text-success"></p>
+        </article>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <script>
+    function filterRole(role, btn) {
+      document.querySelectorAll('.role-filter').forEach(b => {
+        b.className = 'role-filter px-4 py-2 rounded-full bg-surface border border-outline font-label text-label-sm text-on-surface-strong';
+      });
+      btn.className = 'role-filter px-4 py-2 rounded-full bg-primary text-on-primary font-label text-label-sm';
+      document.querySelectorAll('.acct-row').forEach(row => {
+        const r = row.getAttribute('data-role');
+        row.classList.toggle('hidden', role !== 'all' && r !== role);
+      });
+    }
+
+    function handleAdminAction(e, id, text) {
+      e.preventDefault();
+      const el = document.getElementById(id);
+      el.textContent = text;
+      el.classList.remove('hidden');
+    }
+  </script>
+
+
+</body></html>

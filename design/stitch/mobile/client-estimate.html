@@ -1,0 +1,342 @@
+<!-- Autonomy Insurance — mobile/client-estimate -->
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Policy Estimate — Autonomy Insurance</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'mapua-red': '#D52B1E',
+        'deep-red': '#A81F16',
+        'mapua-gold': '#F2B705',
+        'charcoal': '#4B4B4D',
+        'mid-gray': '#8A8B8D',
+        'light-gray': '#D9D9DA',
+        'warm-white': '#FAF7F2',
+        'pure-white': '#FFFFFF',
+        'primary': '#D52B1E',
+        'on-primary': '#FFFFFF',
+        'primary-hover': '#A81F16',
+        'primary-container': '#FFEDEA',
+        'on-primary-container': '#410000',
+        'secondary': '#F2B705',
+        'on-secondary': '#251A00',
+        'secondary-container': '#FFEFD4',
+        'on-secondary-container': '#3F2E00',
+        'surface': '#FAF7F2',
+        'on-surface': '#4B4B4D',
+        'on-surface-strong': '#1B1B1D',
+        'on-surface-muted': '#5E5E60',
+        'surface-card': '#FFFFFF',
+        'surface-dark': '#4B4B4D',
+        'on-surface-dark': '#FAF7F2',
+        'outline': '#D9D9DA',
+        'success': '#15803D',
+        'on-success': '#FFFFFF',
+        'warning': '#B45309',
+        'on-warning': '#FFFFFF',
+        'error': '#BA1A1A',
+        'on-error': '#FFFFFF',
+      },
+      borderRadius: {
+        'sm': '8px',
+        'DEFAULT': '16px',
+        'md': '20px',
+        'lg': '24px',
+        'xl': '32px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '64px',
+        'section-lg': '96px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Hanken Grotesk"', 'sans-serif'],
+        'headline': ['"Hanken Grotesk"', 'sans-serif'],
+        'title': ['"DM Sans"', 'sans-serif'],
+        'body': ['"DM Sans"', 'sans-serif'],
+        'label': ['"DM Sans"', 'sans-serif'],
+        'mono': ['"DM Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-xl': ['84px', { lineHeight: '84px', letterSpacing: '-3.2px', fontWeight: '800' }],
+        'display-xl-mobile': ['32px', { lineHeight: '36px', letterSpacing: '-1.0px', fontWeight: '800' }],
+        'display-lg': ['64px', { lineHeight: '68px', letterSpacing: '-2.4px', fontWeight: '800' }],
+        'display-lg-mobile': ['30px', { lineHeight: '34px', letterSpacing: '-0.8px', fontWeight: '800' }],
+        'display-md': ['48px', { lineHeight: '52px', letterSpacing: '-1.6px', fontWeight: '800' }],
+        'display-md-mobile': ['28px', { lineHeight: '32px', letterSpacing: '-0.6px', fontWeight: '800' }],
+        'headline-lg': ['36px', { lineHeight: '42px', letterSpacing: '-1.0px', fontWeight: '700' }],
+        'headline-lg-mobile': ['24px', { lineHeight: '28px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'headline-md': ['24px', { lineHeight: '30px', letterSpacing: '-0.4px', fontWeight: '700' }],
+        'title-lg': ['20px', { lineHeight: '26px', letterSpacing: '-0.2px', fontWeight: '700' }],
+        'title-md': ['16px', { lineHeight: '22px', letterSpacing: '0px', fontWeight: '700' }],
+        'body-lg': ['18px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-md': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-sm': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0.1px', fontWeight: '700' }],
+        'label-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.4px', fontWeight: '600' }],
+        'mono-md': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '500' }],
+      },
+      transitionDuration: {
+        'state-change': '150ms',
+        'card-lift': '240ms',
+        'surface-enter': '320ms',
+        'surface-exit': '180ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'card-lift': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'cubic-bezier(0.2, 0, 0, 1)',
+        'card-lift': 'cubic-bezier(0.22, 1, 0.36, 1)',
+        'surface-enter': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-exit': 'cubic-bezier(0.3, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@500&amp;family=DM+Sans:wght@400;600;700&amp;family=Hanken+Grotesk:wght@700;800&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    .material-symbols-outlined, .material-symbols-rounded, .material-symbols-sharp, .material-icons {
+      display: inline-block; width: 1em; height: 1em; line-height: 1 !important;
+      box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body antialiased">
+  <div class="max-w-[390px] min-h-[844px] mx-auto bg-surface flex flex-col relative">
+
+    <!-- Top Mobile Header -->
+    <header class="sticky top-0 z-30 bg-surface-card border-b border-outline px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="grid grid-cols-3 gap-0.5 p-1 bg-surface rounded-sm border border-outline" aria-hidden="true">
+          <span class="w-2 h-2 bg-mapua-red"></span>
+          <span class="w-2 h-2 bg-mapua-gold"></span>
+          <span class="w-2 h-2 bg-mapua-red"></span>
+          <span class="w-2 h-2 bg-mapua-gold"></span>
+          <span class="w-2 h-2 bg-pure-white"></span>
+          <span class="w-2 h-2 bg-light-gray"></span>
+          <span class="w-2 h-2 bg-mapua-red"></span>
+          <span class="w-2 h-2 bg-light-gray"></span>
+          <span class="w-2 h-2 bg-mapua-gold"></span>
+        </div>
+        <span class="font-headline text-title-lg text-on-surface-strong">Estimate</span>
+      </div>
+      <img src="https://lh3.googleusercontent.com/aida/ALJJyrBNPH83PI6mgA_4_A_-foW_tP8Shd3dieHS0JLDlRimR18VKECaUMk7PVaU-Z7GJyIrjWRY1ek31arcAB9Z4oGf8o9KVXhvSJP8-vp0nwDMolpyXdM5T1H2GlXbP0_JUT7YN_z_qsHVe8Mkg4yNbSnVHT-N7yqVcyYK_oqkOulYBJwEqIpv9e5WeFH_xR8yQIFjbyWcxEKlYTY0PRU5s34gtCc2pdVP5Kl7GuRmnaROurgT-AdBwwI" alt="Elena Rostova" class="w-9 h-9 rounded-full object-cover border border-outline">
+    </header>
+
+    <main class="flex-1 px-4 py-5 pb-6 flex flex-col gap-5">
+
+      <!-- Toast Feedback -->
+      <div id="estimate-toast" role="status" aria-live="polite" class="hidden px-4 py-2.5 rounded-xl bg-success text-on-success font-label text-label-sm items-center gap-2">
+        <span class="material-symbols-outlined text-[18px]" aria-hidden="true">check_circle</span>
+        <span id="estimate-toast-text">Saved draft.</span>
+      </div>
+
+      <!-- Inputs Card -->
+      <section class="bg-surface-card rounded-2xl border border-outline p-4 flex flex-col gap-5">
+        <!-- Age Slider -->
+        <div class="flex flex-col gap-2">
+          <div class="flex items-center justify-between">
+            <label for="age-slider" class="font-label text-label-lg text-on-surface-strong">Your age</label>
+            <span id="age-value" class="px-2.5 py-0.5 rounded-full bg-surface border border-outline font-mono text-mono-md text-on-surface-strong tabular-nums">32 yrs</span>
+          </div>
+          <input id="age-slider" type="range" min="18" max="65" value="32" oninput="recalculate()" class="w-full accent-primary cursor-pointer">
+          <div class="flex justify-between font-body text-body-sm text-on-surface-muted">
+            <span>18</span>
+            <span>65</span>
+          </div>
+        </div>
+
+        <!-- Coverage Amount Slider -->
+        <div class="flex flex-col gap-2 pt-3 border-t border-outline">
+          <div class="flex items-center justify-between">
+            <label for="coverage-slider" class="font-label text-label-lg text-on-surface-strong">Coverage amount</label>
+            <span id="coverage-value" class="px-2.5 py-0.5 rounded-full bg-surface border border-outline font-mono text-mono-md text-on-surface-strong tabular-nums">₱2,000,000</span>
+          </div>
+          <input id="coverage-slider" type="range" min="500000" max="10000000" step="250000" value="2000000" oninput="recalculate()" class="w-full accent-primary cursor-pointer">
+          <div class="flex justify-between font-body text-body-sm text-on-surface-muted">
+            <span>₱500K</span>
+            <span>₱10M</span>
+          </div>
+        </div>
+
+        <!-- Term Choice Chips -->
+        <div class="flex flex-col gap-2 pt-3 border-t border-outline">
+          <span class="font-label text-label-lg text-on-surface-strong">Term length</span>
+          <div class="grid grid-cols-3 gap-2" role="group" aria-label="Term length">
+            <button type="button" onclick="selectTerm(10)" data-term="10" class="term-chip min-h-[44px] px-3 py-2 rounded-full bg-surface border border-outline font-label text-label-sm text-on-surface-strong whitespace-nowrap">10 years</button>
+            <button type="button" onclick="selectTerm(20)" data-term="20" class="term-chip min-h-[44px] px-3 py-2 rounded-full bg-primary text-on-primary font-label text-label-sm whitespace-nowrap">20 years</button>
+            <button type="button" onclick="selectTerm(30)" data-term="30" class="term-chip min-h-[44px] px-3 py-2 rounded-full bg-surface border border-outline font-label text-label-sm text-on-surface-strong whitespace-nowrap">30 years</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Live Monthly Premium Card -->
+      <section class="bg-surface-card rounded-2xl border-2 border-primary/20 p-4 shadow-md flex flex-col gap-3">
+        <div class="flex items-center justify-between gap-2">
+          <div>
+            <span class="font-label text-label-sm text-on-surface-muted uppercase">Estimated monthly</span>
+            <div id="monthly-premium" class="font-display text-display-md-mobile text-primary tabular-nums">₱2,450<span class="font-body text-body-sm text-on-surface-muted"> / mo</span></div>
+          </div>
+          <span id="summary-chip" class="px-2.5 py-1 rounded-full bg-surface border border-outline font-mono text-mono-md text-on-surface-strong whitespace-nowrap">20y • ₱2M</span>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <button type="button" onclick="saveEstimate(&#39;Sent&#39;)" class="w-full min-h-[44px] px-4 py-2.5 rounded-full bg-primary text-on-primary hover:bg-primary-hover font-label text-label-lg whitespace-nowrap transition-colors">
+            Send to Maya for review
+          </button>
+          <button type="button" onclick="saveEstimate(&#39;Draft&#39;)" class="w-full min-h-[44px] px-4 py-2.5 rounded-full bg-surface border border-outline hover:border-on-surface font-label text-label-lg text-on-surface-strong whitespace-nowrap transition-colors">
+            Save draft
+          </button>
+        </div>
+      </section>
+
+      <!-- Past Estimates List -->
+      <section class="flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <h2 class="font-headline text-headline-md text-on-surface-strong">Past estimates</h2>
+          <span id="past-count" class="font-mono text-mono-md text-on-surface-muted">4</span>
+        </div>
+
+        <div id="past-estimates-list" class="flex flex-col gap-2.5">
+          <!-- Rendered by JS -->
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Mobile Bottom Tab Bar (Estimate Active) -->
+    <nav aria-label="Mobile navigation" class="mt-auto w-full z-30 bg-surface-card border-t border-outline px-2 py-1.5 grid grid-cols-5">
+      <a href="../client-dashboard-mobile/ClientDashboardMobile.html" class="flex flex-col items-center gap-0.5 text-on-surface-muted hover:text-on-surface-strong py-1">
+        <span class="material-symbols-outlined text-[22px]" aria-hidden="true">home</span>
+        <span class="font-label text-label-sm">Home</span>
+      </a>
+      <a href="../client-agent-chat/ClientAgentChat.html" class="flex flex-col items-center gap-0.5 text-on-surface-muted hover:text-on-surface-strong py-1">
+        <span class="material-symbols-outlined text-[22px]" aria-hidden="true">chat_bubble</span>
+        <span class="font-label text-label-sm">Chat</span>
+      </a>
+      <a href="#" aria-current="page" class="flex flex-col items-center gap-0.5 text-primary py-1">
+        <span class="material-symbols-outlined text-[22px]" aria-hidden="true">calculate</span>
+        <span class="font-label text-label-sm">Estimate</span>
+      </a>
+      <a href="#claims" class="flex flex-col items-center gap-0.5 text-on-surface-muted hover:text-on-surface-strong py-1">
+        <span class="material-symbols-outlined text-[22px]" aria-hidden="true">description</span>
+        <span class="font-label text-label-sm">Claims</span>
+      </a>
+      <a href="#profile" class="flex flex-col items-center gap-0.5 text-on-surface-muted hover:text-on-surface-strong py-1">
+        <span class="material-symbols-outlined text-[22px]" aria-hidden="true">person</span>
+        <span class="font-label text-label-sm">Profile</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <script>
+    let selectedTerm = 20;
+    let currentPremium = 2450;
+
+    const pastEstimates = [
+      { id: '#EST-214', title: '20-Year Term • ₱2M', date: 'Today', premium: '₱2,450/mo', status: 'Draft' },
+      { id: '#EST-209', title: '30-Year Term • ₱3M', date: 'Nov 18', premium: '₱3,820/mo', status: 'Sent' },
+      { id: '#EST-198', title: '20-Year Term • ₱2M', date: 'Nov 12', premium: '₱2,180/mo', status: 'Approved' },
+      { id: '#EST-192', title: '10-Year Term • ₱1.5M', date: 'Nov 04', premium: '₱1,490/mo', status: 'Changes requested' }
+    ];
+
+    const statusClass = {
+      'Draft': 'bg-surface border border-outline text-on-surface-strong',
+      'Sent': 'bg-primary-container text-on-primary-container',
+      'Approved': 'bg-success text-on-success',
+      'Changes requested': 'bg-secondary text-on-secondary'
+    };
+
+    function formatShortPeso(amount) {
+      if (amount >= 1000000) return `₱${(amount / 1000000).toFixed(amount % 1000000 === 0 ? 0 : 1)}M`;
+      return `₱${Math.round(amount / 1000)}K`;
+    }
+
+    function selectTerm(term) {
+      selectedTerm = term;
+      document.querySelectorAll('.term-chip').forEach(btn => {
+        const active = Number(btn.getAttribute('data-term')) === term;
+        btn.className = active
+          ? 'term-chip min-h-[44px] px-3 py-2 rounded-full bg-primary text-on-primary font-label text-label-sm whitespace-nowrap'
+          : 'term-chip min-h-[44px] px-3 py-2 rounded-full bg-surface border border-outline font-label text-label-sm text-on-surface-strong whitespace-nowrap';
+      });
+      recalculate();
+    }
+
+    function recalculate() {
+      const age = Number(document.getElementById('age-slider').value);
+      const coverage = Number(document.getElementById('coverage-slider').value);
+
+      document.getElementById('age-value').textContent = `${age} yrs`;
+      document.getElementById('coverage-value').textContent = `₱${coverage.toLocaleString('en-US')}`;
+
+      const ageFactor = 0.7 + (age - 18) * 0.025;
+      const termFactor = selectedTerm === 10 ? 0.85 : selectedTerm === 20 ? 1.0 : 1.25;
+      currentPremium = Math.round(((coverage / 1000000) * 1165 * ageFactor * termFactor) / 10) * 10;
+
+      document.getElementById('monthly-premium').innerHTML = `₱${currentPremium.toLocaleString('en-US')}<span class="font-body text-body-sm text-on-surface-muted"> / mo</span>`;
+      document.getElementById('summary-chip').textContent = `${selectedTerm}y • ${formatShortPeso(coverage)}`;
+    }
+
+    function renderPast() {
+      document.getElementById('past-count').textContent = pastEstimates.length;
+      document.getElementById('past-estimates-list').innerHTML = pastEstimates.map(item => `
+        <article class="bg-surface-card rounded-xl border border-outline p-3.5 flex items-center justify-between gap-3">
+          <div class="min-w-0">
+            <div class="flex items-center gap-2">
+              <span class="font-mono text-mono-md text-on-surface-muted">${item.id}</span>
+              <span class="font-body text-body-sm text-on-surface-muted">• ${item.date}</span>
+            </div>
+            <div class="font-title text-title-md text-on-surface-strong truncate">${item.title}</div>
+            <div class="font-mono text-mono-md text-primary">${item.premium}</div>
+          </div>
+          <span class="px-2.5 py-1 rounded-full font-label text-label-sm whitespace-nowrap shrink-0 ${statusClass[item.status]}">${item.status}</span>
+        </article>
+      `).join('');
+    }
+
+    function saveEstimate(status) {
+      const coverage = Number(document.getElementById('coverage-slider').value);
+      const newId = `#EST-${215 + pastEstimates.length}`;
+      pastEstimates.unshift({
+        id: newId,
+        title: `${selectedTerm}-Year Term • ${formatShortPeso(coverage)}`,
+        date: 'Just now',
+        premium: `₱${currentPremium.toLocaleString('en-US')}/mo`,
+        status
+      });
+      renderPast();
+
+      const toast = document.getElementById('estimate-toast');
+      document.getElementById('estimate-toast-text').textContent =
+        status === 'Sent' ? 'Estimate sent to Maya Santos for review.' : 'Estimate saved to your drafts.';
+      toast.classList.remove('hidden');
+      toast.classList.add('flex');
+    }
+
+    recalculate();
+    renderPast();
+  </script>
+
+
+</body></html>

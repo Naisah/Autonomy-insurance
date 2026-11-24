@@ -1,0 +1,410 @@
+<!-- Autonomy Insurance — web/agent-dashboard -->
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent Desk — Autonomy Insurance</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'mapua-red': '#D52B1E',
+        'deep-red': '#A81F16',
+        'mapua-gold': '#F2B705',
+        'charcoal': '#4B4B4D',
+        'mid-gray': '#8A8B8D',
+        'light-gray': '#D9D9DA',
+        'warm-white': '#FAF7F2',
+        'pure-white': '#FFFFFF',
+        'primary': '#D52B1E',
+        'on-primary': '#FFFFFF',
+        'primary-hover': '#A81F16',
+        'primary-container': '#FFEDEA',
+        'on-primary-container': '#410000',
+        'secondary': '#F2B705',
+        'on-secondary': '#251A00',
+        'secondary-container': '#FFEFD4',
+        'on-secondary-container': '#3F2E00',
+        'surface': '#FAF7F2',
+        'on-surface': '#4B4B4D',
+        'on-surface-strong': '#1B1B1D',
+        'on-surface-muted': '#5E5E60',
+        'surface-card': '#FFFFFF',
+        'surface-dark': '#4B4B4D',
+        'on-surface-dark': '#FAF7F2',
+        'outline': '#D9D9DA',
+        'success': '#15803D',
+        'on-success': '#FFFFFF',
+        'warning': '#B45309',
+        'on-warning': '#FFFFFF',
+        'error': '#BA1A1A',
+        'on-error': '#FFFFFF',
+      },
+      borderRadius: {
+        'sm': '8px',
+        'DEFAULT': '16px',
+        'md': '20px',
+        'lg': '24px',
+        'xl': '32px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '64px',
+        'section-lg': '96px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Hanken Grotesk"', 'sans-serif'],
+        'headline': ['"Hanken Grotesk"', 'sans-serif'],
+        'title': ['"DM Sans"', 'sans-serif'],
+        'body': ['"DM Sans"', 'sans-serif'],
+        'label': ['"DM Sans"', 'sans-serif'],
+        'mono': ['"DM Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-xl': ['84px', { lineHeight: '84px', letterSpacing: '-3.2px', fontWeight: '800' }],
+        'display-xl-mobile': ['32px', { lineHeight: '36px', letterSpacing: '-1.0px', fontWeight: '800' }],
+        'display-lg': ['64px', { lineHeight: '68px', letterSpacing: '-2.4px', fontWeight: '800' }],
+        'display-lg-mobile': ['30px', { lineHeight: '34px', letterSpacing: '-0.8px', fontWeight: '800' }],
+        'display-md': ['48px', { lineHeight: '52px', letterSpacing: '-1.6px', fontWeight: '800' }],
+        'display-md-mobile': ['28px', { lineHeight: '32px', letterSpacing: '-0.6px', fontWeight: '800' }],
+        'headline-lg': ['36px', { lineHeight: '42px', letterSpacing: '-1.0px', fontWeight: '700' }],
+        'headline-lg-mobile': ['24px', { lineHeight: '28px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'headline-md': ['24px', { lineHeight: '30px', letterSpacing: '-0.4px', fontWeight: '700' }],
+        'title-lg': ['20px', { lineHeight: '26px', letterSpacing: '-0.2px', fontWeight: '700' }],
+        'title-md': ['16px', { lineHeight: '22px', letterSpacing: '0px', fontWeight: '700' }],
+        'body-lg': ['18px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-md': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-sm': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0.1px', fontWeight: '700' }],
+        'label-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.4px', fontWeight: '600' }],
+        'mono-md': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '500' }],
+      },
+      transitionDuration: {
+        'state-change': '150ms',
+        'card-lift': '240ms',
+        'surface-enter': '320ms',
+        'surface-exit': '180ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'card-lift': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'cubic-bezier(0.2, 0, 0, 1)',
+        'card-lift': 'cubic-bezier(0.22, 1, 0.36, 1)',
+        'surface-enter': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-exit': 'cubic-bezier(0.3, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@500&amp;family=DM+Sans:wght@400;600;700&amp;family=Hanken+Grotesk:wght@700;800&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    .material-symbols-outlined, .material-symbols-rounded, .material-symbols-sharp, .material-icons {
+      display: inline-block; width: 1em; height: 1em; line-height: 1 !important;
+      box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body antialiased">
+  <div class="min-h-[1024px] flex flex-col" data-stitch-vh="min-h-[1024px]===min-h-screen">
+
+    <!-- Sticky Agent Workspace Header -->
+    <header class="sticky top-0 z-40 bg-surface-card border-b border-outline">
+      <div class="max-w-7xl mx-auto px-gutter-md md:px-gutter-lg py-gutter-md flex items-center justify-between gap-gutter-md">
+        <div class="flex items-center gap-gutter-md">
+          <a href="../insuria-landing/InsuriaLanding.html" class="flex items-center gap-gutter-sm shrink-0">
+            <div class="grid grid-cols-3 gap-0.5 p-1 bg-surface rounded-sm border border-outline" aria-hidden="true">
+              <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+              <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+              <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+              <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+              <span class="w-2.5 h-2.5 bg-pure-white"></span>
+              <span class="w-2.5 h-2.5 bg-light-gray"></span>
+              <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+              <span class="w-2.5 h-2.5 bg-light-gray"></span>
+              <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+            </div>
+            <span class="font-headline text-headline-md text-on-surface-strong tracking-tight">Autonomy Insurance</span>
+          </a>
+          <span class="hidden sm:inline-flex px-3 py-1 rounded-full bg-surface-dark text-pure-white font-label text-label-sm">Agent Desk</span>
+        </div>
+
+        <nav class="hidden md:flex items-center gap-gutter-sm" aria-label="Agent navigation">
+          <a href="#" aria-current="page" class="px-4 py-2 rounded-full bg-primary text-on-primary font-label text-label-lg">Clients</a>
+          <a href="#estimates-queue" class="px-4 py-2 rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg">Estimates</a>
+          <a href="#chat-panel" class="px-4 py-2 rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg">Chats</a>
+        </nav>
+
+        <div class="flex items-center gap-gutter-sm">
+          <div class="hidden sm:block text-right">
+            <div class="font-title text-title-md text-on-surface-strong">Maya Santos</div>
+            <div class="font-label text-label-sm text-success">Online • West Branch</div>
+          </div>
+          <img src="https://lh3.googleusercontent.com/aida/ALJJyrCcIVIRZ7uESG4o0sYPrwZPpnYbVp9t8qEma-oKt9m0nDcfu5K0NhJmOABDoVtAhGy3giyTvNCblxNUDcyLXSpxBUBI4fwu1hzOim5tLVzb4fBJ7CF56g7k0IA-Wt1p2Kf60KTcHx0Sc3QvisaJgL7OGZHZK7M0ozed6OfjKb0FV_-ZaKvRcLgvZLr39EzyDORj2kbDE18G9zpz5mW0cmFd44rAQVrCXWhwSmmERkO6mawo" alt="Maya Santos" class="w-10 h-10 rounded-full object-cover border-2 border-secondary">
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto px-gutter-md md:px-gutter-lg py-gutter-xl flex flex-col gap-gutter-xl">
+
+      <!-- TOP STAT CARDS: Assigned clients, Open chats, Pending estimates -->
+      <section class="grid grid-cols-1 md:grid-cols-3 gap-gutter-lg items-stretch">
+        <article class="bg-surface-card rounded-xl border border-outline p-gutter-xl flex flex-col justify-between gap-gutter-sm">
+          <span class="font-label text-label-lg text-on-surface-muted">Assigned clients</span>
+          <div class="font-display text-display-lg-mobile md:text-display-lg text-on-surface-strong tabular-nums">24</div>
+          <span class="font-body text-body-sm text-on-surface-muted">Your active book of clients</span>
+        </article>
+
+        <article class="bg-surface-card rounded-xl border border-outline p-gutter-xl flex flex-col justify-between gap-gutter-sm">
+          <div class="flex items-center justify-between gap-2">
+            <span class="font-label text-label-lg text-on-surface-muted">Open chats</span>
+            <span class="px-2.5 py-0.5 rounded-full bg-primary text-on-primary font-label text-label-sm tabular-nums">3 unread</span>
+          </div>
+          <div class="font-display text-display-lg-mobile md:text-display-lg text-primary tabular-nums">5</div>
+          <span class="font-body text-body-sm text-on-surface-muted">1.4 min average response time</span>
+        </article>
+
+        <article class="bg-secondary-container border border-secondary rounded-xl p-gutter-xl flex flex-col justify-between gap-gutter-sm">
+          <div class="flex items-center justify-between gap-2">
+            <span class="font-label text-label-lg text-on-secondary-container">Pending estimates</span>
+            <span class="px-2.5 py-0.5 rounded-full bg-secondary text-on-secondary font-label text-label-sm tabular-nums">2 urgent</span>
+          </div>
+          <div class="font-display text-display-lg-mobile md:text-display-lg text-on-secondary-container tabular-nums">4</div>
+          <span class="font-body text-body-sm text-on-secondary-container">Waiting for advisor approval</span>
+        </article>
+      </section>
+
+      <!-- MAIN WORKSPACE: Client List + Estimates Queue (Left) & Quick-Open Chat Panel (Right) -->
+      <section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-xl items-start">
+
+        <!-- Left Column: Assigned Clients + Pending Estimates Queue -->
+        <div class="lg:col-span-7 flex flex-col gap-gutter-xl">
+
+          <!-- Client List with Search -->
+          <div class="bg-surface-card rounded-xl border border-outline p-gutter-lg md:p-gutter-xl flex flex-col gap-gutter-md">
+            <div class="flex flex-wrap items-center justify-between gap-gutter-md">
+              <h1 class="font-headline text-headline-md text-on-surface-strong">Assigned clients</h1>
+              <div class="relative w-full sm:w-64">
+                <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-muted text-[18px]" aria-hidden="true">search</span>
+                <input id="client-search" type="search" placeholder="Search clients..." oninput="filterClients(this.value)" class="w-full rounded-full bg-surface border border-outline pl-10 pr-4 py-2 font-body text-body-sm text-on-surface-strong placeholder:text-on-surface-muted focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+              </div>
+            </div>
+
+            <div id="client-list" class="flex flex-col gap-gutter-sm">
+              <!-- Client 1 -->
+              <button type="button" data-name="elena rostova" onclick="selectClient(&#39;Elena Rostova&#39;, &#39;#INS-4829 • ₱2M Term Life&#39;, &#39;../../images/customer_nadia.jpg&#39;, &#39;Can we add my daughter as a contingent beneficiary before I activate?&#39;)" class="client-row w-full text-left p-gutter-md rounded-lg bg-surface border-2 border-primary flex items-center justify-between gap-gutter-md transition-colors">
+                <div class="flex items-center gap-gutter-md min-w-0">
+                  <img src="https://lh3.googleusercontent.com/aida/ALJJyrBNPH83PI6mgA_4_A_-foW_tP8Shd3dieHS0JLDlRimR18VKECaUMk7PVaU-Z7GJyIrjWRY1ek31arcAB9Z4oGf8o9KVXhvSJP8-vp0nwDMolpyXdM5T1H2GlXbP0_JUT7YN_z_qsHVe8Mkg4yNbSnVHT-N7yqVcyYK_oqkOulYBJwEqIpv9e5WeFH_xR8yQIFjbyWcxEKlYTY0PRU5s34gtCc2pdVP5Kl7GuRmnaROurgT-AdBwwI" alt="Elena Rostova" class="w-11 h-11 rounded-full object-cover shrink-0">
+                  <div class="min-w-0">
+                    <div class="flex items-center gap-2">
+                      <span class="font-title text-title-md text-on-surface-strong truncate">Elena Rostova</span>
+                      <span class="font-mono text-mono-md text-on-surface-muted hidden sm:inline">#INS-4829</span>
+                    </div>
+                    <p class="font-body text-body-sm text-on-surface-muted truncate">Can we add my daughter as a contingent beneficiary?</p>
+                  </div>
+                </div>
+                <div class="flex flex-col items-end gap-1 shrink-0">
+                  <span class="font-mono text-mono-md text-on-surface-muted">10:15</span>
+                  <span class="inline-flex items-center justify-center min-w-[24px] h-6 px-2 rounded-full bg-primary text-on-primary font-label text-label-sm tabular-nums">2</span>
+                </div>
+              </button>
+
+              <!-- Client 2 -->
+              <button type="button" data-name="leo mendoza" onclick="selectClient(&#39;Leo Mendoza&#39;, &#39;#INS-5102 • ₱3M Term Life&#39;, &#39;../../images/customer_leo.jpg&#39;, &#39;Thanks Maya! Uploaded the signed beneficiary update form.&#39;)" class="client-row w-full text-left p-gutter-md rounded-lg bg-surface-card border border-outline hover:border-primary flex items-center justify-between gap-gutter-md transition-colors">
+                <div class="flex items-center gap-gutter-md min-w-0">
+                  <img src="https://lh3.googleusercontent.com/aida/ALJJyrAK5weizwxGLq5H5N4tS9wGHs_eYwSlaCt1WlyaOFg969fAzE4AO-KIoH38JbWAXDiAAUCwrFAQT5IqFFsO1Plz-DG9fDQPAmYiE4eeP6Ymk8PfW181DQ_BccPHasGo0WGxNIzH0HOCIq7VAh9_dzgJUcrUai_OyWANX6TxfQ0nx8z4bjg1-TafpxZxe_ey1Tf73llnt8vGQnpau2RFSgx6Dc4JP9C31aOxiVb4ZZIJoCbtmkw" alt="Leo Mendoza" class="w-11 h-11 rounded-full object-cover shrink-0">
+                  <div class="min-w-0">
+                    <div class="flex items-center gap-2">
+                      <span class="font-title text-title-md text-on-surface-strong truncate">Leo Mendoza</span>
+                      <span class="font-mono text-mono-md text-on-surface-muted hidden sm:inline">#INS-5102</span>
+                    </div>
+                    <p class="font-body text-body-sm text-on-surface-muted truncate">Thanks Maya! Uploaded the signed beneficiary form.</p>
+                  </div>
+                </div>
+                <div class="flex flex-col items-end gap-1 shrink-0">
+                  <span class="font-mono text-mono-md text-on-surface-muted">9:42</span>
+                  <span class="inline-flex items-center justify-center min-w-[24px] h-6 px-2 rounded-full bg-primary text-on-primary font-label text-label-sm tabular-nums">1</span>
+                </div>
+              </button>
+
+              <!-- Client 3 -->
+              <button type="button" data-name="jordan reyes" onclick="selectClient(&#39;Jordan Reyes&#39;, &#39;#INS-3984 • ₱2M Term Life&#39;, &#39;&#39;, &#39;Checking on my December billing schedule date.&#39;)" class="client-row w-full text-left p-gutter-md rounded-lg bg-surface-card border border-outline hover:border-primary flex items-center justify-between gap-gutter-md transition-colors">
+                <div class="flex items-center gap-gutter-md min-w-0">
+                  <div class="w-11 h-11 rounded-full bg-secondary text-on-secondary flex items-center justify-center font-headline text-title-md shrink-0">JR</div>
+                  <div class="min-w-0">
+                    <div class="flex items-center gap-2">
+                      <span class="font-title text-title-md text-on-surface-strong truncate">Jordan Reyes</span>
+                      <span class="font-mono text-mono-md text-on-surface-muted hidden sm:inline">#INS-3984</span>
+                    </div>
+                    <p class="font-body text-body-sm text-on-surface-muted truncate">Checking on my December billing schedule date.</p>
+                  </div>
+                </div>
+                <div class="flex flex-col items-end gap-1 shrink-0">
+                  <span class="font-mono text-mono-md text-on-surface-muted">Yesterday</span>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- "Pending estimates to review" Queue -->
+          <div id="estimates-queue" class="bg-surface-card rounded-xl border border-outline p-gutter-lg md:p-gutter-xl flex flex-col gap-gutter-md">
+            <div class="flex items-center justify-between">
+              <h2 class="font-headline text-headline-md text-on-surface-strong">Pending estimates to review</h2>
+              <span class="font-label text-label-sm text-on-surface-muted">2 shown</span>
+            </div>
+
+            <!-- Estimate Queue Item 1 -->
+            <article class="bg-surface rounded-lg border border-outline p-gutter-md flex flex-col sm:flex-row sm:items-center justify-between gap-gutter-md">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="font-title text-title-md text-on-surface-strong">Elena Rostova</span>
+                  <span class="px-2.5 py-0.5 rounded-full bg-secondary text-on-secondary font-label text-label-sm">Pending</span>
+                </div>
+                <div class="font-headline text-title-lg text-primary tabular-nums mt-1">₱3,000,000 • ₱2,640/mo</div>
+                <div class="font-body text-body-sm text-on-surface-muted">30-year Term Life • Requested Nov 21</div>
+              </div>
+              <div class="flex items-center gap-gutter-sm shrink-0">
+                <button type="button" onclick="reviewEstimate(this, &#39;Approved&#39;)" class="px-4 py-2 rounded-full bg-primary text-on-primary hover:bg-primary-hover font-label text-label-lg transition-colors">Approve</button>
+                <button type="button" onclick="reviewEstimate(this, &#39;Changes requested&#39;)" class="px-4 py-2 rounded-full bg-surface-card border border-outline hover:border-on-surface font-label text-label-lg text-on-surface-strong transition-colors">Request changes</button>
+              </div>
+            </article>
+
+            <!-- Estimate Queue Item 2 -->
+            <article class="bg-surface rounded-lg border border-outline p-gutter-md flex flex-col sm:flex-row sm:items-center justify-between gap-gutter-md">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="font-title text-title-md text-on-surface-strong">Leo Mendoza</span>
+                  <span class="px-2.5 py-0.5 rounded-full bg-secondary text-on-secondary font-label text-label-sm">Pending</span>
+                </div>
+                <div class="font-headline text-title-lg text-primary tabular-nums mt-1">₱5,000,000 • ₱4,120/mo</div>
+                <div class="font-body text-body-sm text-on-surface-muted">20-year Term Life • Requested Nov 22</div>
+              </div>
+              <div class="flex items-center gap-gutter-sm shrink-0">
+                <button type="button" onclick="reviewEstimate(this, &#39;Approved&#39;)" class="px-4 py-2 rounded-full bg-primary text-on-primary hover:bg-primary-hover font-label text-label-lg transition-colors">Approve</button>
+                <button type="button" onclick="reviewEstimate(this, &#39;Changes requested&#39;)" class="px-4 py-2 rounded-full bg-surface-card border border-outline hover:border-on-surface font-label text-label-lg text-on-surface-strong transition-colors">Request changes</button>
+              </div>
+            </article>
+          </div>
+
+        </div>
+
+        <!-- Right Column: Quick-Open Chat Panel with "Escalate to manager" -->
+        <aside id="chat-panel" class="lg:col-span-5 bg-surface-card rounded-xl border border-outline flex flex-col justify-between overflow-hidden lg:sticky lg:top-24">
+          <!-- Chat Header -->
+          <header class="p-gutter-md border-b border-outline flex flex-wrap items-center justify-between gap-gutter-sm bg-surface-card">
+            <div class="flex items-center gap-gutter-sm min-w-0">
+              <img id="panel-avatar" src="https://lh3.googleusercontent.com/aida/ALJJyrBNPH83PI6mgA_4_A_-foW_tP8Shd3dieHS0JLDlRimR18VKECaUMk7PVaU-Z7GJyIrjWRY1ek31arcAB9Z4oGf8o9KVXhvSJP8-vp0nwDMolpyXdM5T1H2GlXbP0_JUT7YN_z_qsHVe8Mkg4yNbSnVHT-N7yqVcyYK_oqkOulYBJwEqIpv9e5WeFH_xR8yQIFjbyWcxEKlYTY0PRU5s34gtCc2pdVP5Kl7GuRmnaROurgT-AdBwwI" alt="Elena Rostova" class="w-10 h-10 rounded-full object-cover shrink-0">
+              <div class="min-w-0">
+                <h2 id="panel-name" class="font-title text-title-md text-on-surface-strong truncate">Elena Rostova</h2>
+                <p id="panel-policy" class="font-body text-body-sm text-on-surface-muted truncate">#INS-4829 • ₱2M Term Life</p>
+              </div>
+            </div>
+
+            <!-- Escalate to manager button -->
+            <button type="button" onclick="escalateChat()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary text-on-secondary hover:opacity-90 font-label text-label-sm shrink-0 transition-opacity">
+              <span class="material-symbols-outlined text-[16px]" aria-hidden="true" data-original-icon="escalation">circle</span>
+              <span>Escalate to manager</span>
+            </button>
+          </header>
+
+          <!-- Escalation Banner (hidden until clicked) -->
+          <div id="escalate-banner" class="hidden bg-secondary-container border-b border-secondary px-gutter-md py-2 font-body text-body-sm text-on-secondary-container">
+            Escalated to Branch Manager. Only escalated thread messages are shared.
+          </div>
+
+          <!-- Chat Messages -->
+          <div id="agent-chat-thread" class="p-gutter-md bg-surface flex flex-col gap-gutter-md min-h-[320px]">
+            <div class="bg-surface-card border border-outline rounded-lg p-3 max-w-[85%]">
+              <p id="panel-last-msg" class="font-body text-body-sm text-on-surface-strong">Can we add my daughter as a contingent beneficiary before I activate?</p>
+              <span class="font-mono text-mono-md text-on-surface-muted block text-right mt-1">10:15 AM</span>
+            </div>
+
+            <div class="bg-primary text-on-primary rounded-lg p-3 max-w-[85%] self-end">
+              <p class="font-body text-body-sm text-on-primary">Absolutely, Elena! I&#39;ll add her to your beneficiary form right now.</p>
+              <span class="font-mono text-mono-md text-on-primary block text-right mt-1">10:16 AM</span>
+            </div>
+          </div>
+
+          <!-- Quick Composer -->
+          <form onsubmit="sendAgentReply(event)" class="p-gutter-md border-t border-outline bg-surface-card flex items-center gap-gutter-sm">
+            <input id="agent-reply-input" type="text" placeholder="Reply to Elena..." class="flex-1 rounded-full bg-surface border border-outline px-gutter-md py-2.5 font-body text-body-sm text-on-surface-strong placeholder:text-on-surface-muted focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+            <button type="submit" aria-label="Send reply" class="w-10 h-10 rounded-full bg-primary text-on-primary hover:bg-primary-hover flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-[18px]">arrow_upward</span>
+            </button>
+          </form>
+        </aside>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <script>
+    function filterClients(query) {
+      const q = query.toLowerCase().trim();
+      document.querySelectorAll('.client-row').forEach(row => {
+        const name = row.getAttribute('data-name') || '';
+        row.classList.toggle('hidden', q && !name.includes(q));
+      });
+    }
+
+    function selectClient(name, policy, avatar, msg) {
+      document.getElementById('panel-name').textContent = name;
+      document.getElementById('panel-policy').textContent = policy;
+      document.getElementById('panel-last-msg').textContent = msg;
+      document.getElementById('agent-reply-input').placeholder = 'Reply to ' + name.split(' ')[0] + '...';
+      if (avatar) {
+        document.getElementById('panel-avatar').src = avatar;
+        document.getElementById('panel-avatar').classList.remove('hidden');
+      }
+      document.getElementById('escalate-banner').classList.add('hidden');
+    }
+
+    function escalateChat() {
+      document.getElementById('escalate-banner').classList.remove('hidden');
+    }
+
+    function reviewEstimate(btn, status) {
+      const card = btn.closest('article');
+      const badge = card.querySelector('span.rounded-full');
+      if (badge) {
+        badge.textContent = status;
+        badge.className = status === 'Approved'
+          ? 'px-2.5 py-0.5 rounded-full bg-success text-on-success font-label text-label-sm'
+          : 'px-2.5 py-0.5 rounded-full bg-surface border border-outline text-on-surface-strong font-label text-label-sm';
+      }
+    }
+
+    function sendAgentReply(e) {
+      e.preventDefault();
+      const input = document.getElementById('agent-reply-input');
+      const val = input.value.trim();
+      if (!val) return;
+      const thread = document.getElementById('agent-chat-thread');
+      const bubble = document.createElement('div');
+      bubble.className = 'bg-primary text-on-primary rounded-lg p-3 max-w-[85%] self-end';
+      bubble.innerHTML = `<p class="font-body text-body-sm text-on-primary"></p><span class="font-mono text-mono-md text-on-primary block text-right mt-1">Just now</span>`;
+      bubble.querySelector('p').textContent = val;
+      thread.appendChild(bubble);
+      input.value = '';
+    }
+  </script>
+
+
+</body></html>

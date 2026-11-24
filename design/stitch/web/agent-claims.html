@@ -1,0 +1,505 @@
+<!-- Autonomy Insurance — web/agent-claims -->
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent Desk, Claims — Autonomy Insurance</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'mapua-red': '#D52B1E',
+        'deep-red': '#A81F16',
+        'mapua-gold': '#F2B705',
+        'charcoal': '#4B4B4D',
+        'mid-gray': '#8A8B8D',
+        'light-gray': '#D9D9DA',
+        'warm-white': '#FAF7F2',
+        'pure-white': '#FFFFFF',
+        'primary': '#D52B1E',
+        'on-primary': '#FFFFFF',
+        'primary-hover': '#A81F16',
+        'primary-container': '#FFEDEA',
+        'on-primary-container': '#410000',
+        'secondary': '#F2B705',
+        'on-secondary': '#251A00',
+        'secondary-container': '#FFEFD4',
+        'on-secondary-container': '#3F2E00',
+        'surface': '#FAF7F2',
+        'on-surface': '#4B4B4D',
+        'on-surface-strong': '#1B1B1D',
+        'on-surface-muted': '#5E5E60',
+        'surface-card': '#FFFFFF',
+        'surface-dark': '#4B4B4D',
+        'on-surface-dark': '#FAF7F2',
+        'outline': '#D9D9DA',
+        'success': '#15803D',
+        'on-success': '#FFFFFF',
+        'warning': '#B45309',
+        'on-warning': '#FFFFFF',
+        'error': '#BA1A1A',
+        'on-error': '#FFFFFF',
+      },
+      borderRadius: {
+        'sm': '8px',
+        'DEFAULT': '16px',
+        'md': '20px',
+        'lg': '24px',
+        'xl': '32px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '64px',
+        'section-lg': '96px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Hanken Grotesk"', 'sans-serif'],
+        'headline': ['"Hanken Grotesk"', 'sans-serif'],
+        'title': ['"DM Sans"', 'sans-serif'],
+        'body': ['"DM Sans"', 'sans-serif'],
+        'label': ['"DM Sans"', 'sans-serif'],
+        'mono': ['"DM Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-xl': ['84px', { lineHeight: '84px', letterSpacing: '-3.2px', fontWeight: '800' }],
+        'display-xl-mobile': ['32px', { lineHeight: '36px', letterSpacing: '-1.0px', fontWeight: '800' }],
+        'display-lg': ['64px', { lineHeight: '68px', letterSpacing: '-2.4px', fontWeight: '800' }],
+        'display-lg-mobile': ['30px', { lineHeight: '34px', letterSpacing: '-0.8px', fontWeight: '800' }],
+        'display-md': ['48px', { lineHeight: '52px', letterSpacing: '-1.6px', fontWeight: '800' }],
+        'display-md-mobile': ['28px', { lineHeight: '32px', letterSpacing: '-0.6px', fontWeight: '800' }],
+        'headline-lg': ['36px', { lineHeight: '42px', letterSpacing: '-1.0px', fontWeight: '700' }],
+        'headline-lg-mobile': ['24px', { lineHeight: '28px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'headline-md': ['24px', { lineHeight: '30px', letterSpacing: '-0.4px', fontWeight: '700' }],
+        'title-lg': ['20px', { lineHeight: '26px', letterSpacing: '-0.2px', fontWeight: '700' }],
+        'title-md': ['16px', { lineHeight: '22px', letterSpacing: '0px', fontWeight: '700' }],
+        'body-lg': ['18px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-md': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-sm': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0.1px', fontWeight: '700' }],
+        'label-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.4px', fontWeight: '600' }],
+        'mono-md': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '500' }],
+      },
+      transitionDuration: {
+        'state-change': '150ms',
+        'card-lift': '240ms',
+        'surface-enter': '320ms',
+        'surface-exit': '180ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'card-lift': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'cubic-bezier(0.2, 0, 0, 1)',
+        'card-lift': 'cubic-bezier(0.22, 1, 0.36, 1)',
+        'surface-enter': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-exit': 'cubic-bezier(0.3, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@500&amp;family=DM+Sans:wght@400;600;700&amp;family=Hanken+Grotesk:wght@700;800&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    .material-symbols-outlined, .material-symbols-rounded, .material-symbols-sharp, .material-icons {
+      display: inline-block; width: 1em; height: 1em; line-height: 1 !important;
+      box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body antialiased">
+  <div class="min-h-[1024px] flex flex-col" data-stitch-vh="min-h-[1024px]===min-h-screen">
+
+    <!-- Sticky Agent Workspace Header (Claims Active) -->
+    <header class="sticky top-0 z-40 bg-surface-card border-b border-outline">
+      <div class="max-w-7xl mx-auto px-gutter-md md:px-gutter-lg py-gutter-md flex items-center justify-between gap-gutter-md">
+        <div class="flex items-center gap-gutter-md">
+          <a href="../insuria-landing/InsuriaLanding.html" class="flex items-center gap-gutter-sm shrink-0">
+            <div class="grid grid-cols-3 gap-0.5 p-1 bg-surface rounded-sm border border-outline" aria-hidden="true">
+              <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+              <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+              <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+              <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+              <span class="w-2.5 h-2.5 bg-pure-white"></span>
+              <span class="w-2.5 h-2.5 bg-light-gray"></span>
+              <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+              <span class="w-2.5 h-2.5 bg-light-gray"></span>
+              <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+            </div>
+            <span class="font-headline text-headline-md text-on-surface-strong tracking-tight">Autonomy Insurance</span>
+          </a>
+          <span class="hidden sm:inline-flex px-3 py-1 rounded-full bg-surface-dark text-pure-white font-label text-label-sm">Agent Desk</span>
+        </div>
+
+        <nav class="hidden md:flex items-center gap-gutter-sm" aria-label="Agent navigation">
+          <a href="../agent-dashboard/AgentDashboard.html" class="px-4 py-2.5 min-h-[44px] inline-flex items-center rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg">Clients</a>
+          <a href="../agent-dashboard/AgentDashboard.html#estimates-queue" class="px-4 py-2.5 min-h-[44px] inline-flex items-center rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg">Estimates</a>
+          <a href="../agent-dashboard/AgentDashboard.html#chat-panel" class="px-4 py-2.5 min-h-[44px] inline-flex items-center rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg">Chats</a>
+          <a href="#" aria-current="page" class="px-4 py-2.5 min-h-[44px] inline-flex items-center rounded-full bg-primary text-on-primary font-label text-label-lg">Claims</a>
+        </nav>
+
+        <div class="flex items-center gap-gutter-sm">
+          <div class="hidden sm:block text-right">
+            <div class="font-title text-title-md text-on-surface-strong">Maya Santos</div>
+            <div class="font-label text-label-sm text-success">Online • West Branch</div>
+          </div>
+          <img src="https://lh3.googleusercontent.com/aida/ALJJyrCcIVIRZ7uESG4o0sYPrwZPpnYbVp9t8qEma-oKt9m0nDcfu5K0NhJmOABDoVtAhGy3giyTvNCblxNUDcyLXSpxBUBI4fwu1hzOim5tLVzb4fBJ7CF56g7k0IA-Wt1p2Kf60KTcHx0Sc3QvisaJgL7OGZHZK7M0ozed6OfjKb0FV_-ZaKvRcLgvZLr39EzyDORj2kbDE18G9zpz5mW0cmFd44rAQVrCXWhwSmmERkO6mawo" alt="Maya Santos" class="w-10 h-10 rounded-full object-cover border-2 border-secondary">
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto px-gutter-md md:px-gutter-lg py-gutter-xl flex flex-col gap-gutter-lg">
+
+      <!-- Page Header + Chat Collapse Toggle -->
+      <section class="flex flex-wrap items-center justify-between gap-gutter-md">
+        <div>
+          <h1 data-design-text-token="display-md" class="font-display text-display-md-mobile md:text-display-md text-on-surface-strong">Assigned claims</h1>
+          <p class="font-body text-body-md text-on-surface-muted">Review client claim submissions, verify documents, and record your decision.</p>
+        </div>
+
+        <button id="toggle-chat-btn" type="button" onclick="toggleChatPanel()" class="inline-flex items-center gap-gutter-sm px-gutter-lg py-2.5 min-h-[44px] rounded-full bg-surface-card border border-outline hover:border-primary font-label text-label-lg text-on-surface-strong transition-colors">
+          <span class="material-symbols-outlined text-[18px]" aria-hidden="true">chat_bubble</span>
+          <span id="toggle-chat-label">Collapse chat</span>
+        </button>
+      </section>
+
+      <!-- Action Feedback Toast -->
+      <div id="agent-claims-toast" role="status" aria-live="polite" class="hidden bg-secondary-container border border-secondary rounded-lg px-gutter-lg py-gutter-md flex items-center justify-between gap-gutter-md">
+        <div class="flex items-center gap-gutter-sm">
+          <span class="material-symbols-outlined text-[20px] text-on-secondary-container" aria-hidden="true">check_circle</span>
+          <span id="agent-claims-toast-msg" class="font-body text-body-md text-on-secondary-container"></span>
+        </div>
+        <button type="button" onclick="hideAgentToast()" aria-label="Dismiss message" class="min-w-[44px] min-h-[44px] rounded-full flex items-center justify-center text-on-secondary-container hover:bg-surface-card transition-colors">
+          <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+      </div>
+
+      <!-- THREE-PANE WORKSPACE -->
+      <section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-lg items-start">
+
+        <!-- LEFT LIST: Assigned Clients' Claims + Filter Row -->
+        <aside class="lg:col-span-3 bg-surface-card rounded-xl border border-outline p-gutter-md flex flex-col gap-gutter-md">
+          <div class="flex items-center justify-between px-1">
+            <h2 class="font-headline text-headline-md text-on-surface-strong">Claims queue</h2>
+            <span class="font-mono text-mono-md text-on-surface-muted tabular-nums">4</span>
+          </div>
+
+          <!-- Filter Row: All, Submitted, Under review, Needs info -->
+          <div class="flex flex-wrap gap-1.5" role="tablist" aria-label="Filter claims by status">
+            <button type="button" onclick="filterClaims(&#39;all&#39;, this)" class="claim-filter px-3 py-1.5 min-h-[36px] rounded-full bg-primary text-on-primary font-label text-label-sm">All</button>
+            <button type="button" onclick="filterClaims(&#39;Submitted&#39;, this)" class="claim-filter px-3 py-1.5 min-h-[36px] rounded-full bg-surface border border-outline text-on-surface-strong font-label text-label-sm">Submitted</button>
+            <button type="button" onclick="filterClaims(&#39;Under review&#39;, this)" class="claim-filter px-3 py-1.5 min-h-[36px] rounded-full bg-surface border border-outline text-on-surface-strong font-label text-label-sm">Under review</button>
+            <button type="button" onclick="filterClaims(&#39;Needs info&#39;, this)" class="claim-filter px-3 py-1.5 min-h-[36px] rounded-full bg-surface border border-outline text-on-surface-strong font-label text-label-sm">Needs info</button>
+          </div>
+
+          <!-- Claims List -->
+          <div class="flex flex-col gap-gutter-sm">
+            <!-- Claim 1 (Selected) -->
+            <button type="button" data-status="Under review" onclick="selectClaim(&#39;#CLM-1042&#39;, &#39;Elena Rostova&#39;, &#39;#INS-4829 — 20-Year Term Life ₱2M&#39;, &#39;Hospitalization Benefit&#39;, &#39;₱32,000&#39;, &#39;Nov 15, 2026&#39;, &#39;Under review&#39;, &#39;Emergency hospital admission on Nov 15 for cardiac evaluation and overnight observation. Submitted itemized hospital billing and attending physician discharge summary.&#39;, &#39;../../images/customer_nadia.jpg&#39;, this)" class="claim-row w-full text-left p-gutter-md rounded-lg bg-surface border-2 border-primary flex flex-col gap-1.5 transition-colors">
+              <div class="flex items-center justify-between gap-2">
+                <span class="font-mono text-mono-md text-on-surface-strong tabular-nums">#CLM-1042</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-secondary text-on-secondary font-label text-label-sm">Under review</span>
+              </div>
+              <div class="font-title text-title-md text-on-surface-strong">Elena Rostova</div>
+              <div class="flex items-center justify-between font-body text-body-sm text-on-surface-muted">
+                <span>Hospitalization</span>
+                <span class="font-mono text-mono-md text-on-surface-strong tabular-nums">₱32,000</span>
+              </div>
+            </button>
+
+            <!-- Claim 2 -->
+            <button type="button" data-status="Needs info" onclick="selectClaim(&#39;#CLM-1038&#39;, &#39;Leo Mendoza&#39;, &#39;#INS-5102 — 20-Year Term Life ₱3M&#39;, &#39;Critical Illness Benefit&#39;, &#39;₱18,500&#39;, &#39;Nov 10, 2026&#39;, &#39;Needs info&#39;, &#39;Outpatient diagnostic workup and specialist consultation. Waiting on clearer lab invoice copy from client.&#39;, &#39;../../images/customer_leo.jpg&#39;, this)" class="claim-row w-full text-left p-gutter-md rounded-lg bg-surface-card border border-outline hover:border-primary flex flex-col gap-1.5 transition-colors">
+              <div class="flex items-center justify-between gap-2">
+                <span class="font-mono text-mono-md text-on-surface-strong tabular-nums">#CLM-1038</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-warning text-on-warning font-label text-label-sm">Needs info</span>
+              </div>
+              <div class="font-title text-title-md text-on-surface-strong">Leo Mendoza</div>
+              <div class="flex items-center justify-between font-body text-body-sm text-on-surface-muted">
+                <span>Critical Illness</span>
+                <span class="font-mono text-mono-md text-on-surface-strong tabular-nums">₱18,500</span>
+              </div>
+            </button>
+
+            <!-- Claim 3 -->
+            <button type="button" data-status="Submitted" onclick="selectClaim(&#39;#CLM-1044&#39;, &#39;Jordan Reyes&#39;, &#39;#INS-3984 — 20-Year Term Life ₱2M&#39;, &#39;Outpatient Lab Benefit&#39;, &#39;₱6,400&#39;, &#39;Nov 21, 2026&#39;, &#39;Submitted&#39;, &#39;Routine blood panel and follow-up consultation at Makati Medical Center.&#39;, &#39;&#39;, this)" class="claim-row w-full text-left p-gutter-md rounded-lg bg-surface-card border border-outline hover:border-primary flex flex-col gap-1.5 transition-colors">
+              <div class="flex items-center justify-between gap-2">
+                <span class="font-mono text-mono-md text-on-surface-strong tabular-nums">#CLM-1044</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-surface border border-outline text-on-surface-strong font-label text-label-sm">Submitted</span>
+              </div>
+              <div class="font-title text-title-md text-on-surface-strong">Jordan Reyes</div>
+              <div class="flex items-center justify-between font-body text-body-sm text-on-surface-muted">
+                <span>Outpatient Lab</span>
+                <span class="font-mono text-mono-md text-on-surface-strong tabular-nums">₱6,400</span>
+              </div>
+            </button>
+
+            <!-- Claim 4 -->
+            <button type="button" data-status="Submitted" onclick="selectClaim(&#39;#CLM-1019&#39;, &#39;Elena Rostova&#39;, &#39;#INS-4829 — 20-Year Term Life ₱2M&#39;, &#39;Preventive Dental Care&#39;, &#39;₱8,500&#39;, &#39;Nov 12, 2026&#39;, &#39;Submitted&#39;, &#39;Annual dental cleaning and panoramic X-ray reimbursement.&#39;, &#39;../../images/customer_nadia.jpg&#39;, this)" class="claim-row w-full text-left p-gutter-md rounded-lg bg-surface-card border border-outline hover:border-primary flex flex-col gap-1.5 transition-colors">
+              <div class="flex items-center justify-between gap-2">
+                <span class="font-mono text-mono-md text-on-surface-strong tabular-nums">#CLM-1019</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-surface border border-outline text-on-surface-strong font-label text-label-sm">Submitted</span>
+              </div>
+              <div class="font-title text-title-md text-on-surface-strong">Elena Rostova</div>
+              <div class="flex items-center justify-between font-body text-body-sm text-on-surface-muted">
+                <span>Dental Care</span>
+                <span class="font-mono text-mono-md text-on-surface-strong tabular-nums">₱8,500</span>
+              </div>
+            </button>
+          </div>
+        </aside>
+
+        <!-- MAIN PANEL: Selected Claim Details, Documents, Decision Area -->
+        <section id="main-claim-panel" class="lg:col-span-5 flex flex-col gap-gutter-lg">
+
+          <!-- Claim Details Card -->
+          <article class="bg-surface-card rounded-xl border border-outline p-gutter-lg md:p-gutter-xl flex flex-col gap-gutter-md">
+            <div class="flex flex-wrap items-start justify-between gap-gutter-sm">
+              <div>
+                <div class="flex items-center gap-gutter-sm">
+                  <span id="det-id" class="font-mono text-mono-md text-on-surface-muted tabular-nums">#CLM-1042</span>
+                  <span id="det-status" class="px-2.5 py-0.5 rounded-full bg-secondary text-on-secondary font-label text-label-sm">Under review</span>
+                </div>
+                <h2 id="det-type" class="font-headline text-headline-md text-on-surface-strong mt-1">Hospitalization Benefit</h2>
+              </div>
+              <div id="det-amount" class="font-display text-headline-lg text-primary tabular-nums">₱32,000</div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-gutter-sm bg-surface rounded-lg p-gutter-md">
+              <div>
+                <div class="font-label text-label-sm text-on-surface-muted uppercase">Client</div>
+                <div id="det-client" class="font-title text-title-md text-on-surface-strong">Elena Rostova</div>
+              </div>
+              <div>
+                <div class="font-label text-label-sm text-on-surface-muted uppercase">Date of Event</div>
+                <div id="det-date" class="font-title text-title-md text-on-surface-strong tabular-nums">Nov 15, 2026</div>
+              </div>
+              <div class="sm:col-span-2">
+                <div class="font-label text-label-sm text-on-surface-muted uppercase">Policy</div>
+                <div id="det-policy" class="font-body text-body-sm text-on-surface-strong">#INS-4829 — 20-Year Term Life ₱2M</div>
+              </div>
+            </div>
+
+            <div>
+              <div class="font-label text-label-sm text-on-surface-muted uppercase mb-1">Description</div>
+              <p id="det-desc" class="font-body text-body-md text-on-surface text-pretty">
+                Emergency hospital admission on Nov 15 for cardiac evaluation and overnight observation. Submitted itemized hospital billing and attending physician discharge summary.
+              </p>
+            </div>
+          </article>
+
+          <!-- Documents Card -->
+          <article class="bg-surface-card rounded-xl border border-outline p-gutter-lg md:p-gutter-xl flex flex-col gap-gutter-md">
+            <div class="flex items-center justify-between">
+              <h3 class="font-headline text-headline-md text-on-surface-strong">Documents</h3>
+              <span class="font-body text-body-sm text-on-surface-muted">3 files</span>
+            </div>
+
+            <div class="flex flex-col gap-gutter-xs">
+              <div class="bg-surface rounded-lg border border-outline px-gutter-md py-2.5 flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2 min-w-0">
+                  <span class="material-symbols-outlined text-[18px] text-primary shrink-0" aria-hidden="true">description</span>
+                  <span class="font-body text-body-sm text-on-surface-strong truncate">hospital_discharge_summary.pdf</span>
+                </div>
+                <button type="button" onclick="showAgentToast(&#39;Opened hospital_discharge_summary.pdf&#39;)" class="px-3 py-1.5 min-h-[36px] rounded-full bg-surface-card border border-outline hover:border-primary font-label text-label-sm text-on-surface-strong shrink-0">View</button>
+              </div>
+
+              <div class="bg-surface rounded-lg border border-outline px-gutter-md py-2.5 flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2 min-w-0">
+                  <span class="material-symbols-outlined text-[18px] text-primary shrink-0" aria-hidden="true">image</span>
+                  <span class="font-body text-body-sm text-on-surface-strong truncate">itemized_billing_nov15.jpg</span>
+                </div>
+                <button type="button" onclick="showAgentToast(&#39;Opened itemized_billing_nov15.jpg&#39;)" class="px-3 py-1.5 min-h-[36px] rounded-full bg-surface-card border border-outline hover:border-primary font-label text-label-sm text-on-surface-strong shrink-0">View</button>
+              </div>
+
+              <div class="bg-surface rounded-lg border border-outline px-gutter-md py-2.5 flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2 min-w-0">
+                  <span class="material-symbols-outlined text-[18px] text-primary shrink-0" aria-hidden="true">description</span>
+                  <span class="font-body text-body-sm text-on-surface-strong truncate">doctor_attending_note.pdf</span>
+                </div>
+                <button type="button" onclick="showAgentToast(&#39;Opened doctor_attending_note.pdf&#39;)" class="px-3 py-1.5 min-h-[36px] rounded-full bg-surface-card border border-outline hover:border-primary font-label text-label-sm text-on-surface-strong shrink-0">View</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Decision Area: Required Note Field + Approve, Request more info, Reject -->
+          <article class="bg-surface-card rounded-xl border border-outline p-gutter-lg md:p-gutter-xl flex flex-col gap-gutter-md">
+            <h3 class="font-headline text-headline-md text-on-surface-strong">Decision</h3>
+
+            <label class="flex flex-col gap-gutter-xs">
+              <span class="font-label text-label-lg text-on-surface-strong">Decision note <span class="text-error">*</span></span>
+              <textarea id="decision-note" rows="3" required placeholder="Add a clear explanation for the client (required before submitting a decision)..." class="w-full rounded DEFAULT bg-surface border border-outline p-gutter-md font-body text-body-sm text-on-surface-strong placeholder:text-on-surface-muted focus:border-primary focus:ring-2 focus:ring-primary-container focus:outline-none"></textarea>
+              <span id="note-error" class="hidden font-body text-body-sm text-error">Please enter a decision note before proceeding.</span>
+            </label>
+
+            <div class="flex flex-wrap items-center gap-gutter-sm">
+              <button type="button" onclick="submitDecision(&#39;Approved&#39;)" class="flex-auto min-h-[44px] px-5 py-2.5 rounded-full bg-success text-on-success hover:opacity-90 font-label text-label-lg whitespace-nowrap transition-opacity">
+                Approve
+              </button>
+              <button type="button" onclick="submitDecision(&#39;Needs info&#39;)" class="flex-auto min-h-[44px] px-5 py-2.5 rounded-full bg-secondary text-on-secondary hover:opacity-90 font-label text-label-lg whitespace-nowrap transition-opacity">
+                Request more info
+              </button>
+              <button type="button" onclick="submitDecision(&#39;Rejected&#39;)" class="flex-auto min-h-[44px] px-5 py-2.5 rounded-full bg-error text-on-error hover:opacity-90 font-label text-label-lg whitespace-nowrap transition-opacity">
+                Reject
+              </button>
+            </div>
+          </article>
+
+        </section>
+
+        <!-- RIGHT SIDE: Collapsible Chat Panel with the Client -->
+        <aside id="agent-chat-aside" class="lg:col-span-4 bg-surface-card rounded-xl border border-outline flex flex-col justify-between overflow-hidden lg:sticky lg:top-24">
+          <header class="p-gutter-md border-b border-outline flex items-center justify-between gap-gutter-sm bg-surface-card">
+            <div class="flex items-center gap-gutter-sm min-w-0">
+              <img id="chat-client-avatar" src="https://lh3.googleusercontent.com/aida/ALJJyrBNPH83PI6mgA_4_A_-foW_tP8Shd3dieHS0JLDlRimR18VKECaUMk7PVaU-Z7GJyIrjWRY1ek31arcAB9Z4oGf8o9KVXhvSJP8-vp0nwDMolpyXdM5T1H2GlXbP0_JUT7YN_z_qsHVe8Mkg4yNbSnVHT-N7yqVcyYK_oqkOulYBJwEqIpv9e5WeFH_xR8yQIFjbyWcxEKlYTY0PRU5s34gtCc2pdVP5Kl7GuRmnaROurgT-AdBwwI" alt="Elena Rostova" class="w-10 h-10 rounded-full object-cover shrink-0">
+              <div class="min-w-0">
+                <h2 id="chat-client-name" class="font-title text-title-md text-on-surface-strong truncate">Elena Rostova</h2>
+                <p id="chat-client-policy" class="font-body text-body-sm text-on-surface-muted truncate">#CLM-1042 • Private chat</p>
+              </div>
+            </div>
+            <button type="button" onclick="toggleChatPanel()" aria-label="Collapse chat panel" class="w-10 h-10 rounded-full hover:bg-surface flex items-center justify-center text-on-surface-muted shrink-0">
+              <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+            </button>
+          </header>
+
+          <div id="agent-claims-thread" class="p-gutter-md bg-surface flex flex-col gap-gutter-md min-h-[300px]">
+            <div class="bg-surface-card border border-outline rounded-lg p-3 max-w-[85%]">
+              <p class="font-body text-body-sm text-on-surface-strong">Hi Maya, I just uploaded my attending physician&#39;s note for #CLM-1042.</p>
+              <span class="font-mono text-mono-md text-on-surface-muted block text-right mt-1">10:15 AM</span>
+            </div>
+
+            <div class="bg-primary text-on-primary rounded-lg p-3 max-w-[85%] self-end">
+              <p class="font-body text-body-sm text-on-primary">Thanks Elena! Got it—I&#39;m reviewing the itemized lines now.</p>
+              <span class="font-mono text-mono-md text-on-primary block text-right mt-1">10:20 AM</span>
+            </div>
+          </div>
+
+          <form onsubmit="sendClientChatMsg(event)" class="p-gutter-md border-t border-outline bg-surface-card flex items-center gap-gutter-sm">
+            <input id="agent-chat-input" type="text" placeholder="Message Elena..." class="flex-1 min-h-[44px] rounded-full bg-surface border border-outline px-gutter-md py-2.5 font-body text-body-sm text-on-surface-strong placeholder:text-on-surface-muted focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+            <button type="submit" aria-label="Send message" class="w-11 h-11 rounded-full bg-primary text-on-primary hover:bg-primary-hover flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-[18px]">arrow_upward</span>
+            </button>
+          </form>
+        </aside>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <script>
+    let chatCollapsed = false;
+
+    function filterClaims(status, btn) {
+      document.querySelectorAll('.claim-filter').forEach(b => {
+        b.className = 'claim-filter px-3 py-1.5 min-h-[36px] rounded-full bg-surface border border-outline text-on-surface-strong font-label text-label-sm';
+      });
+      btn.className = 'claim-filter px-3 py-1.5 min-h-[36px] rounded-full bg-primary text-on-primary font-label text-label-sm';
+
+      document.querySelectorAll('.claim-row').forEach(row => {
+        const s = row.getAttribute('data-status');
+        row.classList.toggle('hidden', status !== 'all' && s !== status);
+      });
+    }
+
+    function selectClaim(id, client, policy, type, amount, date, status, desc, avatar, btn) {
+      document.querySelectorAll('.claim-row').forEach(r => {
+        r.className = 'claim-row w-full text-left p-gutter-md rounded-lg bg-surface-card border border-outline hover:border-primary flex flex-col gap-1.5 transition-colors';
+      });
+      btn.className = 'claim-row w-full text-left p-gutter-md rounded-lg bg-surface border-2 border-primary flex flex-col gap-1.5 transition-colors';
+
+      document.getElementById('det-id').textContent = id;
+      document.getElementById('det-client').textContent = client;
+      document.getElementById('det-policy').textContent = policy;
+      document.getElementById('det-type').textContent = type;
+      document.getElementById('det-amount').textContent = amount;
+      document.getElementById('det-date').textContent = date;
+      document.getElementById('det-status').textContent = status;
+      document.getElementById('det-desc').textContent = desc;
+
+      document.getElementById('chat-client-name').textContent = client;
+      document.getElementById('chat-client-policy').textContent = id + ' • Private chat';
+      document.getElementById('agent-chat-input').placeholder = 'Message ' + client.split(' ')[0] + '...';
+      if (avatar) {
+        document.getElementById('chat-client-avatar').src = avatar;
+        document.getElementById('chat-client-avatar').classList.remove('hidden');
+      }
+    }
+
+    function submitDecision(outcome) {
+      const note = document.getElementById('decision-note');
+      const err = document.getElementById('note-error');
+      if (!note.value.trim()) {
+        err.classList.remove('hidden');
+        note.classList.add('border-error');
+        note.focus();
+        return;
+      }
+      err.classList.add('hidden');
+      note.classList.remove('border-error');
+      const id = document.getElementById('det-id').textContent;
+      document.getElementById('det-status').textContent = outcome;
+      showAgentToast('Claim ' + id + ' marked as "' + outcome + '" and shared with client in chat.');
+    }
+
+    function toggleChatPanel() {
+      chatCollapsed = !chatCollapsed;
+      const aside = document.getElementById('agent-chat-aside');
+      const mainPanel = document.getElementById('main-claim-panel');
+      const label = document.getElementById('toggle-chat-label');
+      if (chatCollapsed) {
+        aside.classList.add('hidden');
+        mainPanel.classList.remove('lg:col-span-5');
+        mainPanel.classList.add('lg:col-span-9');
+        label.textContent = 'Expand chat';
+      } else {
+        aside.classList.remove('hidden');
+        mainPanel.classList.remove('lg:col-span-9');
+        mainPanel.classList.add('lg:col-span-5');
+        label.textContent = 'Collapse chat';
+      }
+    }
+
+    function sendClientChatMsg(e) {
+      e.preventDefault();
+      const input = document.getElementById('agent-chat-input');
+      const val = input.value.trim();
+      if (!val) return;
+      const thread = document.getElementById('agent-claims-thread');
+      const bubble = document.createElement('div');
+      bubble.className = 'bg-primary text-on-primary rounded-lg p-3 max-w-[85%] self-end';
+      bubble.innerHTML = '<p class="font-body text-body-sm text-on-primary"></p><span class="font-mono text-mono-md text-on-primary block text-right mt-1">Just now</span>';
+      bubble.querySelector('p').textContent = val;
+      thread.appendChild(bubble);
+      input.value = '';
+    }
+
+    function showAgentToast(msg) {
+      const toast = document.getElementById('agent-claims-toast');
+      document.getElementById('agent-claims-toast-msg').textContent = msg;
+      toast.classList.remove('hidden');
+      toast.classList.add('flex');
+    }
+
+    function hideAgentToast() {
+      const toast = document.getElementById('agent-claims-toast');
+      toast.classList.add('hidden');
+      toast.classList.remove('flex');
+    }
+  </script>
+
+
+</body></html>

@@ -1,0 +1,246 @@
+<!-- Autonomy Insurance — Create Account (Mobile) -->
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account — Autonomy Insurance</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'mapua-red': '#D52B1E',
+        'deep-red': '#A81F16',
+        'mapua-gold': '#F2B705',
+        'charcoal': '#4B4B4D',
+        'mid-gray': '#8A8B8D',
+        'light-gray': '#D9D9DA',
+        'warm-white': '#FAF7F2',
+        'pure-white': '#FFFFFF',
+        'primary': '#D52B1E',
+        'on-primary': '#FFFFFF',
+        'primary-hover': '#A81F16',
+        'primary-container': '#FFEDEA',
+        'on-primary-container': '#410000',
+        'secondary': '#F2B705',
+        'on-secondary': '#251A00',
+        'secondary-container': '#FFEFD4',
+        'on-secondary-container': '#3F2E00',
+        'surface': '#FAF7F2',
+        'on-surface': '#4B4B4D',
+        'on-surface-strong': '#1B1B1D',
+        'on-surface-muted': '#5E5E60',
+        'surface-card': '#FFFFFF',
+        'surface-dark': '#4B4B4D',
+        'on-surface-dark': '#FAF7F2',
+        'outline': '#D9D9DA',
+        'success': '#15803D',
+        'on-success': '#FFFFFF',
+        'warning': '#B45309',
+        'on-warning': '#FFFFFF',
+        'error': '#BA1A1A',
+        'on-error': '#FFFFFF',
+      },
+      borderRadius: {
+        'sm': '8px',
+        'DEFAULT': '16px',
+        'md': '20px',
+        'lg': '24px',
+        'xl': '32px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '64px',
+        'section-lg': '96px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Hanken Grotesk"', 'sans-serif'],
+        'headline': ['"Hanken Grotesk"', 'sans-serif'],
+        'title': ['"DM Sans"', 'sans-serif'],
+        'body': ['"DM Sans"', 'sans-serif'],
+        'label': ['"DM Sans"', 'sans-serif'],
+        'mono': ['"DM Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-xl': ['84px', { lineHeight: '84px', letterSpacing: '-3.2px', fontWeight: '800' }],
+        'display-xl-mobile': ['32px', { lineHeight: '36px', letterSpacing: '-1.0px', fontWeight: '800' }],
+        'display-lg': ['64px', { lineHeight: '68px', letterSpacing: '-2.4px', fontWeight: '800' }],
+        'display-lg-mobile': ['30px', { lineHeight: '34px', letterSpacing: '-0.8px', fontWeight: '800' }],
+        'display-md': ['48px', { lineHeight: '52px', letterSpacing: '-1.6px', fontWeight: '800' }],
+        'display-md-mobile': ['28px', { lineHeight: '32px', letterSpacing: '-0.6px', fontWeight: '800' }],
+        'headline-lg': ['36px', { lineHeight: '42px', letterSpacing: '-1.0px', fontWeight: '700' }],
+        'headline-lg-mobile': ['24px', { lineHeight: '28px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'headline-md': ['24px', { lineHeight: '30px', letterSpacing: '-0.4px', fontWeight: '700' }],
+        'title-lg': ['20px', { lineHeight: '26px', letterSpacing: '-0.2px', fontWeight: '700' }],
+        'title-md': ['16px', { lineHeight: '22px', letterSpacing: '0px', fontWeight: '700' }],
+        'body-lg': ['18px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-md': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-sm': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0.1px', fontWeight: '700' }],
+        'label-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.4px', fontWeight: '600' }],
+        'mono-md': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '500' }],
+      },
+      transitionDuration: {
+        'state-change': '150ms',
+        'card-lift': '240ms',
+        'surface-enter': '320ms',
+        'surface-exit': '180ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'card-lift': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'cubic-bezier(0.2, 0, 0, 1)',
+        'card-lift': 'cubic-bezier(0.22, 1, 0.36, 1)',
+        'surface-enter': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-exit': 'cubic-bezier(0.3, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@500&amp;family=DM+Sans:wght@400;600;700&amp;family=Hanken+Grotesk:wght@700;800&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    .material-symbols-outlined, .material-symbols-rounded, .material-symbols-sharp, .material-icons {
+      display: inline-block; width: 1em; height: 1em; line-height: 1 !important;
+      box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body antialiased">
+  <div class="max-w-[390px] min-h-[844px] mx-auto bg-surface flex flex-col justify-between px-5 py-8">
+
+    <!-- Top Logo & Header -->
+    <div class="flex flex-col gap-5">
+      <div class="flex items-center gap-2.5">
+        <div class="grid grid-cols-3 gap-0.5 p-1 bg-surface-card rounded-sm border border-outline" aria-hidden="true">
+          <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+          <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+          <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+          <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+          <span class="w-2.5 h-2.5 bg-pure-white"></span>
+          <span class="w-2.5 h-2.5 bg-light-gray"></span>
+          <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+          <span class="w-2.5 h-2.5 bg-light-gray"></span>
+          <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+        </div>
+        <span class="font-headline text-headline-md text-on-surface-strong tracking-tight">Autonomy Insurance</span>
+      </div>
+
+      <div>
+        <h1 class="font-display text-display-md-mobile text-on-surface-strong">Create account</h1>
+        <p class="font-body text-body-md text-on-surface-muted mt-1">Get matched with a dedicated advisor and manage your coverage in one place.</p>
+      </div>
+
+      <!-- Feedback Banner -->
+      <div id="register-feedback" role="status" aria-live="polite" class="hidden px-4 py-3 rounded-xl bg-success text-on-success font-body text-body-sm"></div>
+
+      <!-- Create Account Card -->
+      <form onsubmit="handleRegister(event)" class="bg-surface-card rounded-2xl border border-outline p-5 flex flex-col gap-4 shadow-sm">
+        <label class="flex flex-col gap-1.5">
+          <span class="font-label text-label-lg text-on-surface-strong">Full name</span>
+          <input type="text" required placeholder="Elena Rostova" class="min-h-[44px] rounded-full bg-surface border border-outline px-4 py-2.5 font-body text-body-md text-on-surface-strong placeholder:text-on-surface-muted focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+        </label>
+
+        <label class="flex flex-col gap-1.5">
+          <span class="font-label text-label-lg text-on-surface-strong">Email</span>
+          <input type="email" required placeholder="elena.rostova@email.com" class="min-h-[44px] rounded-full bg-surface border border-outline px-4 py-2.5 font-body text-body-md text-on-surface-strong placeholder:text-on-surface-muted focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+        </label>
+
+        <div class="flex flex-col gap-1.5">
+          <label for="reg-password" class="font-label text-label-lg text-on-surface-strong">Password</label>
+          <div class="relative flex items-center">
+            <input id="reg-password" type="password" required minlength="8" oninput="updateStrength(this.value)" placeholder="At least 8 characters" class="w-full min-h-[44px] rounded-full bg-surface border border-outline pl-4 pr-12 py-2.5 font-body text-body-md text-on-surface-strong placeholder:text-on-surface-muted focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+            <button type="button" onclick="toggleRegPassword()" aria-label="Show password" class="absolute right-1 w-11 h-11 rounded-full flex items-center justify-center text-on-surface-muted hover:text-on-surface-strong">
+              <span id="reg-eye" class="material-symbols-outlined text-[20px]" aria-hidden="true">visibility</span>
+            </button>
+          </div>
+          <!-- Strength Hint -->
+          <div class="flex items-center gap-1.5 pt-1" aria-hidden="true">
+            <span id="bar-1" class="h-1.5 flex-1 rounded-full bg-outline/50"></span>
+            <span id="bar-2" class="h-1.5 flex-1 rounded-full bg-outline/50"></span>
+            <span id="bar-3" class="h-1.5 flex-1 rounded-full bg-outline/50"></span>
+          </div>
+          <span id="strength-hint" class="font-body text-body-sm text-on-surface-muted">Use 8+ characters with a number and a symbol.</span>
+        </div>
+
+        <label class="flex items-start gap-3 min-h-[44px] py-1 cursor-pointer">
+          <input type="checkbox" required class="mt-0.5 w-5 h-5 rounded border-outline text-primary focus:ring-primary shrink-0">
+          <span class="font-body text-body-sm text-on-surface">
+            I agree to the <span class="font-title text-on-surface-strong underline">Terms of Service</span> and <span class="font-title text-on-surface-strong underline">Privacy Policy</span>.
+          </span>
+        </label>
+
+        <button type="submit" class="w-full min-h-[48px] px-6 py-3 rounded-full bg-primary text-on-primary hover:bg-primary-hover font-label text-label-lg whitespace-nowrap transition-colors">
+          Create account
+        </button>
+      </form>
+
+      <!-- Link to Sign In -->
+      <div class="text-center font-body text-body-md text-on-surface">
+        Already have an account?
+        <a href="../client-login-mobile/ClientLoginMobile.html" class="font-title text-primary hover:underline ml-1">Sign in</a>
+      </div>
+    </div>
+
+    <!-- Footer Note -->
+    <footer class="pt-5 border-t border-outline flex items-center justify-center gap-2 text-on-surface-muted">
+      <span class="material-symbols-outlined text-[18px]" aria-hidden="true">devices</span>
+      <span class="font-body text-body-sm">One account works on web and mobile.</span>
+    </footer>
+
+  </div>
+
+  <script>
+    function toggleRegPassword() {
+      const input = document.getElementById('reg-password');
+      const eye = document.getElementById('reg-eye');
+      const show = input.type === 'password';
+      input.type = show ? 'text' : 'password';
+      eye.textContent = show ? 'visibility_off' : 'visibility';
+    }
+
+    function updateStrength(val) {
+      let score = 0;
+      if (val.length >= 8) score++;
+      if (/[0-9]/.test(val)) score++;
+      if (/[^A-Za-z0-9]/.test(val)) score++;
+
+      const b1 = document.getElementById('bar-1');
+      const b2 = document.getElementById('bar-2');
+      const b3 = document.getElementById('bar-3');
+      const hint = document.getElementById('strength-hint');
+
+      b1.className = `h-1.5 flex-1 rounded-full ${score >= 1 ? (score === 1 ? 'bg-error' : score === 2 ? 'bg-secondary' : 'bg-success') : 'bg-outline/50'}`;
+      b2.className = `h-1.5 flex-1 rounded-full ${score >= 2 ? (score === 2 ? 'bg-secondary' : 'bg-success') : 'bg-outline/50'}`;
+      b3.className = `h-1.5 flex-1 rounded-full ${score >= 3 ? 'bg-success' : 'bg-outline/50'}`;
+
+      if (!val) hint.textContent = 'Use 8+ characters with a number and a symbol.';
+      else if (score <= 1) hint.textContent = 'Weak — add numbers and a symbol.';
+      else if (score === 2) hint.textContent = 'Fair — add a symbol for stronger security.';
+      else hint.textContent = 'Strong password.';
+    }
+
+    function handleRegister(e) {
+      e.preventDefault();
+      const box = document.getElementById('register-feedback');
+      box.textContent = 'Account created! Taking you to your home screen...';
+      box.classList.remove('hidden');
+    }
+  </script>
+
+
+</body></html>

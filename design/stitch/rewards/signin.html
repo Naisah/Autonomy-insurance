@@ -1,0 +1,289 @@
+<!-- Autonomy Insurance — rewards/signin -->
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Autonomy Insurance Rewards — Sign In</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'mapua-red': '#D52B1E',
+        'deep-red': '#A81F16',
+        'mapua-gold': '#F2B705',
+        'charcoal': '#4B4B4D',
+        'mid-gray': '#8A8B8D',
+        'light-gray': '#D9D9DA',
+        'warm-white': '#FAF7F2',
+        'pure-white': '#FFFFFF',
+        'primary': '#D52B1E',
+        'on-primary': '#FFFFFF',
+        'primary-hover': '#A81F16',
+        'primary-container': '#FFEDEA',
+        'on-primary-container': '#410000',
+        'secondary': '#F2B705',
+        'on-secondary': '#251A00',
+        'secondary-container': '#FFEFD4',
+        'on-secondary-container': '#3F2E00',
+        'surface': '#FAF7F2',
+        'on-surface': '#4B4B4D',
+        'on-surface-strong': '#1B1B1D',
+        'on-surface-muted': '#5E5E60',
+        'surface-card': '#FFFFFF',
+        'surface-dark': '#4B4B4D',
+        'on-surface-dark': '#FAF7F2',
+        'outline': '#D9D9DA',
+        'success': '#15803D',
+        'on-success': '#FFFFFF',
+        'warning': '#B45309',
+        'on-warning': '#FFFFFF',
+        'error': '#BA1A1A',
+        'on-error': '#FFFFFF',
+      },
+      borderRadius: {
+        'sm': '8px',
+        'DEFAULT': '16px',
+        'md': '20px',
+        'lg': '24px',
+        'xl': '32px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '64px',
+        'section-lg': '96px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Hanken Grotesk"', 'sans-serif'],
+        'headline': ['"Hanken Grotesk"', 'sans-serif'],
+        'title': ['"DM Sans"', 'sans-serif'],
+        'body': ['"DM Sans"', 'sans-serif'],
+        'label': ['"DM Sans"', 'sans-serif'],
+        'mono': ['"DM Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-xl': ['84px', { lineHeight: '84px', letterSpacing: '-3.2px', fontWeight: '800' }],
+        'display-xl-mobile': ['32px', { lineHeight: '36px', letterSpacing: '-1.0px', fontWeight: '800' }],
+        'display-lg': ['64px', { lineHeight: '68px', letterSpacing: '-2.4px', fontWeight: '800' }],
+        'display-lg-mobile': ['30px', { lineHeight: '34px', letterSpacing: '-0.8px', fontWeight: '800' }],
+        'display-md': ['48px', { lineHeight: '52px', letterSpacing: '-1.6px', fontWeight: '800' }],
+        'display-md-mobile': ['28px', { lineHeight: '32px', letterSpacing: '-0.6px', fontWeight: '800' }],
+        'headline-lg': ['36px', { lineHeight: '42px', letterSpacing: '-1.0px', fontWeight: '700' }],
+        'headline-lg-mobile': ['24px', { lineHeight: '28px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'headline-md': ['24px', { lineHeight: '30px', letterSpacing: '-0.4px', fontWeight: '700' }],
+        'title-lg': ['20px', { lineHeight: '26px', letterSpacing: '-0.2px', fontWeight: '700' }],
+        'title-md': ['16px', { lineHeight: '22px', letterSpacing: '0px', fontWeight: '700' }],
+        'body-lg': ['18px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-md': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-sm': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0.1px', fontWeight: '700' }],
+        'label-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.4px', fontWeight: '600' }],
+        'mono-md': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '500' }],
+      },
+      transitionDuration: {
+        'state-change': '150ms',
+        'card-lift': '240ms',
+        'surface-enter': '320ms',
+        'surface-exit': '180ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'card-lift': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'cubic-bezier(0.2, 0, 0, 1)',
+        'card-lift': 'cubic-bezier(0.22, 1, 0.36, 1)',
+        'surface-enter': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-exit': 'cubic-bezier(0.3, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@500&amp;family=DM+Sans:wght@400;600;700&amp;family=Hanken+Grotesk:wght@700;800&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    .material-symbols-outlined, .material-symbols-rounded, .material-symbols-sharp, .material-icons {
+      display: inline-block; width: 1em; height: 1em; line-height: 1 !important;
+      box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body antialiased">
+  <div class="min-h-[884px] flex flex-col max-w-md mx-auto bg-surface" data-stitch-vh="min-h-[884px]===min-h-screen">
+
+    <!-- Playful Gold-Forward Pixel-Mosaic Hero Banner -->
+    <header class="relative bg-secondary-container border-b border-secondary px-gutter-md pt-gutter-lg pb-gutter-lg overflow-hidden">
+      <!-- Pixel-Mosaic Top Strip -->
+      <div class="grid grid-cols-12 gap-1 mb-gutter-md" aria-hidden="true">
+        <span class="h-3 bg-secondary rounded-sm"></span>
+        <span class="h-3 bg-secondary rounded-sm"></span>
+        <span class="h-3 bg-primary rounded-sm"></span>
+        <span class="h-3 bg-pure-white rounded-sm"></span>
+        <span class="h-3 bg-secondary rounded-sm"></span>
+        <span class="h-3 bg-secondary rounded-sm"></span>
+        <span class="h-3 bg-pure-white rounded-sm"></span>
+        <span class="h-3 bg-primary rounded-sm"></span>
+        <span class="h-3 bg-secondary rounded-sm"></span>
+        <span class="h-3 bg-pure-white rounded-sm"></span>
+        <span class="h-3 bg-secondary rounded-sm"></span>
+        <span class="h-3 bg-light-gray rounded-sm"></span>
+        <span class="h-3 bg-pure-white rounded-sm"></span>
+        <span class="h-3 bg-secondary rounded-sm"></span>
+        <span class="h-3 bg-secondary rounded-sm"></span>
+        <span class="h-3 bg-light-gray rounded-sm"></span>
+        <span class="h-3 bg-primary rounded-sm"></span>
+        <span class="h-3 bg-pure-white rounded-sm"></span>
+        <span class="h-3 bg-secondary rounded-sm"></span>
+        <span class="h-3 bg-secondary rounded-sm"></span>
+        <span class="h-3 bg-light-gray rounded-sm"></span>
+        <span class="h-3 bg-secondary rounded-sm"></span>
+        <span class="h-3 bg-primary rounded-sm"></span>
+        <span class="h-3 bg-pure-white rounded-sm"></span>
+      </div>
+
+      <div class="flex items-center justify-between gap-gutter-sm">
+        <div class="flex items-center gap-gutter-sm">
+          <div class="grid grid-cols-3 gap-0.5 p-1.5 bg-surface-card rounded-sm border border-secondary" aria-hidden="true">
+            <span class="w-2 h-2 bg-secondary"></span>
+            <span class="w-2 h-2 bg-secondary"></span>
+            <span class="w-2 h-2 bg-primary"></span>
+            <span class="w-2 h-2 bg-secondary"></span>
+            <span class="w-2 h-2 bg-pure-white"></span>
+            <span class="w-2 h-2 bg-secondary"></span>
+            <span class="w-2 h-2 bg-primary"></span>
+            <span class="w-2 h-2 bg-secondary"></span>
+            <span class="w-2 h-2 bg-secondary"></span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="font-headline text-title-lg text-on-surface-strong">Autonomy Insurance</span>
+            <span class="px-2.5 py-0.5 rounded-full bg-secondary text-on-secondary font-label text-label-sm">Rewards</span>
+          </div>
+        </div>
+        <img src="https://lh3.googleusercontent.com/aida/ALJJyrCUMRAMqhm4riV-toHSZRAL_SBKh8g57i05xrxrIp1yc7oW3DMBaMLgrEx_4cGDtLyVoCe6coFCJ2ATQmB_E8OX4hUF3Ci-Fy75kNbUXoa6jVxSS3QAAVTzkKYUTuDVjxcYIsU-aoNYO81ZzzmKLhmWTn1vDHcuJiSjapnKqTuT419dklHfXjFID6jXGU3ActAbFCNUVx1MrkVOMY5VKw8U3BQaTe_vYvDO5dD9E0e6Qns9cPeSq84dHQ" alt="Walking sneaker sticker" class="w-12 h-12 rounded-full object-cover border-2 border-pure-white">
+      </div>
+    </header>
+
+    <!-- Main Auth Content -->
+    <main class="flex-1 px-gutter-md py-gutter-lg flex flex-col gap-gutter-lg justify-between">
+      <div class="flex flex-col gap-gutter-md">
+        <div class="flex flex-col gap-1">
+          <h1 class="font-display text-display-lg-mobile text-on-surface-strong text-balance">Walk daily. Unlock policy perks.</h1>
+          <p class="font-body text-body-md text-on-surface text-pretty">Turn your daily steps into monthly premium credits and extended coverage periods.</p>
+        </div>
+
+        <!-- Detected Main App Session Card -->
+        <section class="bg-surface-card rounded-xl border border-secondary p-gutter-lg flex flex-col gap-gutter-md">
+          <div class="flex items-center justify-between gap-gutter-sm">
+            <span class="px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label text-label-sm">Active on this device</span>
+            <span class="font-mono text-mono-md text-on-surface-muted tabular-nums">#INS-4829</span>
+          </div>
+
+          <div class="flex items-center gap-gutter-sm">
+            <img src="https://lh3.googleusercontent.com/aida/ALJJyrBNPH83PI6mgA_4_A_-foW_tP8Shd3dieHS0JLDlRimR18VKECaUMk7PVaU-Z7GJyIrjWRY1ek31arcAB9Z4oGf8o9KVXhvSJP8-vp0nwDMolpyXdM5T1H2GlXbP0_JUT7YN_z_qsHVe8Mkg4yNbSnVHT-N7yqVcyYK_oqkOulYBJwEqIpv9e5WeFH_xR8yQIFjbyWcxEKlYTY0PRU5s34gtCc2pdVP5Kl7GuRmnaROurgT-AdBwwI" alt="Elena Rostova" class="w-12 h-12 rounded-full object-cover border-2 border-secondary shrink-0">
+            <div class="min-w-0">
+              <div class="font-title text-title-md text-on-surface-strong">Elena Rostova</div>
+              <div class="font-body text-body-sm text-on-surface-muted">Client • Signed in on Autonomy Insurance</div>
+            </div>
+          </div>
+
+          <a href="../rewards-home/RewardsHome.html" data-component-id="button-secondary" data-component-type="button" data-component-variant="secondary" class="w-full inline-flex items-center justify-center gap-gutter-sm px-gutter-lg py-3.5 rounded-full bg-secondary text-on-secondary hover:opacity-90 active:scale-[0.98] transition-opacity duration-state-change ease-state-change focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2">
+            <span class="material-symbols-outlined text-title-lg" aria-hidden="true">bolt</span>
+            <span data-design-text-token="label-lg" class="font-label text-label-lg">Sign in as Elena Rostova</span>
+          </a>
+
+          <!-- Security Token Note -->
+          <div class="flex items-start gap-2 bg-surface rounded-lg p-3 border border-outline">
+            <span class="material-symbols-outlined text-on-surface-strong text-title-md shrink-0 mt-0.5" aria-hidden="true">verified_user</span>
+            <p class="font-body text-body-sm text-on-surface">
+              Rewards only receives a secure session token from your Autonomy Insurance app—never your password.
+            </p>
+          </div>
+        </section>
+
+        <!-- Divider -->
+        <div class="flex items-center gap-gutter-sm">
+          <div class="flex-1 h-px bg-outline"></div>
+          <span class="font-label text-label-sm text-on-surface-muted">or</span>
+          <div class="flex-1 h-px bg-outline"></div>
+        </div>
+
+        <!-- Secondary: Use a different account -->
+        <section class="flex flex-col gap-gutter-sm">
+          <button id="toggle-alt-btn" type="button" onclick="toggleAltForm()" class="w-full inline-flex items-center justify-center gap-gutter-sm px-gutter-lg py-3 rounded-full bg-surface-card text-on-surface-strong border border-outline hover:border-on-surface transition-colors duration-state-change ease-state-change focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+            <span class="material-symbols-outlined text-title-md" aria-hidden="true">switch_account</span>
+            <span class="font-label text-label-lg">Use a different account</span>
+          </button>
+
+          <form id="alt-account-form" class="hidden bg-surface-card rounded-xl border border-outline p-gutter-lg flex flex-col gap-gutter-md" onsubmit="handleAltSignIn(event)">
+            <label class="flex flex-col gap-gutter-xs w-full">
+              <span class="font-label text-label-lg text-on-surface-strong">Email</span>
+              <input id="alt-email" type="email" required placeholder="elena@insuria.co" class="w-full rounded-full bg-surface border border-outline px-gutter-md py-3 font-body text-body-md text-on-surface-strong placeholder:text-on-surface-muted focus:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+            </label>
+
+            <label class="flex flex-col gap-gutter-xs w-full">
+              <span class="font-label text-label-lg text-on-surface-strong">Password</span>
+              <div class="relative flex items-center">
+                <input id="alt-password" type="password" required placeholder="Enter your password" class="w-full rounded-full bg-surface border border-outline px-gutter-md pr-12 py-3 font-body text-body-md text-on-surface-strong placeholder:text-on-surface-muted focus:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+                <button type="button" aria-label="Show password" onclick="togglePw()" class="absolute right-3 p-1.5 text-on-surface-muted hover:text-on-surface-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-full">
+                  <span id="pw-icon" class="material-symbols-outlined text-title-md">visibility</span>
+                </button>
+              </div>
+            </label>
+
+            <button type="submit" class="w-full inline-flex items-center justify-center gap-gutter-sm px-gutter-lg py-3 rounded-full bg-primary text-on-primary hover:bg-primary-hover transition-colors duration-state-change ease-state-change focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+              <span class="font-label text-label-lg">Sign in to Rewards</span>
+            </button>
+          </form>
+        </section>
+      </div>
+
+      <!-- Footer Role Check Link -->
+      <footer class="pt-gutter-sm flex items-center justify-between border-t border-outline">
+        <span class="font-body text-body-sm text-on-surface-muted">Client policyholders only</span>
+        <a href="../rewards-client-only/RewardsClientOnly.html" class="font-label text-label-sm text-primary hover:underline">Preview non-client gate</a>
+      </footer>
+    </main>
+
+  </div>
+
+  <script>
+    function toggleAltForm() {
+      var form = document.getElementById('alt-account-form');
+      form.classList.toggle('hidden');
+    }
+    function togglePw() {
+      var input = document.getElementById('alt-password');
+      var icon = document.getElementById('pw-icon');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.textContent = 'visibility_off';
+      } else {
+        input.type = 'password';
+        icon.textContent = 'visibility';
+      }
+    }
+    function handleAltSignIn(e) {
+      e.preventDefault();
+      var email = document.getElementById('alt-email').value.toLowerCase();
+      if (email.includes('agent') || email.includes('maya') || email.includes('admin') || email.includes('manager')) {
+        window.location.href = '../rewards-client-only/RewardsClientOnly.html';
+      } else {
+        window.location.href = '../rewards-home/RewardsHome.html';
+      }
+    }
+  </script>
+
+
+</body></html>

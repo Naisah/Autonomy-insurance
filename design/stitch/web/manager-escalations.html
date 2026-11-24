@@ -1,0 +1,540 @@
+<!-- Autonomy Insurance — web/manager-escalations -->
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manager Dashboard, Escalations — Autonomy Insurance</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'mapua-red': '#D52B1E',
+        'deep-red': '#A81F16',
+        'mapua-gold': '#F2B705',
+        'charcoal': '#4B4B4D',
+        'mid-gray': '#8A8B8D',
+        'light-gray': '#D9D9DA',
+        'warm-white': '#FAF7F2',
+        'pure-white': '#FFFFFF',
+        'primary': '#D52B1E',
+        'on-primary': '#FFFFFF',
+        'primary-hover': '#A81F16',
+        'primary-container': '#FFEDEA',
+        'on-primary-container': '#410000',
+        'secondary': '#F2B705',
+        'on-secondary': '#251A00',
+        'secondary-container': '#FFEFD4',
+        'on-secondary-container': '#3F2E00',
+        'surface': '#FAF7F2',
+        'on-surface': '#4B4B4D',
+        'on-surface-strong': '#1B1B1D',
+        'on-surface-muted': '#5E5E60',
+        'surface-card': '#FFFFFF',
+        'surface-dark': '#4B4B4D',
+        'on-surface-dark': '#FAF7F2',
+        'outline': '#D9D9DA',
+        'success': '#15803D',
+        'on-success': '#FFFFFF',
+        'warning': '#B45309',
+        'on-warning': '#FFFFFF',
+        'error': '#BA1A1A',
+        'on-error': '#FFFFFF',
+      },
+      borderRadius: {
+        'sm': '8px',
+        'DEFAULT': '16px',
+        'md': '20px',
+        'lg': '24px',
+        'xl': '32px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '64px',
+        'section-lg': '96px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Hanken Grotesk"', 'sans-serif'],
+        'headline': ['"Hanken Grotesk"', 'sans-serif'],
+        'title': ['"DM Sans"', 'sans-serif'],
+        'body': ['"DM Sans"', 'sans-serif'],
+        'label': ['"DM Sans"', 'sans-serif'],
+        'mono': ['"DM Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-xl': ['84px', { lineHeight: '84px', letterSpacing: '-3.2px', fontWeight: '800' }],
+        'display-xl-mobile': ['32px', { lineHeight: '36px', letterSpacing: '-1.0px', fontWeight: '800' }],
+        'display-lg': ['64px', { lineHeight: '68px', letterSpacing: '-2.4px', fontWeight: '800' }],
+        'display-lg-mobile': ['30px', { lineHeight: '34px', letterSpacing: '-0.8px', fontWeight: '800' }],
+        'display-md': ['48px', { lineHeight: '52px', letterSpacing: '-1.6px', fontWeight: '800' }],
+        'display-md-mobile': ['28px', { lineHeight: '32px', letterSpacing: '-0.6px', fontWeight: '800' }],
+        'headline-lg': ['36px', { lineHeight: '42px', letterSpacing: '-1.0px', fontWeight: '700' }],
+        'headline-lg-mobile': ['24px', { lineHeight: '28px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'headline-md': ['24px', { lineHeight: '30px', letterSpacing: '-0.4px', fontWeight: '700' }],
+        'title-lg': ['20px', { lineHeight: '26px', letterSpacing: '-0.2px', fontWeight: '700' }],
+        'title-md': ['16px', { lineHeight: '22px', letterSpacing: '0px', fontWeight: '700' }],
+        'body-lg': ['18px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-md': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-sm': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0.1px', fontWeight: '700' }],
+        'label-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.4px', fontWeight: '600' }],
+        'mono-md': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '500' }],
+      },
+      transitionDuration: {
+        'state-change': '150ms',
+        'card-lift': '240ms',
+        'surface-enter': '320ms',
+        'surface-exit': '180ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'card-lift': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'cubic-bezier(0.2, 0, 0, 1)',
+        'card-lift': 'cubic-bezier(0.22, 1, 0.36, 1)',
+        'surface-enter': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-exit': 'cubic-bezier(0.3, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@500&amp;family=DM+Sans:wght@400;600;700&amp;family=Hanken+Grotesk:wght@700;800&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    .material-symbols-outlined, .material-symbols-rounded, .material-symbols-sharp, .material-icons {
+      display: inline-block; width: 1em; height: 1em; line-height: 1 !important;
+      box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body antialiased">
+  <div class="min-h-[1024px] flex flex-col" data-stitch-vh="min-h-[1024px]===min-h-screen">
+
+    <!-- Sticky Manager Header -->
+    <header class="sticky top-0 z-30 bg-surface-card border-b border-outline">
+      <div class="max-w-7xl mx-auto px-gutter-lg py-gutter-md flex items-center justify-between gap-gutter-lg">
+        <div class="flex items-center gap-gutter-md">
+          <a href="../insuria-landing/InsuriaLanding.html" class="flex items-center gap-gutter-sm shrink-0">
+            <div class="grid grid-cols-3 gap-0.5 p-1 bg-surface rounded-sm border border-outline" aria-hidden="true">
+              <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+              <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+              <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+              <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+              <span class="w-2.5 h-2.5 bg-pure-white"></span>
+              <span class="w-2.5 h-2.5 bg-light-gray"></span>
+              <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+              <span class="w-2.5 h-2.5 bg-light-gray"></span>
+              <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+            </div>
+            <span class="font-headline text-headline-md text-on-surface-strong tracking-tight">Autonomy Insurance</span>
+          </a>
+          <span class="px-3 py-1 rounded-full bg-surface-dark text-pure-white font-label text-label-sm whitespace-nowrap">Manager • West Branch</span>
+        </div>
+
+        <nav class="hidden md:flex items-center gap-gutter-sm" aria-label="Manager navigation">
+          <a href="../manager-dashboard/ManagerDashboard.html" class="px-4 py-2 rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg whitespace-nowrap">Team</a>
+          <a href="#" aria-current="page" class="px-4 py-2 rounded-full bg-primary text-on-primary font-label text-label-lg whitespace-nowrap">Escalations</a>
+          <a href="#reports" class="px-4 py-2 rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg whitespace-nowrap">Reports</a>
+        </nav>
+
+        <div class="flex items-center gap-gutter-sm shrink-0">
+          <div class="hidden sm:block text-right">
+            <div class="font-title text-title-md text-on-surface-strong">David Vance</div>
+            <div class="font-label text-label-sm text-on-surface-muted">Branch Manager</div>
+          </div>
+          <div class="w-10 h-10 rounded-full bg-secondary text-on-secondary flex items-center justify-center font-headline text-title-md">DV</div>
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto px-gutter-lg py-gutter-xl flex flex-col gap-gutter-lg">
+
+      <!-- Page Header & Toast -->
+      <div class="flex flex-wrap items-end justify-between gap-gutter-md">
+        <div>
+          <h1 class="font-display text-display-md-mobile md:text-display-md text-on-surface-strong">Escalated chats</h1>
+          <p class="font-body text-body-md text-on-surface-muted mt-1">Review conversations your agents escalated and reassign clients within West Branch when needed.</p>
+        </div>
+        <div id="feedback-toast" role="status" aria-live="polite" class="hidden px-4 py-2.5 rounded-full bg-success text-on-success font-label text-label-lg items-center gap-2 shadow-sm">
+          <span class="material-symbols-outlined text-[18px]" aria-hidden="true">check_circle</span>
+          <span id="feedback-toast-text">Client reassigned.</span>
+        </div>
+      </div>
+
+      <!-- Privacy Boundary Banner -->
+      <div class="bg-secondary-container border border-secondary rounded-xl p-gutter-md flex items-center gap-gutter-sm">
+        <span class="material-symbols-outlined text-[20px] text-on-secondary-container shrink-0" aria-hidden="true">lock</span>
+        <p class="font-body text-body-md text-on-secondary-container">
+          <strong class="font-title">You only see chats that an agent escalated to you.</strong> Regular client-agent conversations remain private to the assigned advisor.
+        </p>
+      </div>
+
+      <!-- Workspace Grid: Left Team Agents List + Main Escalated Chats Table -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-xl items-start">
+
+        <!-- LEFT: Team Agents List -->
+        <aside class="lg:col-span-4 bg-surface-card rounded-xl border border-outline p-gutter-lg flex flex-col gap-gutter-md">
+          <div class="flex items-center justify-between gap-2">
+            <h2 class="font-headline text-headline-md text-on-surface-strong">West Branch team</h2>
+            <button type="button" onclick="filterByAgent(&#39;All&#39;)" id="reset-agent-filter" class="hidden font-label text-label-sm text-primary hover:underline">Show all</button>
+          </div>
+
+          <div id="team-agents-list" class="flex flex-col gap-gutter-sm">
+            <!-- Rendered by JS -->
+          </div>
+        </aside>
+
+        <!-- MAIN: Table of Escalated Chats -->
+        <section class="lg:col-span-8 bg-surface-card rounded-xl border border-outline overflow-hidden flex flex-col">
+          <div class="p-gutter-lg border-b border-outline flex flex-wrap items-center justify-between gap-gutter-sm">
+            <div class="flex items-center gap-gutter-sm">
+              <h2 class="font-headline text-headline-md text-on-surface-strong">Escalation queue</h2>
+              <span id="queue-count" class="px-3 py-1 rounded-full bg-primary-container text-on-primary-container font-label text-label-sm tabular-nums">4 chats</span>
+            </div>
+            <span id="active-filter-label" class="font-body text-body-sm text-on-surface-muted">Click any row to view the escalated thread</span>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-outline bg-surface">
+                  <th class="py-3 px-4 font-label text-label-sm text-on-surface-muted uppercase tracking-wider">Client</th>
+                  <th class="py-3 px-4 font-label text-label-sm text-on-surface-muted uppercase tracking-wider">Agent</th>
+                  <th class="py-3 px-4 font-label text-label-sm text-on-surface-muted uppercase tracking-wider">Reason</th>
+                  <th class="py-3 px-4 font-label text-label-sm text-on-surface-muted uppercase tracking-wider">Time</th>
+                  <th class="py-3 px-4 font-label text-label-sm text-on-surface-muted uppercase tracking-wider">Status</th>
+                </tr>
+              </thead>
+              <tbody id="escalations-table-body" class="divide-y divide-outline">
+                <!-- Rendered by JS -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- SLIDE-OVER DRAWER: Escalated Conversation Thread & Reassign Client -->
+  <div id="escalation-drawer-backdrop" class="hidden fixed inset-0 z-40 bg-on-surface-strong/30 backdrop-blur-[1px] transition-opacity" onclick="closeDrawer()"></div>
+  <aside id="escalation-drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title" class="hidden fixed top-0 right-0 z-50 h-full w-full max-w-lg bg-surface-card border-l border-outline shadow-2xl flex flex-col justify-between">
+    <!-- Drawer Header -->
+    <header class="p-gutter-lg border-b border-outline flex items-start justify-between gap-gutter-md bg-surface-card">
+      <div class="min-w-0">
+        <div class="flex items-center gap-2 flex-wrap">
+          <span id="drawer-esc-id" class="font-mono text-mono-md text-on-surface-muted">#ESC-204</span>
+          <span id="drawer-status-chip" class="px-2.5 py-0.5 rounded-full bg-secondary text-on-secondary font-label text-label-sm whitespace-nowrap">Needs review</span>
+        </div>
+        <h2 id="drawer-title" class="font-headline text-headline-md text-on-surface-strong mt-1">Elena Rostova</h2>
+        <p id="drawer-subtitle" class="font-body text-body-sm text-on-surface-muted">Policy #INS-4829 • Assigned to Maya Santos</p>
+      </div>
+      <button type="button" onclick="closeDrawer()" aria-label="Close escalation drawer" class="w-11 h-11 rounded-full hover:bg-surface flex items-center justify-center text-on-surface-muted shrink-0">
+        <span class="material-symbols-outlined text-[22px]" aria-hidden="true">close</span>
+      </button>
+    </header>
+
+    <!-- Drawer Notice: Escalated Portion Only -->
+    <div class="px-gutter-lg py-2.5 bg-surface border-b border-outline flex items-center gap-2">
+      <span class="material-symbols-outlined text-[16px] text-on-surface-muted shrink-0" aria-hidden="true">visibility</span>
+      <span class="font-body text-body-sm text-on-surface-muted">Showing only the escalated conversation thread.</span>
+    </div>
+
+    <!-- Escalated Conversation Thread -->
+    <div id="drawer-thread" class="flex-1 overflow-y-auto p-gutter-lg flex flex-col gap-gutter-md bg-surface">
+      <!-- Rendered by JS -->
+    </div>
+
+    <!-- Reassign Client Action -->
+    <footer class="p-gutter-lg border-t border-outline bg-surface-card flex flex-col gap-gutter-md">
+      <div class="flex flex-col gap-gutter-xs">
+        <label for="reassign-agent-select" class="font-label text-label-lg text-on-surface-strong">Reassign client to another West Branch agent</label>
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-gutter-sm">
+          <select id="reassign-agent-select" class="flex-1 min-h-[44px] rounded-full bg-surface border border-outline px-4 py-2.5 font-body text-body-md text-on-surface-strong focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+            <option value="Carlos Rivera">Carlos Rivera (19 clients)</option>
+            <option value="Hannah Park">Hannah Park (21 clients)</option>
+            <option value="Maya Santos">Maya Santos (24 clients)</option>
+          </select>
+          <button type="button" onclick="openConfirmModal()" class="min-h-[44px] px-5 py-2.5 rounded-full bg-primary text-on-primary hover:bg-primary-hover font-label text-label-lg whitespace-nowrap transition-colors shrink-0">
+            Reassign client
+          </button>
+        </div>
+      </div>
+    </footer>
+  </aside>
+
+  <!-- CONFIRM REASSIGNMENT MODAL -->
+  <div id="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-modal-title" class="hidden fixed inset-0 z-50 flex items-center justify-center p-gutter-md bg-on-surface-strong/40">
+    <div class="bg-surface-card rounded-2xl border border-outline max-w-md w-full p-gutter-xl shadow-2xl flex flex-col gap-gutter-lg">
+      <div class="flex items-start gap-gutter-md">
+        <div class="w-11 h-11 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-[22px]" aria-hidden="true">swap_horiz</span>
+        </div>
+        <div>
+          <h3 id="confirm-modal-title" class="font-headline text-headline-md text-on-surface-strong">Confirm reassignment</h3>
+          <p id="confirm-modal-body" class="font-body text-body-md text-on-surface mt-1">
+            Reassign Elena Rostova from Maya Santos to Carlos Rivera? Both agents and the client will be notified.
+          </p>
+        </div>
+      </div>
+      <div class="flex items-center justify-end gap-gutter-sm">
+        <button type="button" onclick="closeConfirmModal()" class="min-h-[44px] px-5 py-2.5 rounded-full bg-surface border border-outline hover:border-on-surface font-label text-label-lg text-on-surface-strong whitespace-nowrap">
+          Cancel
+        </button>
+        <button type="button" onclick="confirmReassignment()" class="min-h-[44px] px-5 py-2.5 rounded-full bg-primary text-on-primary hover:bg-primary-hover font-label text-label-lg whitespace-nowrap">
+          Confirm reassignment
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script data-stitch-original-script="72053d5c5bbc52c2===../../images/agent_maya.jpg">
+    const agents = [
+      { name: 'Maya Santos', initials: 'MS', avatar: 'https://lh3.googleusercontent.com/aida/ALJJyrCcIVIRZ7uESG4o0sYPrwZPpnYbVp9t8qEma-oKt9m0nDcfu5K0NhJmOABDoVtAhGy3giyTvNCblxNUDcyLXSpxBUBI4fwu1hzOim5tLVzb4fBJ7CF56g7k0IA-Wt1p2Kf60KTcHx0Sc3QvisaJgL7OGZHZK7M0ozed6OfjKb0FV_-ZaKvRcLgvZLr39EzyDORj2kbDE18G9zpz5mW0cmFd44rAQVrCXWhwSmmERkO6mawo', clients: 24, openChats: 5, status: 'Online' },
+      { name: 'Carlos Rivera', initials: 'CR', avatar: null, clients: 19, openChats: 3, status: 'Online' },
+      { name: 'Hannah Park', initials: 'HP', avatar: null, clients: 21, openChats: 4, status: 'Online' }
+    ];
+
+    const escalations = [
+      {
+        id: '#ESC-204',
+        client: 'Elena Rostova',
+        policy: '#INS-4829',
+        agent: 'Maya Santos',
+        reason: 'Grace period exception',
+        time: '10:08 AM',
+        status: 'Needs review',
+        thread: [
+          { sender: 'client', author: 'Elena Rostova', time: '10:02 AM', text: 'Hi Maya, my bank transfer is delayed 5 days because of a branch switch. Can I get a grace extension?' },
+          { sender: 'agent', author: 'Maya Santos', time: '10:05 AM', text: 'I understand, Elena. Since this goes past the standard 15-day window, I am escalating this chat to my branch manager David Vance.' },
+          { sender: 'system', text: 'Chat escalated to David Vance at 10:08 AM — Reason: Grace period exception.' }
+        ]
+      },
+      {
+        id: '#ESC-201',
+        client: 'Leo Mendoza',
+        policy: '#INS-5102',
+        agent: 'Maya Santos',
+        reason: 'Policy upgrade dispute',
+        time: '9:42 AM',
+        status: 'In progress',
+        thread: [
+          { sender: 'client', author: 'Leo Mendoza', time: '9:35 AM', text: 'I asked to keep my original rider when upgrading to ₱2M coverage, but the quote removed it.' },
+          { sender: 'agent', author: 'Maya Santos', time: '9:40 AM', text: 'Let me escalate this to David so we can review rider eligibility or pair you with a senior advisor.' },
+          { sender: 'system', text: 'Chat escalated to David Vance at 9:42 AM — Reason: Policy upgrade dispute.' }
+        ]
+      },
+      {
+        id: '#ESC-198',
+        client: 'Jordan Reyes',
+        policy: '#INS-3984',
+        agent: 'Carlos Rivera',
+        reason: 'Beneficiary mismatch',
+        time: 'Yesterday',
+        status: 'Needs review',
+        thread: [
+          { sender: 'client', author: 'Jordan Reyes', time: 'Yesterday, 4:10 PM', text: 'My spouse’s last name on the ID differs from the beneficiary form I signed last year.' },
+          { sender: 'agent', author: 'Carlos Rivera', time: 'Yesterday, 4:18 PM', text: 'Escalating this thread to David Vance for manager sign-off on the updated marriage certificate.' },
+          { sender: 'system', text: 'Chat escalated to David Vance Yesterday — Reason: Beneficiary mismatch.' }
+        ]
+      },
+      {
+        id: '#ESC-195',
+        client: 'Marcus Lin',
+        policy: '#INS-4410',
+        agent: 'Hannah Park',
+        reason: 'Billing cycle change',
+        time: 'Nov 21',
+        status: 'Resolved',
+        thread: [
+          { sender: 'client', author: 'Marcus Lin', time: 'Nov 21, 11:12 AM', text: 'Can I shift my quarterly due date from the 1st to the 15th?' },
+          { sender: 'agent', author: 'Hannah Park', time: 'Nov 21, 11:20 AM', text: 'Escalating to David to approve the mid-quarter billing alignment.' },
+          { sender: 'system', text: 'Chat escalated to David Vance on Nov 21 — Reason: Billing cycle change.' }
+        ]
+      }
+    ];
+
+    let activeAgentFilter = 'All';
+    let selectedEscalationId = '#ESC-204';
+
+    const statusBadgeClass = {
+      'Needs review': 'bg-secondary text-on-secondary',
+      'In progress': 'bg-primary-container text-on-primary-container',
+      'Reassigned': 'bg-surface border border-outline text-on-surface-strong',
+      'Resolved': 'bg-success text-on-success'
+    };
+
+    function renderAgents() {
+      const container = document.getElementById('team-agents-list');
+      const resetBtn = document.getElementById('reset-agent-filter');
+      resetBtn.classList.toggle('hidden', activeAgentFilter === 'All');
+
+      container.innerHTML = agents.map(agent => {
+        const isSelected = activeAgentFilter === agent.name;
+        const avatarHtml = agent.avatar
+          ? `<img src="${agent.avatar}" alt="${agent.name}" class="w-11 h-11 rounded-full object-cover border border-outline shrink-0">`
+          : `<div class="w-11 h-11 rounded-full bg-surface-dark text-pure-white flex items-center justify-center font-headline text-title-md shrink-0">${agent.initials}</div>`;
+
+        return `
+          <button type="button" onclick="filterByAgent('${agent.name}')" class="w-full text-left p-gutter-md rounded-xl border transition-colors flex items-center justify-between gap-gutter-sm ${isSelected ? 'bg-primary-container/40 border-primary' : 'bg-surface border-outline hover:border-on-surface'}">
+            <div class="flex items-center gap-gutter-sm min-w-0">
+              ${avatarHtml}
+              <div class="min-w-0">
+                <div class="font-title text-title-md text-on-surface-strong truncate">${agent.name}</div>
+                <div class="font-body text-body-sm text-on-surface-muted">${agent.clients} clients • ${agent.openChats} open chats</div>
+              </div>
+            </div>
+            <span class="w-2.5 h-2.5 rounded-full bg-success shrink-0" title="Online"></span>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('escalations-table-body');
+      const filtered = activeAgentFilter === 'All'
+        ? escalations
+        : escalations.filter(e => e.agent === activeAgentFilter);
+
+      document.getElementById('queue-count').textContent = `${filtered.length} ${filtered.length === 1 ? 'chat' : 'chats'}`;
+
+      tbody.innerHTML = filtered.map(item => {
+        const isSelected = item.id === selectedEscalationId;
+        const badge = statusBadgeClass[item.status] || 'bg-surface text-on-surface';
+        return `
+          <tr onclick="openDrawer('${item.id}')" class="cursor-pointer transition-colors ${isSelected ? 'bg-primary-container/25' : 'hover:bg-surface'}">
+            <td class="py-3.5 px-4">
+              <div class="font-title text-title-md text-on-surface-strong">${item.client}</div>
+              <div class="font-mono text-mono-md text-on-surface-muted">${item.id}</div>
+            </td>
+            <td class="py-3.5 px-4 font-body text-body-md text-on-surface">${item.agent}</td>
+            <td class="py-3.5 px-4 font-body text-body-md text-on-surface-strong">${item.reason}</td>
+            <td class="py-3.5 px-4 font-mono text-mono-md text-on-surface-muted whitespace-nowrap">${item.time}</td>
+            <td class="py-3.5 px-4">
+              <span class="inline-block px-2.5 py-0.5 rounded-full font-label text-label-sm whitespace-nowrap ${badge}">${item.status}</span>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function renderDrawer(id) {
+      const item = escalations.find(e => e.id === id);
+      if (!item) return;
+
+      document.getElementById('drawer-esc-id').textContent = item.id;
+      const chip = document.getElementById('drawer-status-chip');
+      chip.textContent = item.status;
+      chip.className = `px-2.5 py-0.5 rounded-full font-label text-label-sm whitespace-nowrap ${statusBadgeClass[item.status]}`;
+
+      document.getElementById('drawer-title').textContent = item.client;
+      document.getElementById('drawer-subtitle').textContent = `Policy ${item.policy} • Assigned to ${item.agent}`;
+
+      const threadEl = document.getElementById('drawer-thread');
+      threadEl.innerHTML = item.thread.map(msg => {
+        if (msg.sender === 'system') {
+          return `
+            <div class="self-center px-3 py-1.5 rounded-full bg-secondary-container text-on-secondary-container font-label text-label-sm text-center">
+              ${msg.text}
+            </div>
+          `;
+        }
+        const isAgent = msg.sender === 'agent';
+        return `
+          <div class="max-w-[88%] flex flex-col gap-1 ${isAgent ? 'self-end items-end' : 'self-start items-start'}">
+            <span class="font-label text-label-sm text-on-surface-muted">${msg.author} • ${msg.time}</span>
+            <div class="px-4 py-3 rounded-2xl font-body text-body-md ${isAgent ? 'bg-primary text-on-primary rounded-br-sm' : 'bg-surface-card border border-outline text-on-surface-strong rounded-bl-sm'}">
+              ${msg.text}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      const selectEl = document.getElementById('reassign-agent-select');
+      selectEl.innerHTML = agents
+        .filter(a => a.name !== item.agent)
+        .map(a => `<option value="${a.name}">${a.name} (${a.clients} clients)</option>`)
+        .join('');
+    }
+
+    function filterByAgent(agentName) {
+      activeAgentFilter = (activeAgentFilter === agentName && agentName !== 'All') ? 'All' : agentName;
+      renderAgents();
+      renderTable();
+    }
+
+    function openDrawer(id) {
+      selectedEscalationId = id;
+      renderTable();
+      renderDrawer(id);
+      document.getElementById('escalation-drawer').classList.remove('hidden');
+      document.getElementById('escalation-drawer-backdrop').classList.remove('hidden');
+    }
+
+    function closeDrawer() {
+      document.getElementById('escalation-drawer').classList.add('hidden');
+      document.getElementById('escalation-drawer-backdrop').classList.add('hidden');
+    }
+
+    function openConfirmModal() {
+      const item = escalations.find(e => e.id === selectedEscalationId);
+      const targetAgent = document.getElementById('reassign-agent-select').value;
+      if (!item || !targetAgent) return;
+      document.getElementById('confirm-modal-body').textContent =
+        `Reassign ${item.client} (${item.policy}) from ${item.agent} to ${targetAgent}? Both agents and the client will be notified.`;
+      document.getElementById('confirm-modal').classList.remove('hidden');
+    }
+
+    function closeConfirmModal() {
+      document.getElementById('confirm-modal').classList.add('hidden');
+    }
+
+    function confirmReassignment() {
+      const item = escalations.find(e => e.id === selectedEscalationId);
+      const targetAgentName = document.getElementById('reassign-agent-select').value;
+      if (!item || !targetAgentName) return;
+
+      const oldAgent = agents.find(a => a.name === item.agent);
+      const newAgent = agents.find(a => a.name === targetAgentName);
+      if (oldAgent && oldAgent.clients > 0) oldAgent.clients -= 1;
+      if (newAgent) newAgent.clients += 1;
+
+      item.agent = targetAgentName;
+      item.status = 'Reassigned';
+      item.thread.push({
+        sender: 'system',
+        text: `Client reassigned to ${targetAgentName} by David Vance.`
+      });
+
+      closeConfirmModal();
+      renderAgents();
+      renderTable();
+      renderDrawer(item.id);
+
+      const toast = document.getElementById('feedback-toast');
+      document.getElementById('feedback-toast-text').textContent = `${item.client} reassigned to ${targetAgentName}.`;
+      toast.classList.remove('hidden');
+      toast.classList.add('inline-flex');
+    }
+
+    // Initialize
+    renderAgents();
+    renderTable();
+    renderDrawer(selectedEscalationId);
+  </script>
+
+
+</body></html>

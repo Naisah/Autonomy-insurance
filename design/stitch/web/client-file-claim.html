@@ -1,0 +1,390 @@
+<!-- Autonomy Insurance — web/client-file-claim -->
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File a Claim — Autonomy Insurance</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'mapua-red': '#D52B1E',
+        'deep-red': '#A81F16',
+        'mapua-gold': '#F2B705',
+        'charcoal': '#4B4B4D',
+        'mid-gray': '#8A8B8D',
+        'light-gray': '#D9D9DA',
+        'warm-white': '#FAF7F2',
+        'pure-white': '#FFFFFF',
+        'primary': '#D52B1E',
+        'on-primary': '#FFFFFF',
+        'primary-hover': '#A81F16',
+        'primary-container': '#FFEDEA',
+        'on-primary-container': '#410000',
+        'secondary': '#F2B705',
+        'on-secondary': '#251A00',
+        'secondary-container': '#FFEFD4',
+        'on-secondary-container': '#3F2E00',
+        'surface': '#FAF7F2',
+        'on-surface': '#4B4B4D',
+        'on-surface-strong': '#1B1B1D',
+        'on-surface-muted': '#5E5E60',
+        'surface-card': '#FFFFFF',
+        'surface-dark': '#4B4B4D',
+        'on-surface-dark': '#FAF7F2',
+        'outline': '#D9D9DA',
+        'success': '#15803D',
+        'on-success': '#FFFFFF',
+        'warning': '#B45309',
+        'on-warning': '#FFFFFF',
+        'error': '#BA1A1A',
+        'on-error': '#FFFFFF',
+      },
+      borderRadius: {
+        'sm': '8px',
+        'DEFAULT': '16px',
+        'md': '20px',
+        'lg': '24px',
+        'xl': '32px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '64px',
+        'section-lg': '96px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Hanken Grotesk"', 'sans-serif'],
+        'headline': ['"Hanken Grotesk"', 'sans-serif'],
+        'title': ['"DM Sans"', 'sans-serif'],
+        'body': ['"DM Sans"', 'sans-serif'],
+        'label': ['"DM Sans"', 'sans-serif'],
+        'mono': ['"DM Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-xl': ['84px', { lineHeight: '84px', letterSpacing: '-3.2px', fontWeight: '800' }],
+        'display-xl-mobile': ['32px', { lineHeight: '36px', letterSpacing: '-1.0px', fontWeight: '800' }],
+        'display-lg': ['64px', { lineHeight: '68px', letterSpacing: '-2.4px', fontWeight: '800' }],
+        'display-lg-mobile': ['30px', { lineHeight: '34px', letterSpacing: '-0.8px', fontWeight: '800' }],
+        'display-md': ['48px', { lineHeight: '52px', letterSpacing: '-1.6px', fontWeight: '800' }],
+        'display-md-mobile': ['28px', { lineHeight: '32px', letterSpacing: '-0.6px', fontWeight: '800' }],
+        'headline-lg': ['36px', { lineHeight: '42px', letterSpacing: '-1.0px', fontWeight: '700' }],
+        'headline-lg-mobile': ['24px', { lineHeight: '28px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'headline-md': ['24px', { lineHeight: '30px', letterSpacing: '-0.4px', fontWeight: '700' }],
+        'title-lg': ['20px', { lineHeight: '26px', letterSpacing: '-0.2px', fontWeight: '700' }],
+        'title-md': ['16px', { lineHeight: '22px', letterSpacing: '0px', fontWeight: '700' }],
+        'body-lg': ['18px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-md': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-sm': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0.1px', fontWeight: '700' }],
+        'label-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.4px', fontWeight: '600' }],
+        'mono-md': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '500' }],
+      },
+      transitionDuration: {
+        'state-change': '150ms',
+        'card-lift': '240ms',
+        'surface-enter': '320ms',
+        'surface-exit': '180ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'card-lift': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'cubic-bezier(0.2, 0, 0, 1)',
+        'card-lift': 'cubic-bezier(0.22, 1, 0.36, 1)',
+        'surface-enter': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-exit': 'cubic-bezier(0.3, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@500&amp;family=DM+Sans:wght@400;600;700&amp;family=Hanken+Grotesk:wght@700;800&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    .material-symbols-outlined, .material-symbols-rounded, .material-symbols-sharp, .material-icons {
+      display: inline-block; width: 1em; height: 1em; line-height: 1 !important;
+      box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body antialiased">
+  <div class="min-h-[1024px] flex flex-col" data-stitch-vh="min-h-[1024px]===min-h-screen">
+
+    <!-- Sticky Web App Navigation (Client Top Nav with Claims Active) -->
+    <header class="sticky top-0 z-40 bg-surface-card border-b border-outline">
+      <div class="max-w-7xl mx-auto px-gutter-lg py-gutter-md flex items-center justify-between gap-gutter-lg">
+        <a href="../insuria-landing/InsuriaLanding.html" class="flex items-center gap-gutter-sm shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-full pr-2">
+          <div class="grid grid-cols-3 gap-0.5 p-1 bg-surface rounded-sm border border-outline" aria-hidden="true">
+            <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+            <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+            <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+            <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+            <span class="w-2.5 h-2.5 bg-pure-white"></span>
+            <span class="w-2.5 h-2.5 bg-light-gray"></span>
+            <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+            <span class="w-2.5 h-2.5 bg-light-gray"></span>
+            <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+          </div>
+          <span class="font-headline text-headline-md text-on-surface-strong tracking-tight">Autonomy Insurance</span>
+        </a>
+
+        <nav class="hidden md:flex items-center gap-gutter-sm" aria-label="Client navigation">
+          <a href="../client-dashboard-web/ClientDashboardWeb.html" class="px-4 py-2.5 min-h-[44px] inline-flex items-center rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg">Home</a>
+          <a href="../client-agent-chat-web/ClientAgentChatWeb.html" class="px-4 py-2.5 min-h-[44px] inline-flex items-center rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg">Chat</a>
+          <a href="../client-estimate-web/ClientEstimateWeb.html" class="px-4 py-2.5 min-h-[44px] inline-flex items-center rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg">Estimate</a>
+          <a href="../client-claims-web/ClientClaimsWeb.html" aria-current="page" class="px-4 py-2.5 min-h-[44px] inline-flex items-center rounded-full bg-primary text-on-primary font-label text-label-lg">Claims</a>
+          <a href="../client-policy-details/ClientPolicyDetails.html" class="px-4 py-2.5 min-h-[44px] inline-flex items-center rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg">Profile</a>
+        </nav>
+
+        <div class="flex items-center gap-gutter-sm">
+          <img src="https://lh3.googleusercontent.com/aida/ALJJyrBNPH83PI6mgA_4_A_-foW_tP8Shd3dieHS0JLDlRimR18VKECaUMk7PVaU-Z7GJyIrjWRY1ek31arcAB9Z4oGf8o9KVXhvSJP8-vp0nwDMolpyXdM5T1H2GlXbP0_JUT7YN_z_qsHVe8Mkg4yNbSnVHT-N7yqVcyYK_oqkOulYBJwEqIpv9e5WeFH_xR8yQIFjbyWcxEKlYTY0PRU5s34gtCc2pdVP5Kl7GuRmnaROurgT-AdBwwI" alt="Elena Rostova" class="w-10 h-10 rounded-full object-cover border border-outline">
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto px-gutter-lg py-gutter-xl flex flex-col gap-gutter-xl">
+
+      <!-- Page Header + 4-Step Stepper (Step 2 Active) -->
+      <section class="flex flex-col gap-gutter-lg">
+        <div class="flex flex-wrap items-center justify-between gap-gutter-md">
+          <div class="flex flex-col gap-gutter-xs">
+            <h1 data-design-text-token="display-md" class="font-display text-display-md-mobile md:text-display-md text-on-surface-strong text-balance">File a claim</h1>
+            <p data-design-text-token="body-lg" class="font-body text-body-lg text-on-surface max-w-prose text-pretty">
+              Share what happened in plain words. Your assigned agent Maya Santos will review it with you.
+            </p>
+          </div>
+          <span class="font-mono text-mono-md text-on-surface-muted px-3 py-1.5 rounded-full bg-surface-card border border-outline">Draft #CLM-1045</span>
+        </div>
+
+        <!-- 4-Step Stepper: Policy, Details (Active), Documents, Review -->
+        <nav aria-label="Claim filing progress" class="bg-surface-card rounded-xl border border-outline p-gutter-lg">
+          <ol class="grid grid-cols-2 md:grid-cols-4 gap-gutter-md">
+            <!-- Step 1: Policy (Completed) -->
+            <li class="flex items-center gap-gutter-sm">
+              <span class="w-9 h-9 rounded-full bg-success text-on-success flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-[18px]" aria-hidden="true">check</span>
+              </span>
+              <div class="min-w-0">
+                <div class="font-label text-label-sm text-on-surface-muted uppercase">Step 1</div>
+                <div class="font-title text-title-md text-on-surface-strong">Policy</div>
+              </div>
+            </li>
+
+            <!-- Step 2: Details (Active) -->
+            <li aria-current="step" class="flex items-center gap-gutter-sm">
+              <span class="w-9 h-9 rounded-full bg-primary text-on-primary flex items-center justify-center font-label text-label-lg tabular-nums shrink-0">2</span>
+              <div class="min-w-0">
+                <div class="font-label text-label-sm text-primary uppercase">Step 2</div>
+                <div class="font-title text-title-md text-on-surface-strong">Details</div>
+              </div>
+            </li>
+
+            <!-- Step 3: Documents -->
+            <li class="flex items-center gap-gutter-sm">
+              <span class="w-9 h-9 rounded-full bg-surface border border-outline text-on-surface-muted flex items-center justify-center font-label text-label-lg tabular-nums shrink-0">3</span>
+              <div class="min-w-0">
+                <div class="font-label text-label-sm text-on-surface-muted uppercase">Step 3</div>
+                <div class="font-title text-title-md text-on-surface-muted">Documents</div>
+              </div>
+            </li>
+
+            <!-- Step 4: Review -->
+            <li class="flex items-center gap-gutter-sm">
+              <span class="w-9 h-9 rounded-full bg-surface border border-outline text-on-surface-muted flex items-center justify-center font-label text-label-lg tabular-nums shrink-0">4</span>
+              <div class="min-w-0">
+                <div class="font-label text-label-sm text-on-surface-muted uppercase">Step 4</div>
+                <div class="font-title text-title-md text-on-surface-muted">Review</div>
+              </div>
+            </li>
+          </ol>
+        </nav>
+      </section>
+
+      <!-- Action Feedback Banner -->
+      <div id="claim-form-toast" role="status" aria-live="polite" class="hidden bg-secondary-container border border-secondary rounded-lg px-gutter-lg py-gutter-md flex items-center justify-between gap-gutter-md">
+        <div class="flex items-center gap-gutter-sm">
+          <span class="material-symbols-outlined text-[20px] text-on-secondary-container" aria-hidden="true">check_circle</span>
+          <span id="claim-form-toast-msg" class="font-body text-body-md text-on-secondary-container"></span>
+        </div>
+        <button type="button" onclick="hideClaimToast()" aria-label="Dismiss message" class="min-w-[44px] min-h-[44px] rounded-full flex items-center justify-center text-on-secondary-container hover:bg-surface-card transition-colors">
+          <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+      </div>
+
+      <!-- TWO-COLUMN LAYOUT: Form (Left) + Sticky "What happens next" Card (Right) -->
+      <section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-xl items-start">
+
+        <!-- Left Column: Step 2 Details Form -->
+        <form onsubmit="handleContinue(event)" class="lg:col-span-8 bg-surface-card rounded-xl border border-outline p-gutter-xl flex flex-col gap-gutter-lg">
+          <div class="flex flex-col gap-gutter-xs">
+            <h2 class="font-headline text-headline-md text-on-surface-strong">Claim details</h2>
+            <p class="font-body text-body-sm text-on-surface-muted">Confirm the policy and tell us what happened.</p>
+          </div>
+
+          <!-- Field 1: Select Policy (#INS-4829 selected) -->
+          <label class="flex flex-col gap-gutter-xs w-full">
+            <span data-design-text-token="label-lg" class="font-label text-label-lg text-on-surface-strong">Select policy</span>
+            <select id="claim-policy" class="w-full min-h-[44px] rounded-full bg-surface border border-outline px-gutter-md py-3 font-body text-body-md text-on-surface-strong focus:border-primary focus:ring-2 focus:ring-primary-container focus:outline-none">
+              <option value="#INS-4829" selected>#INS-4829 — 20-Year Term Life ₱2M (Active)</option>
+              <option value="#INS-5102">#INS-5102 — Family Wellness Rider ₱500K</option>
+            </select>
+          </label>
+
+          <!-- Field 2: Claim Type (Death, Critical illness, Disability) -->
+          <fieldset class="flex flex-col gap-gutter-xs">
+            <legend data-design-text-token="label-lg" class="font-label text-label-lg text-on-surface-strong mb-1">Claim type</legend>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-gutter-sm" role="radiogroup" aria-label="Claim type">
+              <button type="button" onclick="selectClaimType(this, &#39;Death&#39;)" class="claim-type-btn min-h-[44px] py-3 px-gutter-md rounded-full bg-surface border border-outline font-label text-label-lg text-on-surface-strong hover:border-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+                Death
+              </button>
+              <button type="button" onclick="selectClaimType(this, &#39;Critical illness&#39;)" aria-pressed="true" class="claim-type-btn min-h-[44px] py-3 px-gutter-md rounded-full bg-primary text-on-primary font-label text-label-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
+                Critical illness
+              </button>
+              <button type="button" onclick="selectClaimType(this, &#39;Disability&#39;)" class="claim-type-btn min-h-[44px] py-3 px-gutter-md rounded-full bg-surface border border-outline font-label text-label-lg text-on-surface-strong hover:border-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+                Disability
+              </button>
+            </div>
+          </fieldset>
+
+          <!-- Field 3 & 4: Date of Event + Amount Requested in ₱ -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-gutter-lg">
+            <!-- Date of event -->
+            <label class="flex flex-col gap-gutter-xs w-full">
+              <span data-design-text-token="label-lg" class="font-label text-label-lg text-on-surface-strong">Date of event</span>
+              <input type="date" value="2026-11-15" class="w-full min-h-[44px] rounded-full bg-surface border border-outline px-gutter-md py-3 font-mono text-mono-md text-on-surface-strong focus:border-primary focus:ring-2 focus:ring-primary-container focus:outline-none">
+            </label>
+
+            <!-- Amount requested in ₱ -->
+            <!-- COMPONENT: input-field-icon -->
+            <label data-component-id="input-field-icon" data-component-type="input-field" data-component-variant="with-icon" class="flex flex-col gap-gutter-xs w-full">
+              <span data-design-text-token="label-lg" class="font-label text-label-lg text-on-surface-strong">Amount requested (₱)</span>
+              <div class="relative flex items-center">
+                <span class="absolute left-4 font-mono text-mono-md text-on-surface-muted" aria-hidden="true">₱</span>
+                <input type="text" inputmode="numeric" value="45,000" placeholder="0" class="w-full min-h-[44px] rounded-full bg-surface border border-outline pl-10 pr-gutter-md py-3 font-mono text-mono-md text-on-surface-strong tabular-nums placeholder:text-on-surface-muted focus:border-primary focus:ring-2 focus:ring-primary-container focus:outline-none">
+              </div>
+            </label>
+          </div>
+
+          <!-- Field 5: Description Textarea -->
+          <label class="flex flex-col gap-gutter-xs w-full">
+            <span data-design-text-token="label-lg" class="font-label text-label-lg text-on-surface-strong">Description</span>
+            <textarea rows="4" placeholder="Tell us briefly what happened and any hospital or clinic details..." class="w-full rounded DEFAULT bg-surface border border-outline p-gutter-md font-body text-body-md text-on-surface-strong placeholder:text-on-surface-muted focus:border-primary focus:ring-2 focus:ring-primary-container focus:outline-none">Emergency hospital admission on Nov 15 for cardiac evaluation and overnight observation. Itemized billing and discharge summary ready to upload on the next step.</textarea>
+          </label>
+
+          <!-- Bottom Actions: Back, Save draft, Continue -->
+          <div class="pt-gutter-md border-t border-outline flex flex-wrap items-center justify-between gap-gutter-md">
+            <a href="../client-claims-web/ClientClaimsWeb.html" class="inline-flex items-center justify-center gap-gutter-sm px-gutter-lg py-3 min-h-[44px] rounded-full bg-surface-card text-on-surface-strong border border-outline hover:border-on-surface transition-colors font-label text-label-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+              <span class="material-symbols-outlined text-[18px]" aria-hidden="true">arrow_back</span>
+              <span>Back</span>
+            </a>
+
+            <div class="flex flex-wrap items-center gap-gutter-sm">
+              <!-- COMPONENT: button-tertiary -->
+              <button data-component-id="button-tertiary" data-component-type="button" data-component-variant="tertiary" type="button" onclick="showClaimToast(&#39;Draft #CLM-1045 saved. You can finish anytime.&#39;)" class="inline-flex items-center justify-center gap-gutter-sm px-gutter-lg py-3 min-h-[44px] rounded-full bg-surface-card text-on-surface-strong border border-outline hover:border-on-surface transition-colors duration-state-change ease-state-change focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-on-surface focus-visible:ring-offset-2">
+                <span data-design-text-token="label-lg" class="font-label text-label-lg">Save draft</span>
+              </button>
+
+              <!-- COMPONENT: button-primary -->
+              <button data-component-id="button-primary" data-component-type="button" data-component-variant="primary" type="submit" class="inline-flex items-center justify-center gap-gutter-sm px-gutter-xl py-3.5 min-h-[44px] rounded-full bg-primary text-on-primary hover:bg-primary-hover active:scale-[0.98] transition-colors duration-state-change ease-state-change focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
+                <span data-design-text-token="label-lg" class="font-label text-label-lg">Continue</span>
+                <span class="material-symbols-outlined text-[18px]" aria-hidden="true">arrow_forward</span>
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <!-- Right Column: Sticky Card "What happens next" -->
+        <aside class="lg:col-span-4 lg:sticky lg:top-24 flex flex-col gap-gutter-lg">
+          <article class="bg-surface-dark text-on-surface-dark rounded-xl p-gutter-xl flex flex-col gap-gutter-lg">
+            <div class="flex items-center justify-between gap-gutter-sm">
+              <h2 class="font-headline text-headline-md text-pure-white">What happens next</h2>
+              <span class="material-symbols-outlined text-[22px] text-secondary" aria-hidden="true">schedule</span>
+            </div>
+
+            <ol class="flex flex-col gap-gutter-md">
+              <li class="flex items-start gap-gutter-sm">
+                <span class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center font-label text-label-sm shrink-0 mt-0.5">1</span>
+                <div>
+                  <div class="font-title text-title-md text-pure-white">Agent reviews</div>
+                  <p class="font-body text-body-sm text-light-gray">Maya Santos checks your policy and claim details within 24 hours.</p>
+                </div>
+              </li>
+
+              <li class="flex items-start gap-gutter-sm">
+                <span class="w-7 h-7 rounded-full bg-secondary text-on-secondary flex items-center justify-center font-label text-label-sm shrink-0 mt-0.5">2</span>
+                <div>
+                  <div class="font-title text-title-md text-pure-white">You may be asked for documents</div>
+                  <p class="font-body text-body-sm text-light-gray">If anything extra is needed, Maya will ask in plain language.</p>
+                </div>
+              </li>
+
+              <li class="flex items-start gap-gutter-sm">
+                <span class="w-7 h-7 rounded-full bg-success text-on-success flex items-center justify-center font-label text-label-sm shrink-0 mt-0.5">3</span>
+                <div>
+                  <div class="font-title text-title-md text-pure-white">Decision is shared in chat</div>
+                  <p class="font-body text-body-sm text-light-gray">Get notified right inside your private chat thread with Maya.</p>
+                </div>
+              </li>
+            </ol>
+
+            <!-- Demo Note -->
+            <div class="bg-surface-card text-on-surface rounded-lg p-gutter-md flex items-start gap-gutter-sm">
+              <span class="material-symbols-outlined text-[18px] text-on-surface-strong shrink-0 mt-0.5" aria-hidden="true">info</span>
+              <p class="font-body text-body-sm text-on-surface-strong">Payouts are simulated in this demo.</p>
+            </div>
+          </article>
+        </aside>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <script>
+    let selectedType = 'Critical illness';
+
+    function selectClaimType(btn, type) {
+      selectedType = type;
+      document.querySelectorAll('.claim-type-btn').forEach(b => {
+        b.className = 'claim-type-btn min-h-[44px] py-3 px-gutter-md rounded-full bg-surface border border-outline font-label text-label-lg text-on-surface-strong hover:border-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary';
+        b.setAttribute('aria-pressed', 'false');
+      });
+      btn.className = 'claim-type-btn min-h-[44px] py-3 px-gutter-md rounded-full bg-primary text-on-primary font-label text-label-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2';
+      btn.setAttribute('aria-pressed', 'true');
+    }
+
+    function handleContinue(e) {
+      e.preventDefault();
+      showClaimToast('Details saved for ' + selectedType + ' claim. Ready for Step 3: Documents.');
+    }
+
+    function showClaimToast(msg) {
+      const toast = document.getElementById('claim-form-toast');
+      document.getElementById('claim-form-toast-msg').textContent = msg;
+      toast.classList.remove('hidden');
+      toast.classList.add('flex');
+    }
+
+    function hideClaimToast() {
+      const toast = document.getElementById('claim-form-toast');
+      toast.classList.add('hidden');
+      toast.classList.remove('flex');
+    }
+  </script>
+
+
+</body></html>

@@ -1,0 +1,325 @@
+<!-- Autonomy Insurance — web/client-policy -->
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Policy Details #INS-4829 — Autonomy Insurance</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'mapua-red': '#D52B1E',
+        'deep-red': '#A81F16',
+        'mapua-gold': '#F2B705',
+        'charcoal': '#4B4B4D',
+        'mid-gray': '#8A8B8D',
+        'light-gray': '#D9D9DA',
+        'warm-white': '#FAF7F2',
+        'pure-white': '#FFFFFF',
+        'primary': '#D52B1E',
+        'on-primary': '#FFFFFF',
+        'primary-hover': '#A81F16',
+        'primary-container': '#FFEDEA',
+        'on-primary-container': '#410000',
+        'secondary': '#F2B705',
+        'on-secondary': '#251A00',
+        'secondary-container': '#FFEFD4',
+        'on-secondary-container': '#3F2E00',
+        'surface': '#FAF7F2',
+        'on-surface': '#4B4B4D',
+        'on-surface-strong': '#1B1B1D',
+        'on-surface-muted': '#5E5E60',
+        'surface-card': '#FFFFFF',
+        'surface-dark': '#4B4B4D',
+        'on-surface-dark': '#FAF7F2',
+        'outline': '#D9D9DA',
+        'success': '#15803D',
+        'on-success': '#FFFFFF',
+        'warning': '#B45309',
+        'on-warning': '#FFFFFF',
+        'error': '#BA1A1A',
+        'on-error': '#FFFFFF',
+      },
+      borderRadius: {
+        'sm': '8px',
+        'DEFAULT': '16px',
+        'md': '20px',
+        'lg': '24px',
+        'xl': '32px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '64px',
+        'section-lg': '96px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Hanken Grotesk"', 'sans-serif'],
+        'headline': ['"Hanken Grotesk"', 'sans-serif'],
+        'title': ['"DM Sans"', 'sans-serif'],
+        'body': ['"DM Sans"', 'sans-serif'],
+        'label': ['"DM Sans"', 'sans-serif'],
+        'mono': ['"DM Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-xl': ['84px', { lineHeight: '84px', letterSpacing: '-3.2px', fontWeight: '800' }],
+        'display-xl-mobile': ['32px', { lineHeight: '36px', letterSpacing: '-1.0px', fontWeight: '800' }],
+        'display-lg': ['64px', { lineHeight: '68px', letterSpacing: '-2.4px', fontWeight: '800' }],
+        'display-lg-mobile': ['30px', { lineHeight: '34px', letterSpacing: '-0.8px', fontWeight: '800' }],
+        'display-md': ['48px', { lineHeight: '52px', letterSpacing: '-1.6px', fontWeight: '800' }],
+        'display-md-mobile': ['28px', { lineHeight: '32px', letterSpacing: '-0.6px', fontWeight: '800' }],
+        'headline-lg': ['36px', { lineHeight: '42px', letterSpacing: '-1.0px', fontWeight: '700' }],
+        'headline-lg-mobile': ['24px', { lineHeight: '28px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'headline-md': ['24px', { lineHeight: '30px', letterSpacing: '-0.4px', fontWeight: '700' }],
+        'title-lg': ['20px', { lineHeight: '26px', letterSpacing: '-0.2px', fontWeight: '700' }],
+        'title-md': ['16px', { lineHeight: '22px', letterSpacing: '0px', fontWeight: '700' }],
+        'body-lg': ['18px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-md': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-sm': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0.1px', fontWeight: '700' }],
+        'label-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.4px', fontWeight: '600' }],
+        'mono-md': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '500' }],
+      },
+      transitionDuration: {
+        'state-change': '150ms',
+        'card-lift': '240ms',
+        'surface-enter': '320ms',
+        'surface-exit': '180ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'card-lift': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'cubic-bezier(0.2, 0, 0, 1)',
+        'card-lift': 'cubic-bezier(0.22, 1, 0.36, 1)',
+        'surface-enter': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-exit': 'cubic-bezier(0.3, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@500&amp;family=DM+Sans:wght@400;600;700&amp;family=Hanken+Grotesk:wght@700;800&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    .material-symbols-outlined, .material-symbols-rounded, .material-symbols-sharp, .material-icons {
+      display: inline-block; width: 1em; height: 1em; line-height: 1 !important;
+      box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body antialiased">
+  <div class="min-h-[1024px] flex flex-col" data-stitch-vh="min-h-[1024px]===min-h-screen">
+
+    <!-- Sticky Web App Navigation -->
+    <header class="sticky top-0 z-40 bg-surface-card border-b border-outline">
+      <div class="max-w-7xl mx-auto px-gutter-lg py-gutter-md flex items-center justify-between gap-gutter-lg">
+        <a href="../insuria-landing/InsuriaLanding.html" class="flex items-center gap-gutter-sm shrink-0">
+          <div class="grid grid-cols-3 gap-0.5 p-1 bg-surface rounded-sm border border-outline" aria-hidden="true">
+            <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+            <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+            <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+            <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+            <span class="w-2.5 h-2.5 bg-pure-white"></span>
+            <span class="w-2.5 h-2.5 bg-light-gray"></span>
+            <span class="w-2.5 h-2.5 bg-mapua-red"></span>
+            <span class="w-2.5 h-2.5 bg-light-gray"></span>
+            <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
+          </div>
+          <span class="font-headline text-headline-md text-on-surface-strong tracking-tight">Autonomy Insurance</span>
+        </a>
+
+        <nav class="hidden md:flex items-center gap-gutter-sm" aria-label="Client navigation">
+          <a href="../client-dashboard-web/ClientDashboardWeb.html" class="px-4 py-2 rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg">Home</a>
+          <a href="../client-agent-chat-web/ClientAgentChatWeb.html" class="px-4 py-2 rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg">Chat</a>
+          <a href="../client-estimate-web/ClientEstimateWeb.html" class="px-4 py-2 rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg">Estimate</a>
+          <a href="#claims" class="px-4 py-2 rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg">Claims</a>
+          <a href="#profile" class="px-4 py-2 rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg">Profile</a>
+        </nav>
+
+        <div class="flex items-center gap-gutter-sm">
+          <img src="https://lh3.googleusercontent.com/aida/ALJJyrBNPH83PI6mgA_4_A_-foW_tP8Shd3dieHS0JLDlRimR18VKECaUMk7PVaU-Z7GJyIrjWRY1ek31arcAB9Z4oGf8o9KVXhvSJP8-vp0nwDMolpyXdM5T1H2GlXbP0_JUT7YN_z_qsHVe8Mkg4yNbSnVHT-N7yqVcyYK_oqkOulYBJwEqIpv9e5WeFH_xR8yQIFjbyWcxEKlYTY0PRU5s34gtCc2pdVP5Kl7GuRmnaROurgT-AdBwwI" alt="Elena Rostova" class="w-10 h-10 rounded-full object-cover border border-outline">
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto px-gutter-lg py-gutter-xl flex flex-col gap-gutter-xl">
+
+      <!-- Clean Back Link -->
+      <div>
+        <a href="../client-dashboard-web/ClientDashboardWeb.html" class="inline-flex items-center gap-1.5 font-label text-label-lg text-on-surface-strong hover:text-primary">
+          <span class="material-symbols-outlined text-[18px]" aria-hidden="true">arrow_back</span>
+          <span>Back to Dashboard</span>
+        </a>
+      </div>
+
+      <!-- 1. POLICY SUMMARY HERO CARD -->
+      <section class="bg-surface-dark text-on-surface-dark rounded-xl p-gutter-xl flex flex-col gap-gutter-lg relative overflow-hidden">
+        <div class="flex flex-wrap items-center justify-between gap-gutter-md">
+          <div class="flex items-center gap-gutter-sm">
+            <span class="px-3 py-1 rounded-full bg-success text-on-success font-label text-label-sm">Active Policy</span>
+            <span class="font-mono text-mono-md text-light-gray tabular-nums">#INS-4829</span>
+          </div>
+          <a href="../client-agent-chat-web/ClientAgentChatWeb.html" class="inline-flex items-center gap-gutter-sm px-gutter-lg py-2.5 rounded-full bg-primary text-on-primary hover:bg-primary-hover transition-colors font-label text-label-lg">
+            <span class="material-symbols-outlined text-[18px]" aria-hidden="true">chat_bubble</span>
+            <span>Ask Maya about this policy</span>
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter-lg items-end">
+          <div class="md:col-span-6">
+            <h1 class="font-display text-display-md-mobile md:text-display-md text-pure-white">20-Year Term Life</h1>
+            <p class="font-body text-body-lg text-light-gray mt-1">Effective Jan 1, 2026 – Jan 1, 2046 • Policyholder: Elena Rostova</p>
+          </div>
+          <div class="md:col-span-3">
+            <div class="font-label text-label-sm text-light-gray uppercase">Coverage</div>
+            <div class="font-display text-headline-lg-mobile md:text-headline-lg text-pure-white tabular-nums">₱2,000,000</div>
+          </div>
+          <div class="md:col-span-3">
+            <div class="font-label text-label-sm text-light-gray uppercase">Monthly Premium</div>
+            <div class="font-display text-headline-lg-mobile md:text-headline-lg text-secondary tabular-nums">₱1,850<span class="font-headline text-headline-md text-light-gray">/mo</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. COVERAGE DETAILS & 3. BENEFICIARY PLACEHOLDER -->
+      <section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-lg items-stretch">
+
+        <!-- Coverage Details -->
+        <article class="lg:col-span-7 bg-surface-card rounded-xl border border-outline p-gutter-xl flex flex-col gap-gutter-lg">
+          <h2 class="font-headline text-headline-md text-on-surface-strong">Coverage details</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-gutter-md">
+            <div class="bg-surface rounded-lg p-gutter-md">
+              <div class="font-label text-label-sm text-on-surface-muted uppercase">Base Death Benefit</div>
+              <div class="font-headline text-headline-md text-on-surface-strong tabular-nums mt-1">₱2,000,000</div>
+              <p class="font-body text-body-sm text-on-surface-muted mt-1">100% tax-free lump sum payout</p>
+            </div>
+            <div class="bg-surface rounded-lg p-gutter-md">
+              <div class="font-label text-label-sm text-on-surface-muted uppercase">Wellness &amp; Care Rider</div>
+              <div class="font-headline text-headline-md text-on-surface-strong tabular-nums mt-1">₱120,000</div>
+              <p class="font-body text-body-sm text-on-surface-muted mt-1">Annual preventive &amp; dental claims</p>
+            </div>
+            <div class="bg-surface rounded-lg p-gutter-md">
+              <div class="font-label text-label-sm text-on-surface-muted uppercase">Step Rewards Credit</div>
+              <div class="font-headline text-headline-md text-success tabular-nums mt-1">-₱500/mo</div>
+              <p class="font-body text-body-sm text-on-surface-muted mt-1">Gold Tier active (8,940 steps avg)</p>
+            </div>
+            <div class="bg-surface rounded-lg p-gutter-md">
+              <div class="font-label text-label-sm text-on-surface-muted uppercase">Grace Extension</div>
+              <div class="font-headline text-headline-md text-on-surface-strong tabular-nums mt-1">30 days</div>
+              <p class="font-body text-body-sm text-on-surface-muted mt-1">Automatic buffer if a payment is late</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- Beneficiary Placeholder -->
+        <article class="lg:col-span-5 bg-surface-card rounded-xl border border-outline p-gutter-xl flex flex-col justify-between gap-gutter-lg">
+          <div class="flex flex-col gap-gutter-md">
+            <div class="flex items-center justify-between">
+              <h2 class="font-headline text-headline-md text-on-surface-strong">Beneficiaries</h2>
+              <span class="px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label text-label-sm">100% allocated</span>
+            </div>
+
+            <div class="bg-surface rounded-lg border border-dashed border-outline p-gutter-md flex items-center gap-gutter-md">
+              <div class="w-11 h-11 rounded-full bg-surface-card border border-outline flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-[22px] text-on-surface-muted" aria-hidden="true">person_add</span>
+              </div>
+              <div>
+                <div class="font-title text-title-md text-on-surface-strong">Primary Beneficiary Placeholder</div>
+                <div class="font-body text-body-sm text-on-surface-muted">Assign or update your beneficiary details with Maya in under 2 minutes.</div>
+              </div>
+            </div>
+          </div>
+
+          <a href="../client-agent-chat-web/ClientAgentChatWeb.html" class="w-full inline-flex items-center justify-center gap-gutter-sm px-gutter-lg py-3 rounded-full bg-surface border border-outline hover:border-primary font-label text-label-lg text-on-surface-strong transition-colors">
+            <span class="material-symbols-outlined text-[18px]" aria-hidden="true">edit</span>
+            <span>Update beneficiary with agent</span>
+          </a>
+        </article>
+
+      </section>
+
+      <!-- 4. PREMIUM PAYMENT SCHEDULE (Paid, Extended, Upcoming) -->
+      <section class="bg-surface-card rounded-xl border border-outline p-gutter-xl flex flex-col gap-gutter-lg">
+        <div class="flex flex-wrap items-center justify-between gap-gutter-md">
+          <div>
+            <h2 class="font-headline text-headline-md text-on-surface-strong">Premium payment schedule</h2>
+            <p class="font-body text-body-sm text-on-surface-muted">Monthly auto-pay with automatic 30-day extended grace protection</p>
+          </div>
+          <span class="font-mono text-mono-md text-on-surface-muted tabular-nums">₱1,850/mo • Visa •••• 4812</span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-outline font-label text-label-sm text-on-surface-muted uppercase">
+                <th class="py-3 pr-4">Billing Date</th>
+                <th class="py-3 pr-4">Period</th>
+                <th class="py-3 pr-4">Amount</th>
+                <th class="py-3 pr-4">Status</th>
+                <th class="py-3 text-right">Notes</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-outline font-body text-body-md">
+              <tr>
+                <td class="py-4 pr-4 font-mono text-mono-md text-on-surface-strong tabular-nums">Oct 1, 2026</td>
+                <td class="py-4 pr-4 text-on-surface">October 2026</td>
+                <td class="py-4 pr-4 font-title text-on-surface-strong tabular-nums">₱1,850</td>
+                <td class="py-4 pr-4">
+                  <span class="inline-flex items-center px-3 py-1 rounded-full bg-success text-on-success font-label text-label-sm">Paid</span>
+                </td>
+                <td class="py-4 text-right text-body-sm text-on-surface-muted">Receipt #REC-8812</td>
+              </tr>
+
+              <tr>
+                <td class="py-4 pr-4 font-mono text-mono-md text-on-surface-strong tabular-nums">Nov 1, 2026</td>
+                <td class="py-4 pr-4 text-on-surface">November 2026</td>
+                <td class="py-4 pr-4 font-title text-on-surface-strong tabular-nums">₱1,850</td>
+                <td class="py-4 pr-4">
+                  <span class="inline-flex items-center px-3 py-1 rounded-full bg-success text-on-success font-label text-label-sm">Paid</span>
+                </td>
+                <td class="py-4 text-right text-body-sm text-on-surface-muted">Receipt #REC-8904</td>
+              </tr>
+
+              <tr class="bg-secondary-container">
+                <td class="py-4 px-2 font-mono text-mono-md text-on-secondary-container tabular-nums">Dec 1, 2026</td>
+                <td class="py-4 pr-4 text-on-secondary-container font-title">December 2026</td>
+                <td class="py-4 pr-4 font-title text-on-secondary-container tabular-nums">₱1,850</td>
+                <td class="py-4 pr-4">
+                  <span class="inline-flex items-center px-3 py-1 rounded-full bg-secondary text-on-secondary font-label text-label-sm">Extended</span>
+                </td>
+                <td class="py-4 px-2 text-right text-body-sm text-on-secondary-container">30-day grace window active until Dec 31</td>
+              </tr>
+
+              <tr>
+                <td class="py-4 pr-4 font-mono text-mono-md text-on-surface-strong tabular-nums">Jan 1, 2027</td>
+                <td class="py-4 pr-4 text-on-surface">January 2027</td>
+                <td class="py-4 pr-4 font-title text-on-surface-strong tabular-nums">₱1,850</td>
+                <td class="py-4 pr-4">
+                  <span class="inline-flex items-center px-3 py-1 rounded-full bg-surface border border-outline font-label text-label-sm text-on-surface-strong">Upcoming</span>
+                </td>
+                <td class="py-4 text-right text-body-sm text-on-surface-muted">Scheduled auto-pay</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+
+</body></html>
