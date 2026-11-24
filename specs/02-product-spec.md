@@ -75,6 +75,11 @@ As a user I want to unlock the app with Face ID or fingerprint so that I do not 
 - No biometric data is sent to or stored on the server. The back end still verifies the token on every request.
 - If the session has expired, biometrics alone do not sign the user in; the password is required.
 
+A6 Forgot password (simulated reset). Client. Could. 3 points. W, M. Screens: "Forgot password?" link on web/client-login and mobile/sign-in; reset screen is a gap.
+- The client enters their email and always sees the same message ("If this email exists, a reset link was sent"), so the system never reveals which emails are registered.
+- In the demo the reset link is shown in a simulated inbox page instead of a real email. The link works once and expires in 15 minutes.
+- Setting a new password follows the A1 password rule and ends all other sessions.
+
 ### B. Chat with Agent
 
 B1 Real-time chat between a client and their assigned agent. Client, Agent. Must. 8 points. W, M. Screens: web/client-chat, mobile/client-chat, mobile/agent-chat, web/agent-dashboard (chat panel).
@@ -109,7 +114,8 @@ B5 Attachments in chat. Client, Agent. Could. 3 points. W, M.
 ### C. Policy and Estimate
 
 C1 Create a policy estimate from inputs. Client. Must. 5 points. W, M. Screens: web/client-estimate, mobile/client-estimate.
-- Inputs: age (18 to 65), coverage amount (₱500,000 to ₱20,000,000), term (10, 20 or 30 years).
+- Inputs: age (18 to 60), coverage amount (₱500,000 to ₱20,000,000), term (10, 20 or 30 years).
+- Maturity age rule: age plus term must not exceed 70 (so a 30-year term is offered up to age 40). A combination that breaks it shows a clear message and suggests a shorter term.
 - The premium is computed by the rule in section 6 and shown as monthly premium.
 - Out-of-range inputs are blocked with a clear message.
 - The screen shows a breakdown (base, adjustments, total). It shows no reward-based discount (see open decision D1).
@@ -186,6 +192,11 @@ F3 Admin dashboard. Admin. Should. 5 points. W. Screens: web/admin-console, web/
 - Policy settings: the base rate and factors used by the estimate rule (section 6). A change applies only to new estimates (C3).
 - No chat content is available anywhere.
 
+F4 Client dashboard. Client. Must. 3 points. W, M. Screens: web/client-dashboard, mobile/client-dashboard.
+- It is the first screen after login (A1). It shows the active policy summary, the assigned agent with a "Chat" action, the latest estimates, and open claims.
+- Sprint 2 builds a basic version (greeting, agent card, links to Chat and Estimate). Sprint 3 completes the summaries as the other features land.
+- A new client with no policy sees a friendly empty state that points to Estimate.
+
 ### G. Rewards app (separate mobile app, own back end and database)
 
 G1 Sign in as [Client name] (SSO) or with email and password. Client. Must. 8 points. R, API. Screens: rewards/signin, rewards/client-only-access.
@@ -214,28 +225,30 @@ G4 Send reward results to the main system through the REST API. System. Must. 5 
 
 G5 Main system applies reward results to premium collection and claims payouts. System. Should. 5 points. W, M, R, API. Screens: rewards/effect, web/client-policy, web/client-claim-details, mobile/client-policy, mobile/client-claim-details.
 - When a reward result meets the rule (section 6), the Policy module extends the premium collection period; the schedule and the client's Rewards effect screen show it.
-- When a claim is approved, the Claims module delays or reduces the payout by the rule. The client sees the reason; the agent sees only the final payout figure and status, with no reward reason.
+- When a claim is approved, the Claims module delays the payout release date by the rule (delay only; see decision D2). Approval itself is never changed by reward results. The client sees the reason; the agent sees only the release date and status, with no reward reason.
+- Screens that show a reward effect carry a note: "Simulated for this course demo."
 - The effect is calculated by the main system, not the Rewards app. Every effect is logged with the result that caused it.
-- No reward-based discount on the premium (see D1).
+- No reward-based discount on the premium (decision D1).
 
 ## 5. Design items not in the feature list
 - Landing page (web/landing): a static marketing and portal-entry page. Must-lite: it is the demo entry point. No account needed. Its FAQ text is also the AI knowledge base seed.
-- Client dashboard (web/client-dashboard, mobile/client-dashboard): overview of policy, agent, recent chat, and estimates. Built as part of C5 and F1-style summaries. Points: 3 (counted in Sprint 3).
+- Client dashboard: now story F4.
 - Client profile (web/client-profile, mobile/client-profile): name and email edit, notifications, security. Covers A3 logout and A5. Not a separate feature.
-- "Forgot password?" appears on login screens but is not in the guide. Proposed: Could, simulated reset link in the demo. Needs approval.
+- "Forgot password?" appears on login screens: now story A6 (Could).
 - Beneficiaries on the policy screen: view-only sample data. No editing.
 - Web states sheet (web/states): loading, error, 403, session expired states used by all stories (X2, X4).
 
 ## 6. Simplified rules (proposed; sample rates only)
 These stand in for real actuarial and reward logic (guide section 9). Admin settings (F3) can change the base values. Needs team approval.
 
-Estimate rule (adapted from the groupmate's calculator in legacy/frontend-draft/src/utils/premiumCalculator.js, with reward discount and extra inputs removed):
+Estimate rule (adapted from the groupmate's calculator in legacy/frontend-draft/src/utils/premiumCalculator.js, with the reward discount and health-tier inputs removed):
 - units = coverage amount / 1,000
 - monthly premium = units x baseRate x ageFactor x termFactor, rounded to 2 decimals
-- baseRate = 0.70 per 1,000 per month (admin setting)
-- ageFactor = 1 + max(0, age - 25) x 0.032
+- baseRate = 0.65 per 1,000 per month (admin setting)
+- ageFactor = 1.05 raised to max(0, age - 25). Cost of cover rises faster as people get older, so it compounds instead of growing in a straight line (the old draft used a straight line).
 - termFactor = 1 + (termYears - 10) x 0.012
-- Example: coverage 2,000,000, age 30, 20 years: 2000 x 0.70 x 1.16 x 1.12 = 1,818.88 per month.
+- Example: coverage 2,000,000, age 30, 20 years: 2000 x 0.65 x 1.2763 x 1.12 = 1,858.27 per month, close to the 1,850 shown in the Stitch mockup.
+- Issue rules: age 18 to 60, age plus term at most 70, coverage 500,000 to 20,000,000. Real insurers also check income and health (underwriting); out of scope here.
 
 Health score (Rewards app): 0 to 100, from the last 30 days: share of days the step goal was met (70 percent weight) and average steps against goal, capped (30 percent weight). Default daily goal 8,000 steps.
 
@@ -245,29 +258,42 @@ Reward status and effects:
 | Bronze | score under 50 | none | none |
 | Silver | score 50 to 74 | premium collection period extended by 15 days | payout delayed 7 days |
 | Gold | score 75 or more | premium collection period extended by 30 days | payout delayed 14 days |
-The guide says healthier clients extend collection periods and delay or reduce payouts. The delay and extension values above are placeholders. Whether payouts are reduced as well as delayed is an open decision (D2).
+The extension and delay values are placeholders. Payouts are delayed only, never reduced (decision D2). What "extend the premium collection period" means exactly is the first question for the team (Q1 in section 9).
 
 ## 7. Story points by priority and sprint
 Sprint plan follows the guide: Sprint 2 builds core (A1 to A4, B1 to B3, C1 to C4), Sprint 3 builds E1, F1, G1 to G4, Sprint 4 finalizes. Should and Could stories are built after Must stories if time allows, otherwise delivered as designed screens.
 
 | Group | Stories | Points |
 |---|---|---|
-| Sprint 2 (Must core) | A1 5, A2 8, A3 3, A4 5, B1 8, B2 5, B3 3, C1 5, C2 3, C3 3, C4 5 | 53 |
+| Sprint 2 (Must core) | A1 5, A2 8, A3 3, A4 5, B1 8, B2 5, B3 3, C1 5, C2 3, C3 3, C4 5, F4 3 (basic) | 56 |
 | Sprint 3 (Must) | E1 8, F1 5, G1 8, G2 3, G3 5, G4 5 | 34 |
 | Should | A5 5, B4 3, C5 3, D1 5, D2 3, D3 5, E2 3, F2 5, F3 5, G5 5 | 42 |
-| Could | B5 3 | 3 |
-| Total | 28 stories | 132 (135 with the client dashboard) |
-Must total: 87 points. Sprint 2 is the heaviest: build the Auth service and the API contract first, and consider moving C4 to Sprint 3 if Sprint 2 slips. Client dashboard (3 points, section 5) is added to Sprint 3.
+| Could | A6 3, B5 3 | 6 |
+| Total | 30 stories | 138 |
+Must total: 90 points. Sprint 2 is the heaviest: build the Auth service and the API contract first, and move C4 to Sprint 3 if Sprint 2 slips.
 
 ## 8. Definition of Ready (a story can enter a sprint when)
 - Acceptance criteria and screens are listed here and the spec is Approved.
 - The API calls it needs are in the OpenAPI contract (spec 05).
 - The task file exists in specs/tasks with owned files, tests, and an assigned agent tier (spec 01).
 
-## 9. Open decisions for the team
-- D1 Reward discount: the estimate screen (web/client-estimate) shows a "Step Rewards" line lowering the premium, and the admin console has an "Auto-apply Step Rewards discount" toggle. The guide defines the reward effect as extended collection periods and delayed or reduced payouts, with no discount. Proposed: remove the discount line and rename the admin toggle to "Apply reward effects". Needs your decision before screen specs (06).
-- D2 Delay versus reduce: do payouts get only delayed, or also reduced? Proposed: delayed only for the demo, with reduction as a Could.
-- D3 Forgot password: include a simulated reset (Could) or leave out.
-- D4 Mobile claims review for agents (D3) has no screen. Proposed: web only for the demo.
-- D5 Whether the Client dashboard needs its own story points or stays inside C5 and F1.
-- D6 Confirm the proposed rates and thresholds in section 6.
+## 9. Decisions
+
+Decided by the team lead's delegate (Claude, acting as insurance-domain and full-stack lead). Change any of these by editing this section.
+
+- D1 No reward discount. Remove the "Step Rewards" discount line from the estimate screen and rename the admin toggle "Auto-apply Step Rewards discount" to "Apply reward effects". Reason: the guide defines the reward effect as collection period and payout timing only. A premium discount is a pricing and underwriting decision, and the estimate must stay a pure function of age, coverage and term so it is explainable and testable. This is a design edit in Stitch (web/client-estimate, web/admin-console).
+- D2 Payouts are delayed only, never reduced. Reason: in a real policy, the benefit amount is fixed by the contract. Changing the amount based on a wellness score would not be defensible, while a release-date delay is a simple demo mechanism. The guide says "delay or reduce", so delay alone satisfies it. Reduction is not built. Approval decisions are never changed by reward results.
+- D3 Forgot password is included as story A6 (Could, simulated reset page instead of a real email). Reason: any real login system needs it, and the login screens already show the link.
+- D4 Agent claims review is web only (D3 story). Reason: reviewing documents and writing decision notes is desktop work. The agent's mobile app covers chat, estimate review and the client list.
+- D5 The client dashboard is its own story F4 (Must, 3 points). Reason: it is the screen shown after login.
+- D6 Rates and thresholds in section 6 are accepted as sample values, pending the team's answers below. The estimate rule is a pure function in one shared place so changing a rate never touches screens.
+- D7 Real-world note. In real life, insurers pay valid claims as the contract and regulation require, and do not link payouts to activity data. The Rewards effects are a course simulation. The documentation and the demo labels must say so ("Simulated for this course demo").
+
+Questions to confirm with the team and the professor
+- Q1 What does "extend the premium collection period" mean: the client gets more days to pay a due premium (a longer grace period), or the insurer keeps collecting premiums for more months or years? The spec currently treats it as extra days on the schedule; it must match the course brief.
+- Q2 Does the professor require payout reduction, or is delay enough?
+- Q3 Did the professor give sample rates, a formula, or required estimate inputs (for example smoker or gender)?
+- Q4 Which health data counts: steps only, or also other measures? Is 8,000 steps a day an acceptable default goal?
+- Q5 Are three reward levels (Bronze, Silver, Gold) fine, and are the 50 and 75 score thresholds acceptable?
+- Q6 Was the premium discount in the estimate mockup intentional? (D1 removes it.)
+- Q7 Exact deadline, and is a presentation or demo required?
