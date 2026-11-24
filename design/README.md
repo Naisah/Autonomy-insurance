@@ -11,7 +11,7 @@ Motion: state-change 150ms, card-lift 240ms, surface-enter 320ms, surface-exit 1
 Full values live in the tailwind config at the top of each exported file.
 
 ## Screen inventory (38 screens exported, complete as of the zip export)
-Web (23)
+Web (18)
 | Screen | File | Features |
 |---|---|---|
 | Landing | web/landing | entry to portals |
@@ -28,7 +28,7 @@ Web (23)
 | Admin console, accounts | web/admin-console, web/admin-accounts | A4, F3 |
 | States sheet (loading, error, 403, session expired) | web/states | all |
 
-Mobile main app (17)
+Mobile main app (14)
 | Screen | File | Features |
 |---|---|---|
 | Sign in, create account | mobile/sign-in, mobile/register | A1, A3 |
@@ -42,6 +42,11 @@ Mobile main app (17)
 
 Rewards app (6)
 rewards/signin (G1), rewards/client-only-access (G1 role check), rewards/home (G2, G3), rewards/health-score (G3, G4), rewards/goals-rewards (G3), rewards/effect (G5 shown to the client).
+
+## Notes and open design points
+- Admin console has a toggle "Auto-apply Step Rewards discount". The guide defines the reward effect as extending the premium collection period and delaying or reducing claims payouts, not a discount. Align the label or the rule before building (decide in spec 03).
+- Exported HTML links to other screens by old Stitch paths and uses a few missing local avatar images. Treat the files as visual reference only, not as a clickable prototype.
+- Access rules were checked against the screens: agent and manager screens show no reward data, admin screens show no chat content, managers see escalated chats only.
 
 ## Still missing
 - Mobile manager and admin screens are not designed. Assumed web-only for those roles unless the team decides otherwise.

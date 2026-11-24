@@ -57,6 +57,7 @@ services/{auth,core-api,rewards-api}/
 apps/{web,mobile,rewards}/
 design/stitch/       raw Stitch exports, one HTML file per screen
 design/README.md     tokens and screen inventory
+design/design-system.md  Stitch design system (brand, type, components)
 docs/                course documentation, AI use disclosure log, sprint records
 legacy/frontend-draft/  groupmate's first React draft (reference only, do not extend)
 ```
