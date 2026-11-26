@@ -140,7 +140,7 @@ D1 File a claim. Client. Should. 5 points. W, M. Screens: web/client-file-claim,
 D2 Track claim status. Client. Should. 3 points. W, M. Screens: web/client-claims, web/client-claim-details, mobile/client-claims, mobile/client-claim-details.
 - Statuses: Submitted, Under review, Needs info, Approved, Paid, Rejected. The list shows chips, amount and date.
 - Details show a timeline, documents and agent updates. "Needs info" lets the client reply.
-- After approval the client sees the payout date (section 6) and, if a reward delay applies, "Based on your Rewards activity". The payout date is client-only.
+- After approval the client sees "Approved, payout scheduled for [date]" (date from section 6) and, if a reward delay applies, "Based on your Rewards activity". The payout date is client-only.
 
 D3 Agent reviews a claim and updates its status. Agent. Should. 5 points. W. Screens: web/agent-claims. Mobile: none (closed: web only).
 - The agent sees claims of assigned clients only, filtered by status.
@@ -199,7 +199,7 @@ G2 Record daily steps using sample data. Client. Must. 3 points. R. Screens: rew
 - Daily points follow the rule in section 6 (0, 10, 20 or 30). A day can be edited until midnight, then it is locked (409 with a friendly message).
 - Steps are the only input. There are no custom goals, streaks or milestones.
 
-G3 Monthly points, level and progress. Client. Must. 5 points. R. Screens: rewards/home, rewards/status (see spec 06; the older health-score, goals-rewards and effect screens merge into it).
+G3 Step goals and reward progress (monthly points and level; the goal is the next level). Client. Must. 5 points. R. Screens: rewards/home, rewards/status (see spec 06; the older health-score, goals-rewards and effect screens merge into it).
 - The client sees today's steps and points, month points, current level (Bronze, Silver, Gold, Platinum), points to the next level and weekly bars. Points reset each month.
 - The "goal" is the next level. The screen explains the current effect in plain words ("Your Gold level gives you 14 extra days to pay each premium and delays claim payouts by 5 days").
 
