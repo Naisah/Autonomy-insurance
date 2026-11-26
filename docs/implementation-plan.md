@@ -1,6 +1,6 @@
 # Implementation plan: Autonomy Insurance (spec-driven, for Orca)
 
-Status: Draft for team approval, Nov 26, 2026. Builds on docs/build-phases.md and specs 00 to 07. It does not replace any spec. Where it changes a spec (task split, phase order), section 9 lists the edit to make in that spec.
+Status: Draft for team approval, Nov 26, 2026. Team answers recorded in section 11 (Q1 to Q4, Q6). Builds on docs/build-phases.md and specs 00 to 07. It does not replace any spec. Where it changes a spec (task split, phase order), section 9 lists the edit to make in that spec.
 
 ## 1. What this plan is for
 The web app, the main mobile app and the Rewards app are built as one system by coding agents in Orca (spec 01), one small task at a time. This plan says:
@@ -185,7 +185,7 @@ Maximum useful parallelism: about 5 agents at once (Contract or Auth, Core, Web,
 | Mobile | Widget tests; integration_test on the Android emulator by hand | apps/mobile, apps/rewards | Widget tests yes |
 
 ## 8. Environment and tooling
-Each group member's laptop needs: Git, Node 22, Docker Desktop, Flutter SDK with Android Studio and one Android emulator, and Java 17 if the Dart client is generated with openapi-generator. iOS needs a Mac, so the plan assumes Android only (question Q3).
+Each group member's laptop needs: Git, Node 22, Docker Desktop, Flutter SDK with Android Studio and one Android emulator, and Java 17 if the Dart client is generated with openapi-generator. The demo is Android only (Q3 answered), so no Mac is needed.
 Local run: `docker compose up -d`, `npm run db:reset`, then `npm run dev:auth`, `dev:core`, `dev:rewards`, `dev:web`, and `flutter run` in each Flutter app. The Android emulator reaches the laptop at `10.0.2.2`, so the mobile apps need that base URL in debug builds.
 Secrets: `.env` per service from `.env.example`; the Gemini key stays in the owner's `.env` only. Tests never need it.
 
@@ -200,7 +200,7 @@ Secrets: `.env` per service from `.env.example`; the Gemini key stays in the own
 1. **No spec is Approved.** specs/README says agents build only from Approved specs. About 50 decision IDs are open across specs 01 to 07 (C, A, M, S, K, R series). P0.1 and P0.2.
 2. **Task files do not exist.** specs/tasks has only the template; Orca needs one file per task. P0.5.
 3. **No CI and `main` is not protected.** Agents run with permission prompts skipped (spec 01 section 4). P0.6.
-4. **Time zone is undefined.** "A day closes at midnight" (steps), due dates and "Overdue" need one zone. Proposal: Asia/Manila for business dates, UTC for timestamps (Q6).
+4. **Time zone (answered: Asia/Manila).** Business dates (a step day closing at midnight, due dates, Overdue, approval dates) use Asia/Manila; timestamps are stored in UTC. Specs 03 and 04 and the reward vectors must say so.
 5. **Service tokens are scheduled too late** (T024 in Phase 6, needed in Phase 2). Fixed by the T024a split above once approved.
 6. **openapi.yaml does not exist.** A first draft was written on Nov 26 but not linted or committed; T014 can start from it or from scratch (Q8).
 
@@ -219,12 +219,15 @@ Secrets: `.env` per service from `.env.example`; the Gemini key stays in the own
 16. A glossary, risk register and out-of-scope list are course deliverables; the risk register also helps planning (deadline, quota, emulator).
 
 ## 11. Questions for the team
-- **Q1 Stack.** Confirm spec 00 section 4: Node 22 + Fastify + Prisma + Postgres for the services, React + Vite + Tailwind for web, Flutter for both mobile apps, Socket.IO for chat, Gemini for the chatbot.
-- **Q2 Deadline.** Is Jan 4, 2027 the real deadline, and is a live demo required? The plan has about 10 days of buffer in Phase 8.
-- **Q3 Platforms.** Android only for the demo (iOS needs a Mac)? Who has a laptop that can run Docker and an Android emulator at the same time (about 16 GB RAM)?
-- **Q4 Team split.** Which group members review which lanes? Spec 01 requires a human review on every task; with 5 agents in parallel that is several reviews a day.
+Answered on Nov 26, 2026:
+- **Q1 Stack: answered.** Flutter for both mobile apps. Web stays React + Vite + Tailwind and the services stay as in spec 00 section 4 (no change requested).
+- **Q2 Deadline: answered.** Jan 4, 2027, and the team wants to finish earlier. Phase dates are targets; any phase can start as soon as the previous exit demo passes.
+- **Q3 Platforms: answered.** Android only for the demo. iOS is out of scope.
+- **Q4 Team split: answered.** Reviewers are picked at random per pull request; there are no fixed lanes for humans.
+- **Q6 Time zone: answered.** Asia/Manila for business dates, UTC for stored timestamps.
+
+Still open:
 - **Q5 Designs.** Build the missing screen states (waiting banner, availability toggle, bell, Rewards status) from spec 06 without new Stitch exports?
-- **Q6 Time zone.** Asia/Manila for business dates?
 - **Q7 Dart client.** Java-based openapi-generator, or a pure-Dart generator?
 - **Q8 Contract draft.** Should T014 start from the unreviewed openapi.yaml draft written on Nov 26?
 - **Q9 SSO fallback.** Keep the system-browser fallback, or rely on deep links plus email and password login in the Rewards app?
@@ -233,3 +236,4 @@ Secrets: `.env` per service from `.env.example`; the Gemini key stays in the own
 - **Q12 Admin close period.** Does the admin console need "Close period now", or only the Rewards app?
 - **Q13 Gemini key.** Who owns the key, and is the free tier enough for testing (tests use the fake provider)?
 - **Q14 Orca quotas.** Fill the quota column in spec 01 before Phase 1 starts.
+- Which laptop runs Docker and the Android emulator together for the demo (about 16 GB RAM)?
