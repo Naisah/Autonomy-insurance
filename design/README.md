@@ -40,8 +40,8 @@ Mobile main app (14)
 | Profile | mobile/client-profile | A5, settings |
 | Agent home, chat, review estimate | mobile/agent-home, mobile/agent-chat, mobile/agent-review-estimate | B2, B4, C4, F1 |
 
-Rewards app (6)
-rewards/signin (G1), rewards/client-only-access (G1 role check), rewards/home (G2, G3), rewards/health-score (G3, G4), rewards/goals-rewards (G3), rewards/effect (G5 shown to the client).
+Rewards app (6 exported, 4 target screens)
+rewards/signin (G1), rewards/client-only-access (G1 role check), rewards/home (G2, G3), rewards/health-score (G3, G4), rewards/goals-rewards (G3), rewards/effect (G5 shown to the client). Target (spec 06): rewards/signin, rewards/client-only-access, rewards/home, rewards/status. rewards/status is made by editing rewards/health-score; rewards/goals-rewards and rewards/effect are retired once merged into it.
 
 ## Notes and open design points
 - Admin console has a toggle "Auto-apply Step Rewards discount". The guide defines the reward effect as extending the premium collection period and delaying or reducing claims payouts, not a discount. Align the label or the rule before building (decide in spec 03).
@@ -52,3 +52,5 @@ rewards/signin (G1), rewards/client-only-access (G1 role check), rewards/home (G
 - Mobile manager and admin screens are not designed. Assumed web-only for those roles unless the team decides otherwise.
 - Agent claims review on mobile (D3).
 - Source of truth for brand and components: design/design-system.md (exported from Stitch). Raw files came from stitch_remix_of_insuria_life_insurance_platform.zip.
+
+- Full list of Stitch edits still to do: specs/06-screen-specs.md section 7.
