@@ -1,4 +1,3 @@
-<!-- Autonomy Insurance — mobile/biometric-unlock -->
 <!DOCTYPE html><html lang="en"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -152,7 +151,7 @@ if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
       <!-- Returning User Avatar -->
       <div class="flex flex-col items-center gap-gutter-sm">
         <div class="relative">
-          <img id="user-avatar" src="https://lh3.googleusercontent.com/aida/ALJJyrBNPH83PI6mgA_4_A_-foW_tP8Shd3dieHS0JLDlRimR18VKECaUMk7PVaU-Z7GJyIrjWRY1ek31arcAB9Z4oGf8o9KVXhvSJP8-vp0nwDMolpyXdM5T1H2GlXbP0_JUT7YN_z_qsHVe8Mkg4yNbSnVHT-N7yqVcyYK_oqkOulYBJwEqIpv9e5WeFH_xR8yQIFjbyWcxEKlYTY0PRU5s34gtCc2pdVP5Kl7GuRmnaROurgT-AdBwwI" alt="Elena Rostova" class="w-20 h-20 rounded-full object-cover border-2 border-secondary">
+          <img id="user-avatar" src="https://lh3.googleusercontent.com/aida/ALJJyrCA3671pF-_RmHeZHCHPNhoTBhYVAeRwq-OQCz_an-cE8i3kC5liK4CkwoU1dqZLFEKs_YuXcgHdoOZ1i7j2abAvjxEbRYSFDdCkZk7BB9M8k1kYQK4KKOOWj2FrR7FWG2PJZYlrmWbZEPkjZfftS2X9IBbXc_bbkMTjrTqVIY3BRyjQDWaFs-L4j8jdWmwoEGmd74q3as_jER030i-0sKdn5iZrLb2T9Q1UKCogq9dc9wpPwDjhD4" alt="Elena Rostova" class="w-20 h-20 rounded-full object-cover border-2 border-secondary">
           <span id="user-badge" class="absolute -bottom-1 -right-1 px-2.5 py-0.5 rounded-full bg-secondary text-on-secondary font-label text-label-sm border border-surface-card">Client</span>
         </div>
         <div>
@@ -179,7 +178,7 @@ if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
           <span data-design-text-token="label-lg">Unlock with Face ID</span>
         </button>
 
-        <a href="../client-login/ClientLogin.html" class="font-label text-label-lg text-on-surface-strong hover:text-primary underline underline-offset-4">
+        <a href="sign-in.html" class="font-label text-label-lg text-on-surface-strong hover:text-primary underline underline-offset-4">
           Use email &amp; password instead
         </a>
       </div>
@@ -205,7 +204,7 @@ if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
 
   </div>
 
-  <script data-stitch-original-script="09b19183554e501c===../../images/customer_nadia.jpg|||72053d5c5bbc52c2===../../images/agent_maya.jpg">
+  <script data-stitch-original-script="3d0f065e99b7513e===../../images/customer_nadia.jpg|||2d4bc1853f7d27b4===../../images/agent_maya.jpg">
     function setReturningRole(role) {
       const cBtn = document.getElementById('role-client');
       const aBtn = document.getElementById('role-agent');
@@ -217,14 +216,14 @@ if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
       if (role === 'client') {
         cBtn.className = 'px-3 py-1 rounded-full bg-primary text-on-primary font-label text-label-sm transition-colors';
         aBtn.className = 'px-3 py-1 rounded-full text-on-surface-muted font-label text-label-sm transition-colors';
-        avatar.src = 'https://lh3.googleusercontent.com/aida/ALJJyrBNPH83PI6mgA_4_A_-foW_tP8Shd3dieHS0JLDlRimR18VKECaUMk7PVaU-Z7GJyIrjWRY1ek31arcAB9Z4oGf8o9KVXhvSJP8-vp0nwDMolpyXdM5T1H2GlXbP0_JUT7YN_z_qsHVe8Mkg4yNbSnVHT-N7yqVcyYK_oqkOulYBJwEqIpv9e5WeFH_xR8yQIFjbyWcxEKlYTY0PRU5s34gtCc2pdVP5Kl7GuRmnaROurgT-AdBwwI';
+        avatar.src = 'https://lh3.googleusercontent.com/aida/ALJJyrCA3671pF-_RmHeZHCHPNhoTBhYVAeRwq-OQCz_an-cE8i3kC5liK4CkwoU1dqZLFEKs_YuXcgHdoOZ1i7j2abAvjxEbRYSFDdCkZk7BB9M8k1kYQK4KKOOWj2FrR7FWG2PJZYlrmWbZEPkjZfftS2X9IBbXc_bbkMTjrTqVIY3BRyjQDWaFs-L4j8jdWmwoEGmd74q3as_jER030i-0sKdn5iZrLb2T9Q1UKCogq9dc9wpPwDjhD4';
         badge.textContent = 'Client';
         greeting.textContent = 'Welcome back, Elena';
         email.textContent = 'elena.rostova@insuria.co';
       } else {
         aBtn.className = 'px-3 py-1 rounded-full bg-surface-dark text-pure-white font-label text-label-sm transition-colors';
         cBtn.className = 'px-3 py-1 rounded-full text-on-surface-muted font-label text-label-sm transition-colors';
-        avatar.src = 'https://lh3.googleusercontent.com/aida/ALJJyrCcIVIRZ7uESG4o0sYPrwZPpnYbVp9t8qEma-oKt9m0nDcfu5K0NhJmOABDoVtAhGy3giyTvNCblxNUDcyLXSpxBUBI4fwu1hzOim5tLVzb4fBJ7CF56g7k0IA-Wt1p2Kf60KTcHx0Sc3QvisaJgL7OGZHZK7M0ozed6OfjKb0FV_-ZaKvRcLgvZLr39EzyDORj2kbDE18G9zpz5mW0cmFd44rAQVrCXWhwSmmERkO6mawo';
+        avatar.src = 'https://lh3.googleusercontent.com/aida/ALJJyrAO8IEpuYwn8n35tUrwuedKVwTGTVvA7HPaWU_IWEr1QfXthX1HQBSbi28JitI5AfJQ9onVCoc_yZjzKo0fllsbgaKR92tFEJRHZpO10ZQJydCeurG56l0hm_UQgIfi5sAJ2yotnBAKnqu971cQJUek7_9FVyDw9bl7eepJEN0yVyeySkMenuIoJguorUYOHV3sqVQlMx0pJNxXEVGYHjTs2dQxg0Z2rc3VclfNviDG91cj';
         badge.textContent = 'Agent';
         greeting.textContent = 'Welcome back, Maya';
         email.textContent = 'maya.santos@insuria.co';
@@ -238,4 +237,5 @@ if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
   </script>
 
 
+<script src="../../prototype/proto-links.js" defer></script>
 </body></html>

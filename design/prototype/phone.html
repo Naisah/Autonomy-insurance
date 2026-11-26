@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Autonomy Insurance: phone preview</title>
+<style>
+  body { margin:0; min-height:100vh; background:#FAF7F2; display:flex; flex-direction:column; align-items:center;
+         justify-content:center; gap:16px; padding:24px; box-sizing:border-box; font:600 14px/20px "DM Sans",system-ui,sans-serif; }
+  .phone { width:390px; height:844px; max-height:calc(100vh - 96px); border:12px solid #1B1B1D; border-radius:48px;
+           overflow:hidden; background:#fff; box-shadow:0 16px 48px rgba(0,0,0,.18); }
+  iframe { width:100%; height:100%; border:0; display:block; }
+  a { color:#1B1B1D; }
+</style>
+</head>
+<body>
+  <a href="index.html">Back to the launcher</a>
+  <div class="phone"><iframe id="screen" title="Mobile screen"></iframe></div>
+<script>
+  var p = new URLSearchParams(location.search).get('p') || 'mobile/sign-in';
+  if (!/^(mobile|rewards)\/[a-z0-9-]+$/.test(p)) p = 'mobile/sign-in';
+  document.getElementById('screen').src = '../stitch/' + p + '.html';
+</script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Autonomy Insurance: clickable prototype</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@500&family=DM+Sans:wght@400;600;700&family=Hanken+Grotesk:wght@700;800&display=swap">
+<style>
+  :root { --red:#D52B1E; --red-deep:#A81F16; --red-soft:#FFEDEA; --gold:#F2B705; --gold-soft:#FFEFD4;
+          --bg:#FAF7F2; --card:#FFFFFF; --text:#4B4B4D; --strong:#1B1B1D; --muted:#5E5E60; --line:#D9D9DA; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:16px/24px "DM Sans",system-ui,sans-serif; }
+  main { max-width:1120px; margin:0 auto; padding:48px 24px 96px; }
+  h1 { font:800 48px/52px "Hanken Grotesk",sans-serif; color:var(--strong); margin:0 0 8px; }
+  h2 { font:700 24px/30px "Hanken Grotesk",sans-serif; color:var(--strong); margin:0; }
+  .lead { font-size:18px; line-height:28px; max-width:70ch; margin:0 0 32px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:24px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:24px; padding:24px; display:flex; flex-direction:column; gap:16px; }
+  .tag { display:inline-block; font:600 12px/16px "DM Sans"; padding:4px 10px; border-radius:9999px; background:var(--red-soft); color:var(--red-deep); }
+  .tag.gold { background:var(--gold-soft); color:#3F2E00; }
+  .row { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .btn { display:inline-flex; align-items:center; justify-content:center; padding:10px 18px; border-radius:9999px;
+         background:var(--red); color:#fff; font:600 14px/20px "DM Sans"; text-decoration:none; }
+  .btn:hover { background:var(--red-deep); }
+  .btn.ghost { background:transparent; color:var(--strong); border:1px solid var(--line); }
+  .btn.ghost:hover { border-color:var(--strong); }
+  .actions { display:flex; gap:8px; flex-wrap:wrap; }
+  ol { margin:0; padding-left:20px; font-size:14px; line-height:22px; }
+  ol a { color:var(--strong); }
+  .note { font-size:14px; line-height:20px; color:var(--muted); }
+  .mono { font-family:"DM Mono",monospace; font-size:13px; }
+  section + section { margin-top:48px; }
+  .all { columns:3 220px; font-size:14px; line-height:24px; }
+  .all a { color:var(--strong); }
+</style>
+</head>
+<body>
+<main>
+  <span class="tag">ITS120P · Deliverable 12</span>
+  <h1>Autonomy Insurance prototype</h1>
+  <p class="lead">Clickable prototype of the main flows, built from the Stitch exports in <span class="mono">design/stitch</span>. Pick a role to start. Mobile screens open in a phone frame. Every screen has a small <b>Prototype</b> chip at the bottom left that brings you back here.</p>
+
+  <section>
+    <div class="grid">
+      <div class="card">
+        <div class="row"><h2>Client, web</h2><span class="tag">Web</span></div>
+        <ol>
+          <li>Landing, then Client Login (any email and a 6+ character password) or Create an account</li>
+          <li>Dashboard: chat with Maya, resume an estimate, open the policy card, view a claim</li>
+          <li>Top nav: Chat (agent and AI tabs), Estimate, Claims, Profile</li>
+          <li>Claims, then File a new claim, then Continue to the claim details</li>
+        </ol>
+        <div class="actions">
+          <a class="btn" href="../stitch/web/landing.html">Start at landing</a>
+          <a class="btn ghost" href="../stitch/web/client-dashboard.html">Skip to dashboard</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="row"><h2>Client, mobile</h2><span class="tag">Mobile</span></div>
+        <ol>
+          <li>Sign in or Create account, then Biometric unlock (pick Client)</li>
+          <li>Dashboard: Chat now, Resume estimate, Active Policy card, claim card</li>
+          <li>Bottom nav: Home, Chat, Estimate, Claims, Profile</li>
+          <li>Claims, then File a claim, then Continue to the claim details</li>
+          <li>Profile, then Open Rewards</li>
+        </ol>
+        <div class="actions">
+          <a class="btn" href="phone.html?p=mobile/sign-in">Open in phone frame</a>
+          <a class="btn ghost" href="../stitch/mobile/sign-in.html">Full window</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="row"><h2>Agent</h2><span class="tag">Web + Mobile</span></div>
+        <ol>
+          <li>Web: Agent Desk (clients, estimates queue, chat, escalate), then Claims review</li>
+          <li>Mobile: Agent Home, then Chat with Elena Rostova or Review estimate</li>
+          <li>Mobile also: Biometric unlock with the Agent role goes to Agent Home</li>
+        </ol>
+        <div class="actions">
+          <a class="btn" href="../stitch/web/agent-dashboard.html">Agent Desk (web)</a>
+          <a class="btn ghost" href="phone.html?p=mobile/agent-home">Agent Home (mobile)</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="row"><h2>Manager</h2><span class="tag">Web</span></div>
+        <ol>
+          <li>Manager dashboard: team overview, reassign a client</li>
+          <li>Escalations: escalated chats, reassign and confirm</li>
+        </ol>
+        <div class="actions">
+          <a class="btn" href="../stitch/web/manager-dashboard.html">Manager dashboard</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="row"><h2>Admin</h2><span class="tag">Web</span></div>
+        <ol>
+          <li>Admin console: create accounts, assign agents, policy settings</li>
+          <li>Accounts and roles: filter by role, create account, save assignment</li>
+        </ol>
+        <div class="actions">
+          <a class="btn" href="../stitch/web/admin-console.html">Admin console</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="row"><h2>Rewards app</h2><span class="tag gold">Mobile</span></div>
+        <ol>
+          <li>Sign in as Elena Rostova, or Preview the non-client gate</li>
+          <li>Home, then the Health and Goals tabs</li>
+          <li>Health, then the Extended Grace card opens the reward effect</li>
+        </ol>
+        <p class="note">These screens still show the old 0 to 100 health score. The target Status screen (levels and points) is listed in spec 06 section 7.</p>
+        <div class="actions">
+          <a class="btn" href="phone.html?p=rewards/signin">Open in phone frame</a>
+          <a class="btn ghost" href="../stitch/rewards/signin.html">Full window</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Every screen</h2>
+    <p class="note">38 screens. Mobile and Rewards links open in the phone frame.</p>
+    <div class="all" id="all"></div>
+  </section>
+</main>
+<script>
+  var screens = {
+    'Web': ['landing','client-login','client-register','client-dashboard','client-chat','client-estimate','client-policy','client-claims','client-file-claim','client-claim-details','client-profile','agent-dashboard','agent-claims','manager-dashboard','manager-escalations','admin-console','admin-accounts','states'],
+    'Mobile': ['sign-in','register','biometric-unlock','client-dashboard','client-chat','client-estimate','client-policy','client-claims','client-file-claim','client-claim-details','client-profile','agent-home','agent-chat','agent-review-estimate'],
+    'Rewards': ['signin','client-only-access','home','health-score','goals-rewards','effect']
+  };
+  var out = '';
+  Object.keys(screens).forEach(function (g) {
+    var dir = g.toLowerCase();
+    screens[g].forEach(function (s) {
+      var href = dir === 'web' ? '../stitch/web/' + s + '.html' : 'phone.html?p=' + dir + '/' + s;
+      out += '<div><a href="' + href + '">' + g + ': ' + s + '</a></div>';
+    });
+  });
+  document.getElementById('all').innerHTML = out;
+</script>
+</body>
+</html>

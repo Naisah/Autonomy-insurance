@@ -1,4 +1,3 @@
-<!-- Autonomy Insurance — web/client-policy -->
 <!DOCTYPE html><html lang="en"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -126,7 +125,7 @@ if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
     <!-- Sticky Web App Navigation -->
     <header class="sticky top-0 z-40 bg-surface-card border-b border-outline">
       <div class="max-w-7xl mx-auto px-gutter-lg py-gutter-md flex items-center justify-between gap-gutter-lg">
-        <a href="../insuria-landing/InsuriaLanding.html" class="flex items-center gap-gutter-sm shrink-0">
+        <a href="landing.html" class="flex items-center gap-gutter-sm shrink-0">
           <div class="grid grid-cols-3 gap-0.5 p-1 bg-surface rounded-sm border border-outline" aria-hidden="true">
             <span class="w-2.5 h-2.5 bg-mapua-red"></span>
             <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
@@ -142,15 +141,15 @@ if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
         </a>
 
         <nav class="hidden md:flex items-center gap-gutter-sm" aria-label="Client navigation">
-          <a href="../client-dashboard-web/ClientDashboardWeb.html" class="px-4 py-2 rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg">Home</a>
-          <a href="../client-agent-chat-web/ClientAgentChatWeb.html" class="px-4 py-2 rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg">Chat</a>
-          <a href="../client-estimate-web/ClientEstimateWeb.html" class="px-4 py-2 rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg">Estimate</a>
-          <a href="#claims" class="px-4 py-2 rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg">Claims</a>
-          <a href="#profile" class="px-4 py-2 rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg">Profile</a>
+          <a href="client-dashboard.html" class="px-4 py-2 rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg">Home</a>
+          <a href="client-chat.html" class="px-4 py-2 rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg">Chat</a>
+          <a href="client-estimate.html" class="px-4 py-2 rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg">Estimate</a>
+          <a href="client-claims.html" class="px-4 py-2 rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg">Claims</a>
+          <a href="client-profile.html" class="px-4 py-2 rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg">Profile</a>
         </nav>
 
         <div class="flex items-center gap-gutter-sm">
-          <img src="https://lh3.googleusercontent.com/aida/ALJJyrBNPH83PI6mgA_4_A_-foW_tP8Shd3dieHS0JLDlRimR18VKECaUMk7PVaU-Z7GJyIrjWRY1ek31arcAB9Z4oGf8o9KVXhvSJP8-vp0nwDMolpyXdM5T1H2GlXbP0_JUT7YN_z_qsHVe8Mkg4yNbSnVHT-N7yqVcyYK_oqkOulYBJwEqIpv9e5WeFH_xR8yQIFjbyWcxEKlYTY0PRU5s34gtCc2pdVP5Kl7GuRmnaROurgT-AdBwwI" alt="Elena Rostova" class="w-10 h-10 rounded-full object-cover border border-outline">
+          <img src="https://lh3.googleusercontent.com/aida/ALJJyrCA3671pF-_RmHeZHCHPNhoTBhYVAeRwq-OQCz_an-cE8i3kC5liK4CkwoU1dqZLFEKs_YuXcgHdoOZ1i7j2abAvjxEbRYSFDdCkZk7BB9M8k1kYQK4KKOOWj2FrR7FWG2PJZYlrmWbZEPkjZfftS2X9IBbXc_bbkMTjrTqVIY3BRyjQDWaFs-L4j8jdWmwoEGmd74q3as_jER030i-0sKdn5iZrLb2T9Q1UKCogq9dc9wpPwDjhD4" alt="Elena Rostova" class="w-10 h-10 rounded-full object-cover border border-outline">
         </div>
       </div>
     </header>
@@ -159,7 +158,7 @@ if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
 
       <!-- Clean Back Link -->
       <div>
-        <a href="../client-dashboard-web/ClientDashboardWeb.html" class="inline-flex items-center gap-1.5 font-label text-label-lg text-on-surface-strong hover:text-primary">
+        <a href="client-dashboard.html" class="inline-flex items-center gap-1.5 font-label text-label-lg text-on-surface-strong hover:text-primary">
           <span class="material-symbols-outlined text-[18px]" aria-hidden="true">arrow_back</span>
           <span>Back to Dashboard</span>
         </a>
@@ -172,7 +171,7 @@ if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
             <span class="px-3 py-1 rounded-full bg-success text-on-success font-label text-label-sm">Active Policy</span>
             <span class="font-mono text-mono-md text-light-gray tabular-nums">#INS-4829</span>
           </div>
-          <a href="../client-agent-chat-web/ClientAgentChatWeb.html" class="inline-flex items-center gap-gutter-sm px-gutter-lg py-2.5 rounded-full bg-primary text-on-primary hover:bg-primary-hover transition-colors font-label text-label-lg">
+          <a href="client-chat.html" class="inline-flex items-center gap-gutter-sm px-gutter-lg py-2.5 rounded-full bg-primary text-on-primary hover:bg-primary-hover transition-colors font-label text-label-lg">
             <span class="material-symbols-outlined text-[18px]" aria-hidden="true">chat_bubble</span>
             <span>Ask Maya about this policy</span>
           </a>
@@ -243,7 +242,7 @@ if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
             </div>
           </div>
 
-          <a href="../client-agent-chat-web/ClientAgentChatWeb.html" class="w-full inline-flex items-center justify-center gap-gutter-sm px-gutter-lg py-3 rounded-full bg-surface border border-outline hover:border-primary font-label text-label-lg text-on-surface-strong transition-colors">
+          <a href="client-chat.html" class="w-full inline-flex items-center justify-center gap-gutter-sm px-gutter-lg py-3 rounded-full bg-surface border border-outline hover:border-primary font-label text-label-lg text-on-surface-strong transition-colors">
             <span class="material-symbols-outlined text-[18px]" aria-hidden="true">edit</span>
             <span>Update beneficiary with agent</span>
           </a>
@@ -322,4 +321,5 @@ if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
   </div>
 
 
+<script src="../../prototype/proto-links.js" defer></script>
 </body></html>

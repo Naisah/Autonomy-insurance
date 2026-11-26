@@ -13,7 +13,7 @@
 | 9 | REST API endpoint list | specs/05-api-contract.md and packages/contracts/openapi.yaml (task T014) | Notes done, file to write |
 | 10 | SSO flow | specs/03-architecture.md section 9.1 | Draft v2 |
 | 11 | Sketches and wireframes for each role | design/stitch (38 screens) and design/README.md | Done, edits listed in spec 06 section 7 |
-| 12 | Clickable prototype of main flows | Gap. The Stitch exports are separate pages. Check whether Stitch can link screens into a prototype, otherwise link them in a small static page | To decide |
+| 12 | Clickable prototype of main flows | design/prototype/index.html (launcher with one entry per role: client web, client mobile, agent, manager, admin, rewards). Links the 38 Stitch exports in design/stitch | Done (screens still need the spec 06 section 7 edits) |
 | 13 | Working web and mobile apps with the Must features | apps/, services/ (tasks in spec 07) | Not started |
 | 14 | Test and bug log | docs/bug-log.md | Start in Sprint 2 |
 | 15 | UI/UX review | docs/ux-review.md (task T112) | Sprint 3 |

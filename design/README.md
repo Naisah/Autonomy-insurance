@@ -45,12 +45,12 @@ rewards/signin (G1), rewards/client-only-access (G1 role check), rewards/home (G
 
 ## Notes and open design points
 - Admin console has a toggle "Auto-apply Step Rewards discount". The guide defines the reward effect as extending the premium collection period and delaying or reducing claims payouts, not a discount. Align the label or the rule before building (decide in spec 03).
-- Exported HTML links to other screens by old Stitch paths and uses a few missing local avatar images. Treat the files as visual reference only, not as a clickable prototype.
+- The exports are linked into a clickable prototype: open design/prototype/index.html. Stitch's own link paths are rewritten by design/prototype/link_stitch.py, and design/prototype/proto-links.js wires the buttons Stitch left unlinked. Re-run the script after every new export (design/prototype/README.md).
 - Access rules were checked against the screens: agent and manager screens show no reward data, admin screens show no chat content, managers see escalated chats only.
 
 ## Still missing
 - Mobile manager and admin screens are not designed. Assumed web-only for those roles unless the team decides otherwise.
 - Agent claims review on mobile (D3).
-- Source of truth for brand and components: design/design-system.md (exported from Stitch). Raw files came from stitch_remix_of_insuria_life_insurance_platform.zip.
+- Source of truth for brand and components: design/design-system.md (exported from Stitch). Raw files came from stitch_remix_of_insuria_life_insurance_platform (2).zip, exported 2026-11-26.
 
 - Full list of Stitch edits still to do: specs/06-screen-specs.md section 7.

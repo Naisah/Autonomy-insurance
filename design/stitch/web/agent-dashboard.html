@@ -1,4 +1,3 @@
-<!-- Autonomy Insurance — web/agent-dashboard -->
 <!DOCTYPE html><html lang="en"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -127,7 +126,7 @@ if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
     <header class="sticky top-0 z-40 bg-surface-card border-b border-outline">
       <div class="max-w-7xl mx-auto px-gutter-md md:px-gutter-lg py-gutter-md flex items-center justify-between gap-gutter-md">
         <div class="flex items-center gap-gutter-md">
-          <a href="../insuria-landing/InsuriaLanding.html" class="flex items-center gap-gutter-sm shrink-0">
+          <a href="landing.html" class="flex items-center gap-gutter-sm shrink-0">
             <div class="grid grid-cols-3 gap-0.5 p-1 bg-surface rounded-sm border border-outline" aria-hidden="true">
               <span class="w-2.5 h-2.5 bg-mapua-red"></span>
               <span class="w-2.5 h-2.5 bg-mapua-gold"></span>
@@ -148,6 +147,7 @@ if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
           <a href="#" aria-current="page" class="px-4 py-2 rounded-full bg-primary text-on-primary font-label text-label-lg">Clients</a>
           <a href="#estimates-queue" class="px-4 py-2 rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg">Estimates</a>
           <a href="#chat-panel" class="px-4 py-2 rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg">Chats</a>
+          <a href="agent-claims.html" class="px-4 py-2 rounded-full text-on-surface hover:text-on-surface-strong font-label text-label-lg">Claims</a>
         </nav>
 
         <div class="flex items-center gap-gutter-sm">
@@ -155,7 +155,7 @@ if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
             <div class="font-title text-title-md text-on-surface-strong">Maya Santos</div>
             <div class="font-label text-label-sm text-success">Online • West Branch</div>
           </div>
-          <img src="https://lh3.googleusercontent.com/aida/ALJJyrCcIVIRZ7uESG4o0sYPrwZPpnYbVp9t8qEma-oKt9m0nDcfu5K0NhJmOABDoVtAhGy3giyTvNCblxNUDcyLXSpxBUBI4fwu1hzOim5tLVzb4fBJ7CF56g7k0IA-Wt1p2Kf60KTcHx0Sc3QvisaJgL7OGZHZK7M0ozed6OfjKb0FV_-ZaKvRcLgvZLr39EzyDORj2kbDE18G9zpz5mW0cmFd44rAQVrCXWhwSmmERkO6mawo" alt="Maya Santos" class="w-10 h-10 rounded-full object-cover border-2 border-secondary">
+          <img src="https://lh3.googleusercontent.com/aida/ALJJyrAO8IEpuYwn8n35tUrwuedKVwTGTVvA7HPaWU_IWEr1QfXthX1HQBSbi28JitI5AfJQ9onVCoc_yZjzKo0fllsbgaKR92tFEJRHZpO10ZQJydCeurG56l0hm_UQgIfi5sAJ2yotnBAKnqu971cQJUek7_9FVyDw9bl7eepJEN0yVyeySkMenuIoJguorUYOHV3sqVQlMx0pJNxXEVGYHjTs2dQxg0Z2rc3VclfNviDG91cj" alt="Maya Santos" class="w-10 h-10 rounded-full object-cover border-2 border-secondary">
         </div>
       </div>
     </header>
@@ -209,7 +209,7 @@ if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
               <!-- Client 1 -->
               <button type="button" data-name="elena rostova" onclick="selectClient(&#39;Elena Rostova&#39;, &#39;#INS-4829 • ₱2M Term Life&#39;, &#39;../../images/customer_nadia.jpg&#39;, &#39;Can we add my daughter as a contingent beneficiary before I activate?&#39;)" class="client-row w-full text-left p-gutter-md rounded-lg bg-surface border-2 border-primary flex items-center justify-between gap-gutter-md transition-colors">
                 <div class="flex items-center gap-gutter-md min-w-0">
-                  <img src="https://lh3.googleusercontent.com/aida/ALJJyrBNPH83PI6mgA_4_A_-foW_tP8Shd3dieHS0JLDlRimR18VKECaUMk7PVaU-Z7GJyIrjWRY1ek31arcAB9Z4oGf8o9KVXhvSJP8-vp0nwDMolpyXdM5T1H2GlXbP0_JUT7YN_z_qsHVe8Mkg4yNbSnVHT-N7yqVcyYK_oqkOulYBJwEqIpv9e5WeFH_xR8yQIFjbyWcxEKlYTY0PRU5s34gtCc2pdVP5Kl7GuRmnaROurgT-AdBwwI" alt="Elena Rostova" class="w-11 h-11 rounded-full object-cover shrink-0">
+                  <img src="https://lh3.googleusercontent.com/aida/ALJJyrCA3671pF-_RmHeZHCHPNhoTBhYVAeRwq-OQCz_an-cE8i3kC5liK4CkwoU1dqZLFEKs_YuXcgHdoOZ1i7j2abAvjxEbRYSFDdCkZk7BB9M8k1kYQK4KKOOWj2FrR7FWG2PJZYlrmWbZEPkjZfftS2X9IBbXc_bbkMTjrTqVIY3BRyjQDWaFs-L4j8jdWmwoEGmd74q3as_jER030i-0sKdn5iZrLb2T9Q1UKCogq9dc9wpPwDjhD4" alt="Elena Rostova" class="w-11 h-11 rounded-full object-cover shrink-0">
                   <div class="min-w-0">
                     <div class="flex items-center gap-2">
                       <span class="font-title text-title-md text-on-surface-strong truncate">Elena Rostova</span>
@@ -227,7 +227,7 @@ if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
               <!-- Client 2 -->
               <button type="button" data-name="leo mendoza" onclick="selectClient(&#39;Leo Mendoza&#39;, &#39;#INS-5102 • ₱3M Term Life&#39;, &#39;../../images/customer_leo.jpg&#39;, &#39;Thanks Maya! Uploaded the signed beneficiary update form.&#39;)" class="client-row w-full text-left p-gutter-md rounded-lg bg-surface-card border border-outline hover:border-primary flex items-center justify-between gap-gutter-md transition-colors">
                 <div class="flex items-center gap-gutter-md min-w-0">
-                  <img src="https://lh3.googleusercontent.com/aida/ALJJyrAK5weizwxGLq5H5N4tS9wGHs_eYwSlaCt1WlyaOFg969fAzE4AO-KIoH38JbWAXDiAAUCwrFAQT5IqFFsO1Plz-DG9fDQPAmYiE4eeP6Ymk8PfW181DQ_BccPHasGo0WGxNIzH0HOCIq7VAh9_dzgJUcrUai_OyWANX6TxfQ0nx8z4bjg1-TafpxZxe_ey1Tf73llnt8vGQnpau2RFSgx6Dc4JP9C31aOxiVb4ZZIJoCbtmkw" alt="Leo Mendoza" class="w-11 h-11 rounded-full object-cover shrink-0">
+                  <img src="https://lh3.googleusercontent.com/aida/ALJJyrAHDTVePTXxnjgZPsqVxaTa0KfeCWt5vA43xkJjOKRHY6YHhlnok35mlRuDITDRJT14V4LAO1Z9PSrE8V4llx0FojtdYmn8gGFNYQBabEaDGoIWcO5o8-iWneke6CCgM3IK_0tznm4f-_idqWBWTG0OZrVf7m5eC2xOCqmCYBm4N5uuMeHb8UuDhm0Vt_3U5Qr2L-MIoy3GQJ9Zm-Op3DpjVLyViEnt3k6btuN6ncbx_Upv0-Y" alt="Leo Mendoza" class="w-11 h-11 rounded-full object-cover shrink-0">
                   <div class="min-w-0">
                     <div class="flex items-center gap-2">
                       <span class="font-title text-title-md text-on-surface-strong truncate">Leo Mendoza</span>
@@ -308,7 +308,7 @@ if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
           <!-- Chat Header -->
           <header class="p-gutter-md border-b border-outline flex flex-wrap items-center justify-between gap-gutter-sm bg-surface-card">
             <div class="flex items-center gap-gutter-sm min-w-0">
-              <img id="panel-avatar" src="https://lh3.googleusercontent.com/aida/ALJJyrBNPH83PI6mgA_4_A_-foW_tP8Shd3dieHS0JLDlRimR18VKECaUMk7PVaU-Z7GJyIrjWRY1ek31arcAB9Z4oGf8o9KVXhvSJP8-vp0nwDMolpyXdM5T1H2GlXbP0_JUT7YN_z_qsHVe8Mkg4yNbSnVHT-N7yqVcyYK_oqkOulYBJwEqIpv9e5WeFH_xR8yQIFjbyWcxEKlYTY0PRU5s34gtCc2pdVP5Kl7GuRmnaROurgT-AdBwwI" alt="Elena Rostova" class="w-10 h-10 rounded-full object-cover shrink-0">
+              <img id="panel-avatar" src="https://lh3.googleusercontent.com/aida/ALJJyrCA3671pF-_RmHeZHCHPNhoTBhYVAeRwq-OQCz_an-cE8i3kC5liK4CkwoU1dqZLFEKs_YuXcgHdoOZ1i7j2abAvjxEbRYSFDdCkZk7BB9M8k1kYQK4KKOOWj2FrR7FWG2PJZYlrmWbZEPkjZfftS2X9IBbXc_bbkMTjrTqVIY3BRyjQDWaFs-L4j8jdWmwoEGmd74q3as_jER030i-0sKdn5iZrLb2T9Q1UKCogq9dc9wpPwDjhD4" alt="Elena Rostova" class="w-10 h-10 rounded-full object-cover shrink-0">
               <div class="min-w-0">
                 <h2 id="panel-name" class="font-title text-title-md text-on-surface-strong truncate">Elena Rostova</h2>
                 <p id="panel-policy" class="font-body text-body-sm text-on-surface-muted truncate">#INS-4829 • ₱2M Term Life</p>
@@ -407,4 +407,5 @@ if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
   </script>
 
 
+<script src="../../prototype/proto-links.js" defer></script>
 </body></html>

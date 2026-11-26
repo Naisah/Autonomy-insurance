@@ -91,13 +91,21 @@ Rewards app logout: main-app logout ends the Rewards session; on foreground or f
 - B5 (attachments) has no screen yet.
 
 ## 7. Stitch edits still to do (all screens are exported)
-All gap screens from the earlier prompt list now exist in design/stitch. What remains are edits to existing screens:
-- web/client-estimate: remove the "Step Rewards" discount line and the agent quote that mentions lowering the rate with the rewards tier.
-- web/admin-console: rename the toggle "Auto-apply Step Rewards discount" to "Apply reward effects"; add policy settings (point bands, level thresholds, extension days, delay days, standard processing days, default max clients), the notifications bell and the labeled demo "Close period now".
-- Rewards: edit rewards/home and rewards/health-score so they show monthly points, the four levels, points to the next level and the effect in plain words (this becomes rewards/status); retire the 0 to 100 score, rewards/goals-rewards and rewards/effect.
-- web/client-policy: extension card and Overdue chip. web/client-chat: AI tab and handoff if missing.
-- Waiting banner on the client dashboard and chat screens (web and mobile). Available/Away toggle on the agent screens. Notifications bell on the manager and admin screens.
-Prompts: if the team regenerates a screen in Stitch, use the wording above, never "delayed or reduced", "+30 days" or "7-day step goal" (those came from an earlier draft).
+All gap screens from the earlier prompt list exist in design/stitch. The edits below were sent to Stitch on 2026-11-26. The exports of that day (stitch_remix_of_insuria_life_insurance_platform (1).zip and (2).zip, which differ only in image links) linked the screens and embedded the images, but none of the screen edits are in it. Colors and fonts did not change.
+
+| Screen | Edit | Status (export 2026-11-26) |
+|---|---|---|
+| web/client-estimate | Remove the "Step Rewards credit -₱500/mo" line and Maya's quote about the rewards tier lowering the rate | Not done |
+| web/client-dashboard | Remove "Includes -₱500/mo Step Rewards discount" under the premium (found in this check, not in the earlier prompt) | Not done |
+| web/admin-console | Rename "Auto-apply Step Rewards discount" to "Apply reward effects"; policy settings (point bands, level thresholds, extension days, delay days, standard processing days, default max clients); notifications bell; "Close period now" labeled Demo only | Not done (the console has a generic "Policy settings" form, without these fields) |
+| rewards/home, rewards/health-score | Monthly points, the four levels, points to the next level, the effect in plain words, sync chip, "Simulated for this course demo" (this becomes rewards/status); retire the 0 to 100 score, rewards/goals-rewards and rewards/effect | Not done (still "Health Score 88 / 100", "+30 days", streaks and goals) |
+| web/client-policy, mobile/client-policy | Extension card and Overdue chip | Not done. mobile/client-policy still says "Collection period extended by 30 days"; the logic gives +7, +14 or +21 |
+| web/client-chat, mobile/client-chat | AI tab and handoff to the agent | Done (agent and AI tabs, "Talk to my agent") |
+| Client dashboard and chat (web and mobile) | Waiting banner; agent chat input disabled, AI tab still works | Not done |
+| web/agent-dashboard, mobile/agent-home | Available/Away toggle, no reward data | Toggle not done. No reward data: checked |
+| web/manager-dashboard | Notifications bell, waiting clients count, availability and editable client limit per agent | Not done |
+
+Prompts: if the team regenerates a screen in Stitch, use the wording above, never "delayed or reduced", "+30 days" or "7-day step goal" (those came from an earlier draft). After a new export, run design/prototype/link_stitch.py again (see design/prototype/README.md) and update this table.
 
 ## 8. Decisions that need approval
 - S1 Web profile shows the biometric option as information only; the toggle lives on mobile.

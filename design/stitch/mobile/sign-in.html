@@ -1,4 +1,3 @@
-<!-- Autonomy Insurance — Sign In (Mobile) -->
 <!DOCTYPE html><html lang="en"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -178,7 +177,7 @@ if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
       <!-- Link to Create Account -->
       <div class="text-center font-body text-body-md text-on-surface">
         New to Autonomy Insurance?
-        <a href="../client-register-mobile/ClientRegisterMobile.html" class="font-title text-primary hover:underline ml-1">Create account</a>
+        <a href="register.html" class="font-title text-primary hover:underline ml-1">Create account</a>
       </div>
     </div>
 
@@ -211,9 +210,10 @@ if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
 
     function handleSignIn(e) {
       e.preventDefault();
-      showFeedback('Signed in! Redirecting to your home screen...');
+      showFeedback('Signed in! Continuing to biometric unlock...'); setTimeout(() => { window.location.href = 'biometric-unlock.html'; }, 500);
     }
   </script>
 
 
+<script src="../../prototype/proto-links.js" defer></script>
 </body></html>
