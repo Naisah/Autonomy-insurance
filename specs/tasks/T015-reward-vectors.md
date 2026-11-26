@@ -1,7 +1,7 @@
 # T015 Reward test vectors and TS reference
-Status: Draft. Not Ready until P0.1 marks the specs below Approved and every task in Needs is merged to main.
+Status: Ready. Specs 00 to 07 Approved Nov 26, 2026 (PR #2). Start only when PR #2 and every task in Needs are merged to main.
 Phase: 1
-Tier: T2          Agent: Probe (proposed)
+Tier: T2          Agent: Probe
 Stories: G2, G3, G5             Needs: none
 Branch: agent/T015-reward-vectors
 Specs to read: 02 section 6 (reward rules); 03 sections 9.2 and 9.3; 04 reward_status_history, period_summary

@@ -1,7 +1,7 @@
 # T061 Web landing, login and register
-Status: Draft. Not Ready until P0.1 marks the specs below Approved and every task in Needs is merged to main.
+Status: Ready. Specs 00 to 07 Approved Nov 26, 2026 (PR #2). Start only when PR #2 and every task in Needs are merged to main.
 Phase: 2
-Tier: T2          Agent: Pixel (proposed)
+Tier: T2          Agent: Pixel
 Stories: A1             Needs: T060, T020
 Branch: agent/T061-web-auth-screens
 Specs to read: 06 section 3 (landing, login, register rows); 02 A1; contract tag auth

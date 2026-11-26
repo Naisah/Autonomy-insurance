@@ -1,7 +1,7 @@
 # T026 Agent assignment and waiting queue
-Status: Draft. Not Ready until P0.1 marks the specs below Approved and every task in Needs is merged to main.
+Status: Ready. Specs 00 to 07 Approved Nov 26, 2026 (PR #2). Start only when PR #2 and every task in Needs are merged to main.
 Phase: 2
-Tier: T1          Agent: Forge (proposed)
+Tier: T1          Agent: Forge
 Stories: A1, A4             Needs: T022, T023
 Branch: agent/T026-assignment
 Specs to read: 02 A1, A4; 03 section 5.1; 04 users; decisions A7, M1, K7

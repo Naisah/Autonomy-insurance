@@ -1,7 +1,7 @@
 # T023 Directory outbox to core-api
-Status: Draft. Not Ready until P0.1 marks the specs below Approved and every task in Needs is merged to main.
+Status: Ready. Specs 00 to 07 Approved Nov 26, 2026 (PR #2). Start only when PR #2 and every task in Needs are merged to main.
 Phase: 2
-Tier: T1          Agent: Forge (proposed)
+Tier: T1          Agent: Forge
 Stories: A2             Needs: T022, T024a
 Branch: agent/T023-directory-outbox
 Specs to read: 03 sections 3.1 and 5; 04 auth_events; decision A2

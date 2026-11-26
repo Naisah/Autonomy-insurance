@@ -1,7 +1,7 @@
 # T006 Scaffold apps/web
-Status: Draft. Not Ready until P0.1 marks the specs below Approved and every task in Needs is merged to main.
+Status: Ready. Specs 00 to 07 Approved Nov 26, 2026 (PR #2). Start only when PR #2 and every task in Needs are merged to main.
 Phase: 1
-Tier: T3          Agent: Pixel (proposed)
+Tier: T3          Agent: Pixel
 Stories: all             Needs: T000
 Branch: agent/T006-web-scaffold
 Specs to read: 00 sections 4 and 6; 07 section 1 (conflict-avoidance conventions); 06 section 2

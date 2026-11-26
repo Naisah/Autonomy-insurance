@@ -1,7 +1,7 @@
 # T025 Auth acceptance suite for A1 and A3
-Status: Draft. Not Ready until P0.1 marks the specs below Approved and every task in Needs is merged to main.
+Status: Ready. Specs 00 to 07 Approved Nov 26, 2026 (PR #2). Start only when PR #2 and every task in Needs are merged to main.
 Phase: 2
-Tier: T2          Agent: Probe (proposed)
+Tier: T2          Agent: Probe
 Stories: A1, A3             Needs: T021
 Branch: agent/T025-auth-acceptance
 Specs to read: 02 A1, A3 and section 3; contract tag auth

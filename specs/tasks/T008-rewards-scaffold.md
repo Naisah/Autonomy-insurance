@@ -1,7 +1,7 @@
 # T008 Scaffold apps/rewards
-Status: Draft. Not Ready until P0.1 marks the specs below Approved and every task in Needs is merged to main.
+Status: Ready. Specs 00 to 07 Approved Nov 26, 2026 (PR #2). Start only when PR #2 and every task in Needs are merged to main.
 Phase: 1
-Tier: T3          Agent: Stride (proposed)
+Tier: T3          Agent: Stride
 Stories: G1             Needs: T007
 Branch: agent/T008-rewards-scaffold
 Specs to read: 00 sections 4 and 6; 03 sections 9 and 11

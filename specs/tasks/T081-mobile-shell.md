@@ -1,7 +1,7 @@
 # T081 Mobile shell: secure storage, refresh, role tabs, states
-Status: Draft. Not Ready until P0.1 marks the specs below Approved and every task in Needs is merged to main.
+Status: Ready. Specs 00 to 07 Approved Nov 26, 2026 (PR #2). Start only when PR #2 and every task in Needs are merged to main.
 Phase: 2
-Tier: T2          Agent: Flutterby (proposed)
+Tier: T2          Agent: Flutterby
 Stories: A3, X2             Needs: T007, T009, T080
 Branch: agent/T081-mobile-shell
 Specs to read: 06 section 4; 03 sections 4 and 11

@@ -1,7 +1,7 @@
 # T013 Seed scripts and docs/seed-readme.md
-Status: Draft. Not Ready until P0.1 marks the specs below Approved and every task in Needs is merged to main.
+Status: Ready. Specs 00 to 07 Approved Nov 26, 2026 (PR #2). Start only when PR #2 and every task in Needs are merged to main.
 Phase: 1
-Tier: T3          Agent: Seedling (proposed)
+Tier: T3          Agent: Seedling
 Stories: X6             Needs: T010, T011, T012
 Branch: agent/T013-seed-data
 Specs to read: 04 section 6; 02 section 6

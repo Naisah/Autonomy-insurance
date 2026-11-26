@@ -1,7 +1,7 @@
 # T000 Repo hygiene: workspaces, docker-compose, env examples, PR template
-Status: Draft. Not Ready until P0.1 marks the specs below Approved and every task in Needs is merged to main.
+Status: Ready. Specs 00 to 07 Approved Nov 26, 2026 (PR #2). Start only when PR #2 and every task in Needs are merged to main.
 Phase: 1
-Tier: T3          Agent: Forge (proposed)
+Tier: T3          Agent: Forge
 Stories: all             Needs: none
 Branch: agent/T000-repo-hygiene
 Specs to read: 00 sections 4 to 6; 03 section 12; 04 sections 1 and 7 (database names)
@@ -18,7 +18,7 @@ Do not touch: anything else, especially:
 Steps:
 1. Root `package.json` with npm workspaces for `apps/web`, `services/*` and `packages/contracts` (Flutter apps stay outside npm).
 2. Root scripts that forward to workspaces: `contract:check`, `db:reset`, `dev:auth`, `dev:core`, `dev:rewards`, `dev:web` (each may fail until its task lands).
-3. `docker-compose.yml`: one Postgres container whose init script creates `autonomy_auth`, `autonomy_core`, `autonomy_rewards`. Use the Postgres version named in spec 00 section 4; if it names none, write a Question.
+3. `docker-compose.yml`: one Postgres container whose init script creates `autonomy_auth`, `autonomy_core`, `autonomy_rewards`. Use PostgreSQL 16 (spec 00 section 4).
 4. `.env.example` per service listing every variable by name with a placeholder value only (database URL, ports, JWT keys path, Gemini key for core-api).
 5. `.gitignore`: `.env`, `node_modules`, build output, Flutter build folders. Add `.editorconfig`.
 6. PR template: task file link, Owns respected, Done when tests listed, AI use logged.

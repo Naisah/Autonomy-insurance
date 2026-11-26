@@ -1,7 +1,7 @@
 # T004 Scaffold services/core-api
-Status: Draft. Not Ready until P0.1 marks the specs below Approved and every task in Needs is merged to main.
+Status: Ready. Specs 00 to 07 Approved Nov 26, 2026 (PR #2). Start only when PR #2 and every task in Needs are merged to main.
 Phase: 1
-Tier: T3          Agent: Forge (proposed)
+Tier: T3          Agent: Forge
 Stories: all             Needs: T000
 Branch: agent/T004-core-api-scaffold
 Specs to read: 00 sections 4 to 6; 03 sections 3, 6, 12, 13; 05 section 4 (C8)
@@ -18,7 +18,7 @@ Steps:
 4. Error model with the `Error` shape and codes from spec 05 decision C8; request id on every response and log line.
 5. Socket.IO plugin placeholder (registered, no events yet).
 6. npm scripts `dev`, `build`, `test`.
-7. Shared server code (Q11 open): keep it inside this service until Q11 is answered.
+7. Shared server code is copied per service (Q11); no shared package.
 Done when:
 - [ ] `npm test` passes.
 - [ ] `GET /health` returns ok.

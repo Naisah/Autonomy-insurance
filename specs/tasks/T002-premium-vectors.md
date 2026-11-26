@@ -1,7 +1,7 @@
 # T002 Premium formula test vectors and TS reference
-Status: Draft. Not Ready until P0.1 marks the specs below Approved and every task in Needs is merged to main.
+Status: Ready. Specs 00 to 07 Approved Nov 26, 2026 (PR #2). Start only when PR #2 and every task in Needs are merged to main.
 Phase: 1
-Tier: T2          Agent: Trial: Anvil, Probe and Pixel (P0.7); keep the best
+Tier: T2          Agent: Anvil, Probe and Pixel (trial, P0.7); keep the best
 Stories: C1, C2             Needs: none
 Branch: agent/T002-premium-vectors
 Specs to read: 02 sections 6 and 9 (formula, baseRate 0.70); 03 section 8; 04 estimates; decisions A6, M6

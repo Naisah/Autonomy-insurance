@@ -1,7 +1,7 @@
 # T083 Mobile sign-in and register
-Status: Draft. Not Ready until P0.1 marks the specs below Approved and every task in Needs is merged to main.
+Status: Ready. Specs 00 to 07 Approved Nov 26, 2026 (PR #2). Start only when PR #2 and every task in Needs are merged to main.
 Phase: 2
-Tier: T3          Agent: Flutterby (proposed)
+Tier: T3          Agent: Flutterby
 Stories: A1             Needs: T081, T020
 Branch: agent/T083-mobile-auth-screens
 Specs to read: 06 section 4 (sign-in, register rows); 02 A1

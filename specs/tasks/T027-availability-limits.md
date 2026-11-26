@@ -1,7 +1,7 @@
 # T027 Availability and client limits
-Status: Draft. Not Ready until P0.1 marks the specs below Approved and every task in Needs is merged to main.
+Status: Ready. Specs 00 to 07 Approved Nov 26, 2026 (PR #2). Start only when PR #2 and every task in Needs are merged to main.
 Phase: 2
-Tier: T2          Agent: Forge (proposed)
+Tier: T2          Agent: Forge
 Stories: A4, F1             Needs: T026
 Branch: agent/T027-availability-limits
 Specs to read: 02 A4, F1; 03 section 5.1; contract tags users and me

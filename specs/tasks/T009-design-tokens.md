@@ -1,7 +1,7 @@
 # T009 Design tokens for web and Flutter
-Status: Draft. Not Ready until P0.1 marks the specs below Approved and every task in Needs is merged to main.
+Status: Ready. Specs 00 to 07 Approved Nov 26, 2026 (PR #2). Start only when PR #2 and every task in Needs are merged to main.
 Phase: 1
-Tier: T3          Agent: Pixel (proposed)
+Tier: T3          Agent: Pixel
 Stories: X5, X7             Needs: T006, T007
 Branch: agent/T009-design-tokens
 Specs to read: design/README.md; design/design-system.md; 06 section 2

@@ -1,7 +1,7 @@
 # T007 Scaffold apps/mobile and packages/dart_shared
-Status: Draft. Not Ready until P0.1 marks the specs below Approved and every task in Needs is merged to main.
+Status: Ready. Specs 00 to 07 Approved Nov 26, 2026 (PR #2). Start only when PR #2 and every task in Needs are merged to main.
 Phase: 1
-Tier: T3          Agent: Flutterby (proposed)
+Tier: T3          Agent: Flutterby
 Stories: all             Needs: T000
 Branch: agent/T007-mobile-scaffold
 Specs to read: 00 sections 4 and 6; 03 section 11; 07 section 1 (Flutter routes convention)

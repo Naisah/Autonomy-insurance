@@ -1,5 +1,5 @@
 # T014 Finish packages/contracts/openapi.yaml from spec 05
-Status: Draft. Not Ready until P0.1 marks the specs below Approved and every task in Needs is merged to main.
+Status: Ready. Specs 00 to 07 Approved Nov 26, 2026 (PR #2). Start only when PR #2 and every task in Needs are merged to main.
 Phase: 1
 Tier: T1          Agent: Atlas
 Stories: all             Needs: T001
@@ -16,7 +16,7 @@ Steps:
 1. Start from the Nov 26 draft already in `packages/contracts/openapi.yaml` (Q8).
 2. Apply the spec 05 section 8 change list in one commit.
 3. Check every story in spec 02 except A2, A5, B5 has an operation, with `x-roles`, `x-stories`, `x-priority`.
-4. Include `POST /service/token` (needed by T024a in Phase 2).
+4. Include `POST /service/token` (T024a) and the Admin close-period operation through core-api that spec 05 section 8 lists (Q12).
 5. List the Socket.IO events in the description header (spec 03 section 7).
 6. Regenerate clients and run `npm run contract:check`.
 Done when:
@@ -27,6 +27,6 @@ Done when:
 - [ ] No `payoutReductionPercent`, `payoutAmount`, `healthScore`, `/rewards/goal`, `/rewards/milestones` remain.
 Notes:
 - Spec 07 says the file does not exist; that line is out of date (decision K6, Q8).
-- Contract decisions C1 to C8 must be approved before spec 05 is Approved.
+- Contract decisions C1 to C8 are decided (docs/decisions.md).
 Questions: (agent writes here, sets Status to Blocked and stops if the spec is silent)
 Handoff: (agent fills in: what changed, how to run checks, what is left)
