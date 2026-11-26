@@ -1,0 +1,2812 @@
+openapi: 3.1.0
+info:
+  title: Autonomy Insurance API
+  version: 0.1.0-draft
+  summary: One contract for the three services of Autonomy Insurance (auth, core-api, rewards-api).
+  description: |
+    Source of truth for every request and response shape (spec 05). Code that disagrees with
+    this file is wrong, or this file is changed first, in its own commit (constitution principle 2).
+
+    ## Services
+    Each path declares its service with a path-level `servers` entry: auth on port 4001,
+    core-api on 4002, rewards-api on 4003. `/health` exists on all three.
+
+    ## Extensions on every operation
+    - `x-roles`: who may call it. Values: `public`, `Client`, `Agent`, `Manager`, `Admin`,
+      `service` (a service-account token, the "service key"). The authorization matrix test is
+      generated from this field.
+    - `x-stories`: product-spec stories served (spec 02).
+    - `x-priority`: Must, Should or Could.
+    - `x-demo: true`: available only when `DEMO_MODE=true`; the UI labels it "Demo only".
+
+    ## Reward data boundary (X9)
+    Schemas ending in `Client` may carry reward fields. Schemas ending in `Staff` never do.
+    Reward fields: `rewardNote`, `rewardStatus`, `rewardPoints`, `payoutDelayDays`,
+    `payoutDueDate`, `reasonLabel`. The lint fails if a `*Staff` schema gains one of them.
+
+    ## Tokens
+    - User access token: RS256 JWT, 15 minutes, claims `sub`, `role`, `sid`, `aud`, `iss`, `exp`, `iat`.
+      Normal login gives `aud = core-api`; Rewards SSO gives `aud = rewards-api` (Client only).
+    - Refresh token: opaque, 7 days, rotated on every use. Web receives it in an httpOnly cookie
+      (`ai_refresh`), mobile in the response body.
+    - Service key: client-credentials JWT from `POST /service/token`, `aud = core-api`, with scopes.
+      Accepted only by `POST /api/rewards/results` and `/internal/*` routes. Every other route
+      rejects it, and those routes reject every user token.
+
+    ## Errors
+    All errors use the `Error` body. Codes: UNAUTHORIZED (401, session expired or no token),
+    FORBIDDEN (403), NOT_FOUND (404), VALIDATION (400), CONFLICT (409), ACCOUNT_BLOCKED (429 on
+    login), RATE_LIMITED (429), AI_UNAVAILABLE (503), NO_AGENT_ASSIGNED (409, the client is waiting
+    for an agent), INVALID_STATE (409).
+
+    ## Money, dates and ids
+    Money is a string with two decimals in pesos (`"1818.88"`). Dates are `YYYY-MM-DD`, times are
+    ISO 8601 UTC. Ids are UUIDs; `INS-4829` and `CLM-1042` are separate display numbers.
+    Lists use cursor pagination (`limit`, `cursor`, response `nextCursor`).
+
+    ## Real-time chat (Socket.IO, core-api, path `/socket.io`)
+    Handshake: `auth: { token: <access token> }`. Invalid token closes the connection.
+    Client to server:
+    - `conversation:join { conversationId }` -> ack `{ ok: true }` or `{ ok: false, code }`.
+      Re-checked on every join, so a reassignment removes access.
+    - `message:send { conversationId, clientMessageId, body }` (body 1 to 2,000 chars).
+    - `conversation:read { conversationId, lastReadMessageId }`.
+    Server to client:
+    - `message:ack { clientMessageId, id, createdAt }` to the sender (persist first, then emit).
+    - `message:new Message` to room `conv:{conversationId}`.
+    - `conversation:unread { conversationId, unreadCount }` to the other participant.
+    - `access_revoked { conversationId }` when a client is reassigned away from this agent.
+    - `escalation:opened` and `escalation:resolved { conversationId, escalationId }` to the manager.
+    A resend with the same `clientMessageId` returns the existing message (dedupe).
+servers:
+  - url: http://localhost:4002
+    description: core-api (default; auth and rewards-api paths override this)
+tags:
+  - { name: System }
+  - { name: Auth, description: "Accounts, sessions and tokens (auth service)" }
+  - { name: Accounts, description: "Staff accounts, roles, availability and limits (auth service)" }
+  - { name: SSO, description: "Single sign-on into the Rewards app and service tokens (auth service)" }
+  - { name: Internal, description: "Service-to-service routes, service key only" }
+  - { name: Dashboard }
+  - { name: Chat }
+  - { name: Escalations }
+  - { name: AI }
+  - { name: Estimates }
+  - { name: Policies }
+  - { name: Claims }
+  - { name: Settings }
+  - { name: Notifications }
+  - { name: RewardEffects, description: "Reward results and their effects in the main system (core-api)" }
+  - { name: Rewards, description: "Rewards app back end (rewards-api)" }
+
+x-servers:
+  auth: &auth
+    - url: http://localhost:4001
+      description: auth
+  core: &core
+    - url: http://localhost:4002
+      description: core-api
+  rewards: &rewards
+    - url: http://localhost:4003
+      description: rewards-api
+
+security:
+  - bearerAuth: []
+
+paths:
+  # ---------------------------------------------------------------- System
+  /health:
+    servers:
+      - { url: http://localhost:4001, description: "auth" }
+      - { url: http://localhost:4002, description: "core-api" }
+      - { url: http://localhost:4003, description: "rewards-api" }
+    get:
+      tags: [System]
+      operationId: getHealth
+      summary: Service health
+      security: []
+      x-roles: [public]
+      x-stories: [X6]
+      x-priority: Must
+      responses:
+        '200':
+          description: The service is up
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Health' }
+              example: { status: ok, service: core-api, version: 1.0.0 }
+
+  # ---------------------------------------------------------------- Auth (auth service)
+  /auth/register:
+    servers: *auth
+    post:
+      tags: [Auth]
+      operationId: register
+      summary: Register a client account
+      description: |
+        Creates a Client, hashes the password (argon2id) and runs agent assignment in the same
+        transaction. When no agent is Available with room, the client is created waiting
+        (`agentStatus: Waiting`) and Admin and managers are notified.
+      security: []
+      x-roles: [public]
+      x-stories: [A1]
+      x-priority: Must
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/RegisterRequest' }
+      responses:
+        '201':
+          description: Account created and signed in
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AuthResult' }
+        '400': { $ref: '#/components/responses/Validation' }
+        '409': { $ref: '#/components/responses/Conflict' }
+  /auth/login:
+    servers: *auth
+    post:
+      tags: [Auth]
+      operationId: login
+      summary: Sign in with email and password
+      description: |
+        Wrong email or password gives the same generic message. Five failures in 10 minutes block
+        the email for 5 minutes (429 ACCOUNT_BLOCKED with `retryAfterSeconds`).
+      security: []
+      x-roles: [public]
+      x-stories: [A1, X3]
+      x-priority: Must
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/LoginRequest' }
+      responses:
+        '200':
+          description: Signed in
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AuthResult' }
+        '400': { $ref: '#/components/responses/Validation' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '429': { $ref: '#/components/responses/AccountBlocked' }
+  /auth/refresh:
+    servers: *auth
+    post:
+      tags: [Auth]
+      operationId: refresh
+      summary: Rotate the refresh token and get a new access token
+      description: Web sends the `ai_refresh` cookie; mobile sends `refreshToken` in the body. Reusing an old refresh token revokes the session.
+      security: []
+      x-roles: [public]
+      x-stories: [A3]
+      x-priority: Must
+      requestBody:
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/RefreshRequest' }
+      responses:
+        '200':
+          description: New tokens
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/TokenPair' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /auth/logout:
+    servers: *auth
+    post:
+      tags: [Auth]
+      operationId: logout
+      summary: Sign out of this session (also ends its Rewards SSO sessions)
+      x-roles: [Client, Agent, Manager, Admin]
+      x-stories: [A3]
+      x-priority: Must
+      responses:
+        '204': { description: "Signed out" }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /auth/logout-all:
+    servers: *auth
+    post:
+      tags: [Auth]
+      operationId: logoutAll
+      summary: Sign out of all devices
+      x-roles: [Client, Agent, Manager, Admin]
+      x-stories: [A3]
+      x-priority: Must
+      responses:
+        '204': { description: "Every session revoked" }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /auth/me:
+    servers: *auth
+    get:
+      tags: [Auth]
+      operationId: getMe
+      summary: The signed-in user
+      x-roles: [Client, Agent, Manager, Admin]
+      x-stories: [A3, A1]
+      x-priority: Must
+      responses:
+        '200':
+          description: Current user
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/User' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /auth/change-password:
+    servers: *auth
+    post:
+      tags: [Auth]
+      operationId: changePassword
+      summary: Change own password (also clears must-change-password)
+      x-roles: [Client, Agent, Manager, Admin]
+      x-stories: [A3, A4]
+      x-priority: Must
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ChangePasswordRequest' }
+      responses:
+        '204': { description: "Password changed; other sessions revoked" }
+        '400': { $ref: '#/components/responses/Validation' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /auth/forgot-password:
+    servers: *auth
+    post:
+      tags: [Auth]
+      operationId: forgotPassword
+      summary: Request a password reset (Could, decision D3; not built unless approved)
+      security: []
+      x-roles: [public]
+      x-stories: [A6]
+      x-priority: Could
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email]
+              properties:
+                email: { type: string, format: email }
+      responses:
+        '202': { description: "Accepted; the same answer whether or not the email exists" }
+
+  # ---------------------------------------------------------------- Accounts (auth service)
+  /users:
+    servers: *auth
+    get:
+      tags: [Accounts]
+      operationId: listUsers
+      summary: List accounts (Admin all; Manager own team only)
+      x-roles: [Admin, Manager]
+      x-stories: [A4, F2]
+      x-priority: Must
+      parameters:
+        - { name: role, in: query, schema: { $ref: '#/components/schemas/Role' } }
+        - { name: status, in: query, schema: { $ref: '#/components/schemas/UserStatus' } }
+        - { name: q, in: query, description: Name or email contains, schema: { type: string, maxLength: 100 } }
+        - { $ref: '#/components/parameters/Limit' }
+        - { $ref: '#/components/parameters/Cursor' }
+      responses:
+        '200':
+          description: Accounts
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/StaffDirectoryPage' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+    post:
+      tags: [Accounts]
+      operationId: createUser
+      summary: Create a staff account (Manager or Agent; Admin only)
+      description: Creates the account with `mustChangePassword = true`. An Agent needs a Manager; a Manager reports to the Admin. Creating an Agent re-runs assignment for waiting clients.
+      x-roles: [Admin]
+      x-stories: [A4]
+      x-priority: Must
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CreateUserRequest' }
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/StaffDirectoryEntry' }
+        '400': { $ref: '#/components/responses/Validation' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '409': { $ref: '#/components/responses/Conflict' }
+  /users/{id}:
+    servers: *auth
+    parameters:
+      - { $ref: '#/components/parameters/Id' }
+    get:
+      tags: [Accounts]
+      operationId: getUser
+      summary: Get one account
+      x-roles: [Admin, Manager]
+      x-stories: [A4]
+      x-priority: Must
+      responses:
+        '200':
+          description: Account
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/StaffDirectoryEntry' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    patch:
+      tags: [Accounts]
+      operationId: updateUser
+      summary: Update an account
+      description: |
+        Admin: name, role, reportsTo, status, maxClients. Manager: maxClients for agents in their
+        own team only. Raising a limit or activating an agent re-runs assignment for waiting clients.
+      x-roles: [Admin, Manager]
+      x-stories: [A4, F2]
+      x-priority: Must
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/UpdateUserRequest' }
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/StaffDirectoryEntry' }
+        '400': { $ref: '#/components/responses/Validation' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /me/availability:
+    servers: *auth
+    put:
+      tags: [Accounts]
+      operationId: setAvailability
+      summary: Set own availability (Agent)
+      description: Away agents get no new clients and keep existing ones. Becoming Available re-runs assignment.
+      x-roles: [Agent]
+      x-stories: [A4, F1]
+      x-priority: Must
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [availability]
+              properties:
+                availability: { $ref: '#/components/schemas/Availability' }
+      responses:
+        '200':
+          description: Saved
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/User' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+  # ---------------------------------------------------------------- SSO and service tokens (auth service)
+  /sso/authorize:
+    servers: *auth
+    post:
+      tags: [SSO]
+      operationId: ssoAuthorize
+      summary: Get a one-time code for the Rewards app (main mobile app, Client only)
+      description: The code lives 60 seconds, is single use and is bound to the PKCE challenge and this session.
+      x-roles: [Client]
+      x-stories: [G1]
+      x-priority: Must
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/SsoAuthorizeRequest' }
+      responses:
+        '200':
+          description: Code issued
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [code, expiresInSeconds]
+                properties:
+                  code: { type: string }
+                  expiresInSeconds: { type: integer, example: 60 }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+  /sso/token:
+    servers: *auth
+    post:
+      tags: [SSO]
+      operationId: ssoToken
+      summary: Exchange the code and PKCE verifier for Rewards tokens
+      description: Gives an access token with `aud = rewards-api` (10 minutes) and a refresh token. The session is a child of the main session.
+      security: []
+      x-roles: [public]
+      x-stories: [G1]
+      x-priority: Must
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/SsoTokenRequest' }
+      responses:
+        '200':
+          description: Rewards tokens
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/TokenPair' }
+        '400': { $ref: '#/components/responses/Validation' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /service/token:
+    servers: *auth
+    post:
+      tags: [SSO]
+      operationId: serviceToken
+      summary: Get a service key (client credentials)
+      description: For rewards-api (`reward:write`, `reward:read-effects`), auth (`directory:write`) and core-api (`users:reassign`). A service token can never act as a user.
+      security: []
+      x-roles: [public]
+      x-stories: [G4]
+      x-priority: Must
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ServiceTokenRequest' }
+      responses:
+        '200':
+          description: Service token
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [accessToken, expiresInSeconds, scopes]
+                properties:
+                  accessToken: { type: string }
+                  expiresInSeconds: { type: integer }
+                  scopes: { type: array, items: { type: string } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /.well-known/jwks.json:
+    servers: *auth
+    get:
+      tags: [SSO]
+      operationId: getJwks
+      summary: Public keys for verifying tokens
+      security: []
+      x-roles: [public]
+      x-stories: [A3, G1]
+      x-priority: Must
+      responses:
+        '200':
+          description: JSON Web Key Set
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [keys]
+                properties:
+                  keys: { type: array, items: { type: object, additionalProperties: true } }
+  /internal/users/{id}/reports-to:
+    servers: *auth
+    parameters:
+      - { $ref: '#/components/parameters/Id' }
+    put:
+      tags: [Internal]
+      operationId: setReportsTo
+      summary: Reassign a client to another agent (called by core-api for a manager)
+      security:
+        - serviceKey: []
+      x-roles: [service]
+      x-scope: users:reassign
+      x-stories: [F2, B4]
+      x-priority: Should
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [reportsTo]
+              properties:
+                reportsTo: { type: string, format: uuid }
+      responses:
+        '204': { description: "Reassigned; a user.reassigned event is written" }
+        '400': { $ref: '#/components/responses/Validation' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+
+  # ---------------------------------------------------------------- Internal (core-api)
+  /internal/directory-events:
+    servers: *core
+    post:
+      tags: [Internal]
+      operationId: receiveDirectoryEvents
+      summary: Directory events from auth (user changes, availability, waiting clients)
+      description: Events older than the stored version for that user are ignored.
+      security:
+        - serviceKey: []
+      x-roles: [service]
+      x-scope: directory:write
+      x-stories: [A2, A4]
+      x-priority: Must
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [events]
+              properties:
+                events: { type: array, items: { $ref: '#/components/schemas/DirectoryEvent' }, maxItems: 100 }
+      responses:
+        '204': { description: "Applied" }
+        '400': { $ref: '#/components/responses/Validation' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+  # ---------------------------------------------------------------- Dashboard
+  /dashboard:
+    servers: *core
+    get:
+      tags: [Dashboard]
+      operationId: getDashboard
+      summary: Dashboard for the signed-in role
+      description: One route, one shape per role, discriminated by `role` (decision C2). Counts match the matching lists.
+      x-roles: [Client, Agent, Manager, Admin]
+      x-stories: [F1, F2, F3, F4]
+      x-priority: Must
+      responses:
+        '200':
+          description: Dashboard
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Dashboard' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+  /manager/team:
+    servers: *core
+    get:
+      tags: [Dashboard]
+      operationId: getManagerTeam
+      summary: Own team's agents with counts, availability and limits (no chat content, no reward data)
+      x-roles: [Manager]
+      x-stories: [F2]
+      x-priority: Should
+      responses:
+        '200':
+          description: Team
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [agents, waitingClients]
+                properties:
+                  agents: { type: array, items: { $ref: '#/components/schemas/TeamAgentStaff' } }
+                  waitingClients: { type: integer, minimum: 0 }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+  # ---------------------------------------------------------------- Chat
+  /conversations:
+    servers: *core
+    get:
+      tags: [Chat]
+      operationId: listConversations
+      summary: Conversations visible to me
+      description: Client gets their one conversation. Agent gets assigned clients' conversations (search by client name). Manager gets conversations with an Open escalation from their team.
+      x-roles: [Client, Agent, Manager]
+      x-stories: [B1, B2, F2]
+      x-priority: Must
+      parameters:
+        - { name: q, in: query, description: Client name contains (Agent), schema: { type: string, maxLength: 100 } }
+        - { name: unreadOnly, in: query, schema: { type: boolean } }
+        - { $ref: '#/components/parameters/Limit' }
+        - { $ref: '#/components/parameters/Cursor' }
+      responses:
+        '200':
+          description: Conversations
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items: { type: array, items: { $ref: '#/components/schemas/ConversationSummary' } }
+                  nextCursor: { type: [string, 'null'] }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+  /conversations/{id}:
+    servers: *core
+    parameters:
+      - { $ref: '#/components/parameters/Id' }
+    get:
+      tags: [Chat]
+      operationId: getConversation
+      summary: One conversation
+      x-roles: [Client, Agent, Manager]
+      x-stories: [B1, B3]
+      x-priority: Must
+      responses:
+        '200':
+          description: Conversation
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ConversationSummary' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /conversations/{id}/messages:
+    servers: *core
+    parameters:
+      - { $ref: '#/components/parameters/Id' }
+    get:
+      tags: [Chat]
+      operationId: listMessages
+      summary: Message history, newest first, 30 per page
+      x-roles: [Client, Agent, Manager]
+      x-stories: [B3]
+      x-priority: Must
+      parameters:
+        - { name: before, in: query, description: Message id cursor; returns older messages, schema: { type: string, format: uuid } }
+        - { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 30, default: 30 } }
+      responses:
+        '200':
+          description: Messages
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items, hasMore]
+                properties:
+                  items: { type: array, items: { $ref: '#/components/schemas/Message' } }
+                  hasMore: { type: boolean }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    post:
+      tags: [Chat]
+      operationId: sendMessage
+      summary: Send a message (REST fallback for the socket event)
+      description: A waiting client gets 409 NO_AGENT_ASSIGNED. A manager can write only while an escalation is Open.
+      x-roles: [Client, Agent, Manager]
+      x-stories: [B1]
+      x-priority: Must
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/SendMessageRequest' }
+      responses:
+        '201':
+          description: Stored (or the existing message for a repeated clientMessageId)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Message' }
+        '400': { $ref: '#/components/responses/Validation' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/NoAgentAssigned' }
+  /conversations/{id}/read:
+    servers: *core
+    parameters:
+      - { $ref: '#/components/parameters/Id' }
+    post:
+      tags: [Chat]
+      operationId: markConversationRead
+      summary: Mark messages read up to a message
+      x-roles: [Client, Agent, Manager]
+      x-stories: [B2]
+      x-priority: Must
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [lastReadMessageId]
+              properties:
+                lastReadMessageId: { type: string, format: uuid }
+      responses:
+        '204': { description: "Saved" }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /conversations/{id}/escalate:
+    servers: *core
+    parameters:
+      - { $ref: '#/components/parameters/Id' }
+    post:
+      tags: [Escalations]
+      operationId: escalateConversation
+      summary: Escalate a chat to my manager (Agent)
+      x-roles: [Agent]
+      x-stories: [B4]
+      x-priority: Should
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [reason]
+              properties:
+                reason: { type: string, minLength: 1, maxLength: 300 }
+      responses:
+        '201':
+          description: Escalation opened
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Escalation' }
+        '400': { $ref: '#/components/responses/Validation' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+  /escalations:
+    servers: *core
+    get:
+      tags: [Escalations]
+      operationId: listEscalations
+      summary: Escalations from my team (Manager)
+      x-roles: [Manager]
+      x-stories: [B4, F2]
+      x-priority: Should
+      parameters:
+        - { name: status, in: query, schema: { $ref: '#/components/schemas/EscalationStatus' } }
+      responses:
+        '200':
+          description: Escalations
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items: { type: array, items: { $ref: '#/components/schemas/Escalation' } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+  /escalations/{id}/resolve:
+    servers: *core
+    parameters:
+      - { $ref: '#/components/parameters/Id' }
+    post:
+      tags: [Escalations]
+      operationId: resolveEscalation
+      summary: Resolve an escalation (manager access to the chat ends)
+      x-roles: [Manager]
+      x-stories: [B4, F2]
+      x-priority: Should
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                note: { type: string, maxLength: 300 }
+      responses:
+        '200':
+          description: Resolved
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Escalation' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/InvalidState' }
+  /clients/{id}/reassign:
+    servers: *core
+    parameters:
+      - { $ref: '#/components/parameters/Id' }
+    post:
+      tags: [Escalations]
+      operationId: reassignClient
+      summary: Reassign a client to another agent in my team (Manager)
+      description: core-api checks the team, then calls auth `PUT /internal/users/{id}/reports-to`. The new agent sees the full history; the old agent loses access.
+      x-roles: [Manager]
+      x-stories: [F2, B4]
+      x-priority: Should
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [agentId]
+              properties:
+                agentId: { type: string, format: uuid }
+      responses:
+        '204': { description: "Reassigned" }
+        '400': { $ref: '#/components/responses/Validation' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/Conflict' }
+
+  # ---------------------------------------------------------------- AI chatbot
+  /ai/conversation:
+    servers: *core
+    get:
+      tags: [AI]
+      operationId: getAiConversation
+      summary: My AI chat (private to me)
+      x-roles: [Client]
+      x-stories: [E1]
+      x-priority: Must
+      responses:
+        '200':
+          description: AI conversation
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AiConversation' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+  /ai/conversation/messages:
+    servers: *core
+    post:
+      tags: [AI]
+      operationId: sendAiMessage
+      summary: Ask the AI assistant
+      description: |
+        General knowledge only, from the knowledge base; no legal or financial advice, no personal
+        figures. 20 messages per hour. After two "I don't know" answers in a row the handoff is
+        offered (`handoffSuggested`). If the provider is down, canned answers are used.
+      x-roles: [Client]
+      x-stories: [E1]
+      x-priority: Must
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [body]
+              properties:
+                body: { type: string, minLength: 1, maxLength: 1000 }
+      responses:
+        '200':
+          description: The assistant's reply
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AiReply' }
+        '400': { $ref: '#/components/responses/Validation' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+        '503': { $ref: '#/components/responses/AiUnavailable' }
+    delete:
+      tags: [AI]
+      operationId: clearAiMessages
+      summary: Clear my AI chat
+      x-roles: [Client]
+      x-stories: [E1]
+      x-priority: Should
+      responses:
+        '204': { description: "Cleared" }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+  /ai/conversation/handoff:
+    servers: *core
+    post:
+      tags: [AI]
+      operationId: handoffToAgent
+      summary: Talk to my agent (posts a summary into the agent chat)
+      description: The agent sees only the summary message (kind Handoff), never the AI transcript. A waiting client still gets the summary queued (agentStatus Waiting).
+      x-roles: [Client]
+      x-stories: [E2]
+      x-priority: Must
+      responses:
+        '201':
+          description: Summary posted
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [message, agentStatus]
+                properties:
+                  message: { $ref: '#/components/schemas/Message' }
+                  agentStatus: { $ref: '#/components/schemas/AgentStatus' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+  # ---------------------------------------------------------------- Estimates
+  /estimates:
+    servers: *core
+    get:
+      tags: [Estimates]
+      operationId: listEstimates
+      summary: My estimates
+      x-roles: [Client]
+      x-stories: [C3]
+      x-priority: Must
+      parameters:
+        - { name: status, in: query, schema: { $ref: '#/components/schemas/EstimateStatus' } }
+        - { $ref: '#/components/parameters/Limit' }
+        - { $ref: '#/components/parameters/Cursor' }
+      responses:
+        '200':
+          description: Estimates
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/EstimatePage' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+    post:
+      tags: [Estimates]
+      operationId: createEstimate
+      summary: Save a new estimate (Draft)
+      description: Saving works while waiting for an agent.
+      x-roles: [Client]
+      x-stories: [C1, C2]
+      x-priority: Must
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/EstimateInput' }
+      responses:
+        '201':
+          description: Saved
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Estimate' }
+        '400': { $ref: '#/components/responses/Validation' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+  /estimates/preview:
+    servers: *core
+    post:
+      tags: [Estimates]
+      operationId: previewEstimate
+      summary: Compute a premium without saving (the server formula)
+      x-roles: [Client]
+      x-stories: [C2]
+      x-priority: Must
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/EstimateInput' }
+      responses:
+        '200':
+          description: Premium
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PremiumBreakdown' }
+        '400': { $ref: '#/components/responses/Validation' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+  /estimates/{id}:
+    servers: *core
+    parameters:
+      - { $ref: '#/components/parameters/Id' }
+    get:
+      tags: [Estimates]
+      operationId: getEstimate
+      summary: One of my estimates
+      x-roles: [Client]
+      x-stories: [C3]
+      x-priority: Must
+      responses:
+        '200':
+          description: Estimate
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Estimate' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    patch:
+      tags: [Estimates]
+      operationId: updateEstimate
+      summary: Edit an estimate (Draft or ChangesRequested only)
+      x-roles: [Client]
+      x-stories: [C1, C3]
+      x-priority: Must
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/EstimateInput' }
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Estimate' }
+        '400': { $ref: '#/components/responses/Validation' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/InvalidState' }
+  /estimates/{id}/duplicate:
+    servers: *core
+    parameters:
+      - { $ref: '#/components/parameters/Id' }
+    post:
+      tags: [Estimates]
+      operationId: duplicateEstimate
+      summary: Copy an estimate into a new Draft
+      x-roles: [Client]
+      x-stories: [C3]
+      x-priority: Should
+      responses:
+        '201':
+          description: New Draft
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Estimate' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /estimates/{id}/send:
+    servers: *core
+    parameters:
+      - { $ref: '#/components/parameters/Id' }
+    post:
+      tags: [Estimates]
+      operationId: sendEstimate
+      summary: Send an estimate to my agent for review
+      x-roles: [Client]
+      x-stories: [C4]
+      x-priority: Must
+      responses:
+        '200':
+          description: Sent
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Estimate' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/NoAgentAssigned' }
+  /agent/estimates:
+    servers: *core
+    get:
+      tags: [Estimates]
+      operationId: listAgentEstimates
+      summary: Estimates from my clients (default Sent, for review)
+      x-roles: [Agent]
+      x-stories: [C4, F1]
+      x-priority: Must
+      parameters:
+        - { name: status, in: query, schema: { $ref: '#/components/schemas/EstimateStatus' } }
+        - { $ref: '#/components/parameters/Limit' }
+        - { $ref: '#/components/parameters/Cursor' }
+      responses:
+        '200':
+          description: Estimates
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items: { type: array, items: { $ref: '#/components/schemas/EstimateStaff' } }
+                  nextCursor: { type: [string, 'null'] }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+  /agent/estimates/{id}:
+    servers: *core
+    parameters:
+      - { $ref: '#/components/parameters/Id' }
+    get:
+      tags: [Estimates]
+      operationId: getAgentEstimate
+      summary: One estimate from my client
+      x-roles: [Agent]
+      x-stories: [C4]
+      x-priority: Must
+      responses:
+        '200':
+          description: Estimate
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/EstimateStaff' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /agent/estimates/{id}/approve:
+    servers: *core
+    parameters:
+      - { $ref: '#/components/parameters/Id' }
+      - { $ref: '#/components/parameters/IdempotencyKey' }
+    post:
+      tags: [Estimates]
+      operationId: approveEstimate
+      summary: Approve an estimate; creates the policy and its full schedule
+      description: One transaction. Approving twice returns the same policy.
+      x-roles: [Agent]
+      x-stories: [C4, C5]
+      x-priority: Must
+      responses:
+        '200':
+          description: Approved
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [estimate, policy]
+                properties:
+                  estimate: { $ref: '#/components/schemas/EstimateStaff' }
+                  policy: { $ref: '#/components/schemas/PolicyStaff' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/InvalidState' }
+  /agent/estimates/{id}/request-changes:
+    servers: *core
+    parameters:
+      - { $ref: '#/components/parameters/Id' }
+    post:
+      tags: [Estimates]
+      operationId: requestEstimateChanges
+      summary: Send an estimate back to the client with a note
+      x-roles: [Agent]
+      x-stories: [C4]
+      x-priority: Must
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [note]
+              properties:
+                note: { type: string, minLength: 1, maxLength: 500 }
+      responses:
+        '200':
+          description: Changes requested
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/EstimateStaff' }
+        '400': { $ref: '#/components/responses/Validation' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/InvalidState' }
+
+  # ---------------------------------------------------------------- Policies
+  /policies:
+    servers: *core
+    get:
+      tags: [Policies]
+      operationId: listPolicies
+      summary: My policies
+      x-roles: [Client]
+      x-stories: [C5]
+      x-priority: Must
+      responses:
+        '200':
+          description: Policies
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items: { type: array, items: { $ref: '#/components/schemas/PolicyClient' } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+  /policies/{id}:
+    servers: *core
+    parameters:
+      - { $ref: '#/components/parameters/Id' }
+    get:
+      tags: [Policies]
+      operationId: getPolicy
+      summary: One of my policies
+      x-roles: [Client]
+      x-stories: [C5, G5]
+      x-priority: Must
+      responses:
+        '200':
+          description: Policy
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PolicyClient' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /policies/{id}/schedule:
+    servers: *core
+    parameters:
+      - { $ref: '#/components/parameters/Id' }
+    get:
+      tags: [Policies]
+      operationId: getPolicySchedule
+      summary: Payment schedule with effective due dates (client view, includes reward extension)
+      x-roles: [Client]
+      x-stories: [C5, G5]
+      x-priority: Must
+      parameters:
+        - { name: from, in: query, description: First due date to return, schema: { type: string, format: date } }
+        - { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 360, default: 12 } }
+      responses:
+        '200':
+          description: Schedule
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items, total]
+                properties:
+                  items: { type: array, items: { $ref: '#/components/schemas/ScheduleItemClient' } }
+                  total: { type: integer, description: "term years x 12" }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /policies/{id}/schedule/{itemId}/pay:
+    servers: *core
+    parameters:
+      - { $ref: '#/components/parameters/Id' }
+      - { name: itemId, in: path, required: true, schema: { type: string, format: uuid } }
+    post:
+      tags: [Policies]
+      operationId: payScheduleItem
+      summary: Mark a premium as paid (simulated)
+      x-roles: [Client]
+      x-stories: [C5, X7]
+      x-priority: Should
+      x-demo: true
+      responses:
+        '200':
+          description: Paid
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ScheduleItemClient' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/InvalidState' }
+  /agent/clients/{id}/policies:
+    servers: *core
+    parameters:
+      - { $ref: '#/components/parameters/Id' }
+    get:
+      tags: [Policies]
+      operationId: listClientPoliciesForAgent
+      summary: Policies of one of my clients (no reward fields, original due dates only)
+      x-roles: [Agent]
+      x-stories: [C5, F1]
+      x-priority: Must
+      responses:
+        '200':
+          description: Policies
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items: { type: array, items: { $ref: '#/components/schemas/PolicyStaff' } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  # ---------------------------------------------------------------- Claims
+  /claims:
+    servers: *core
+    get:
+      tags: [Claims]
+      operationId: listClaims
+      summary: My claims, with counts per status
+      x-roles: [Client]
+      x-stories: [D2]
+      x-priority: Should
+      parameters:
+        - { name: status, in: query, schema: { $ref: '#/components/schemas/ClaimStatus' } }
+      responses:
+        '200':
+          description: Claims
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items, counts]
+                properties:
+                  items: { type: array, items: { $ref: '#/components/schemas/ClaimClient' } }
+                  counts: { type: object, additionalProperties: { type: integer } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+    post:
+      tags: [Claims]
+      operationId: createClaim
+      summary: Start a claim (Draft, private to me)
+      x-roles: [Client]
+      x-stories: [D1]
+      x-priority: Should
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ClaimInput' }
+      responses:
+        '201':
+          description: Draft created
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ClaimClient' }
+        '400': { $ref: '#/components/responses/Validation' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+  /claims/{id}:
+    servers: *core
+    parameters:
+      - { $ref: '#/components/parameters/Id' }
+    get:
+      tags: [Claims]
+      operationId: getClaim
+      summary: One of my claims with its timeline
+      x-roles: [Client]
+      x-stories: [D2, G5]
+      x-priority: Should
+      responses:
+        '200':
+          description: Claim
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ClaimClient' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+    patch:
+      tags: [Claims]
+      operationId: updateClaim
+      summary: Edit a Draft claim
+      x-roles: [Client]
+      x-stories: [D1]
+      x-priority: Should
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ClaimInput' }
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ClaimClient' }
+        '400': { $ref: '#/components/responses/Validation' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/InvalidState' }
+  /claims/{id}/documents:
+    servers: *core
+    parameters:
+      - { $ref: '#/components/parameters/Id' }
+    post:
+      tags: [Claims]
+      operationId: addClaimDocument
+      summary: Attach a document (name and size only in the demo, decision M4)
+      x-roles: [Client]
+      x-stories: [D1]
+      x-priority: Should
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [fileName, fileSizeBytes, mimeType]
+              properties:
+                fileName: { type: string, minLength: 1, maxLength: 200 }
+                fileSizeBytes: { type: integer, minimum: 1, maximum: 10485760 }
+                mimeType: { type: string, enum: [application/pdf, image/jpeg, image/png] }
+      responses:
+        '201':
+          description: Added
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ClaimDocument' }
+        '400': { $ref: '#/components/responses/Validation' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/InvalidState' }
+  /claims/{id}/submit:
+    servers: *core
+    parameters:
+      - { $ref: '#/components/parameters/Id' }
+      - { $ref: '#/components/parameters/IdempotencyKey' }
+    post:
+      tags: [Claims]
+      operationId: submitClaim
+      summary: Submit a Draft claim (gets its CLM number)
+      x-roles: [Client]
+      x-stories: [D1]
+      x-priority: Should
+      responses:
+        '200':
+          description: Submitted
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ClaimClient' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/InvalidState' }
+  /claims/{id}/reply:
+    servers: *core
+    parameters:
+      - { $ref: '#/components/parameters/Id' }
+    post:
+      tags: [Claims]
+      operationId: replyToClaim
+      summary: Answer a "Needs info" request (moves the claim back to UnderReview)
+      x-roles: [Client]
+      x-stories: [D2]
+      x-priority: Should
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [note]
+              properties:
+                note: { type: string, minLength: 1, maxLength: 1000 }
+      responses:
+        '200':
+          description: Replied
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ClaimClient' }
+        '400': { $ref: '#/components/responses/Validation' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/InvalidState' }
+  /agent/claims:
+    servers: *core
+    get:
+      tags: [Claims]
+      operationId: listAgentClaims
+      summary: Claims from my clients (submitted or later; no payout date, no reward data)
+      x-roles: [Agent]
+      x-stories: [D3, F1]
+      x-priority: Should
+      parameters:
+        - { name: status, in: query, schema: { $ref: '#/components/schemas/ClaimStatus' } }
+      responses:
+        '200':
+          description: Claims
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items: { type: array, items: { $ref: '#/components/schemas/ClaimStaff' } }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+  /agent/claims/{id}:
+    servers: *core
+    parameters:
+      - { $ref: '#/components/parameters/Id' }
+    get:
+      tags: [Claims]
+      operationId: getAgentClaim
+      summary: One claim from my client
+      x-roles: [Agent]
+      x-stories: [D3]
+      x-priority: Should
+      responses:
+        '200':
+          description: Claim
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ClaimStaff' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /agent/claims/{id}/decision:
+    servers: *core
+    parameters:
+      - { $ref: '#/components/parameters/Id' }
+      - { $ref: '#/components/parameters/IdempotencyKey' }
+    post:
+      tags: [Claims]
+      operationId: decideClaim
+      summary: Move a claim (StartReview, Approve, RequestInfo, Reject, MarkPaid)
+      description: |
+        Approve needs `amountApproved` (not above the requested amount). The server records the
+        payout date = approval date + standard processing days + the reward delay for the client's
+        level on the approval date. The response never includes the payout date (client-only).
+        RequestInfo and Reject need a note.
+      x-roles: [Agent]
+      x-stories: [D3, G5]
+      x-priority: Should
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ClaimDecisionRequest' }
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ClaimStaff' }
+        '400': { $ref: '#/components/responses/Validation' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/InvalidState' }
+
+  # ---------------------------------------------------------------- Settings and preferences
+  /settings/estimate-rate:
+    servers: *core
+    get:
+      tags: [Settings]
+      operationId: getEstimateRate
+      summary: Current estimate rate (clients use it for the live premium)
+      x-roles: [Client, Agent, Manager, Admin]
+      x-stories: [C2, F3]
+      x-priority: Must
+      responses:
+        '200':
+          description: Rate
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/EstimateRate' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+    put:
+      tags: [Settings]
+      operationId: updateEstimateRate
+      summary: Change the rate (creates a new formula version; old estimates keep theirs)
+      x-roles: [Admin]
+      x-stories: [F3, C3]
+      x-priority: Should
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/EstimateRateInput' }
+      responses:
+        '200':
+          description: Saved
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/EstimateRate' }
+        '400': { $ref: '#/components/responses/Validation' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+  /settings/reward-rules:
+    servers: *core
+    get:
+      tags: [Settings]
+      operationId: getRewardRules
+      summary: Reward rules (point bands, levels, extension and delay days, Apply reward effects)
+      x-roles: [Admin]
+      x-stories: [F3, G5]
+      x-priority: Should
+      responses:
+        '200':
+          description: Rules
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/RewardRules' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+    put:
+      tags: [Settings]
+      operationId: updateRewardRules
+      summary: Change the reward rules
+      x-roles: [Admin]
+      x-stories: [F3, G5]
+      x-priority: Should
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/RewardRules' }
+      responses:
+        '200':
+          description: Saved
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/RewardRules' }
+        '400': { $ref: '#/components/responses/Validation' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+  /settings/claims-processing:
+    servers: *core
+    get:
+      tags: [Settings]
+      operationId: getClaimsProcessing
+      summary: Standard claim processing days
+      x-roles: [Admin]
+      x-stories: [F3, D3]
+      x-priority: Should
+      responses:
+        '200':
+          description: Setting
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ClaimsProcessingSetting' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+    put:
+      tags: [Settings]
+      operationId: updateClaimsProcessing
+      summary: Change standard claim processing days
+      x-roles: [Admin]
+      x-stories: [F3, D3]
+      x-priority: Should
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ClaimsProcessingSetting' }
+      responses:
+        '200':
+          description: Saved
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ClaimsProcessingSetting' }
+        '400': { $ref: '#/components/responses/Validation' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+  /settings/assignment:
+    servers: *core
+    get:
+      tags: [Settings]
+      operationId: getAssignmentSetting
+      summary: Default maximum clients per agent
+      x-roles: [Admin]
+      x-stories: [F3, A4]
+      x-priority: Should
+      responses:
+        '200':
+          description: Setting
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AssignmentSetting' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+    put:
+      tags: [Settings]
+      operationId: updateAssignmentSetting
+      summary: Change the default maximum clients per agent
+      x-roles: [Admin]
+      x-stories: [F3, A4]
+      x-priority: Should
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/AssignmentSetting' }
+      responses:
+        '200':
+          description: Saved
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AssignmentSetting' }
+        '400': { $ref: '#/components/responses/Validation' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+  /me/preferences:
+    servers: *core
+    get:
+      tags: [Settings]
+      operationId: getPreferences
+      summary: My notification preferences
+      x-roles: [Client, Agent, Manager, Admin]
+      x-stories: [A3]
+      x-priority: Should
+      responses:
+        '200':
+          description: Preferences
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Preferences' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+    put:
+      tags: [Settings]
+      operationId: updatePreferences
+      summary: Save my notification preferences
+      x-roles: [Client, Agent, Manager, Admin]
+      x-stories: [A3]
+      x-priority: Should
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/Preferences' }
+      responses:
+        '200':
+          description: Saved
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Preferences' }
+        '400': { $ref: '#/components/responses/Validation' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+
+  # ---------------------------------------------------------------- Notifications
+  /notifications:
+    servers: *core
+    get:
+      tags: [Notifications]
+      operationId: listNotifications
+      summary: My in-app notifications (for example "A client is waiting for an agent")
+      x-roles: [Admin, Manager, Agent]
+      x-stories: [A4, F2, F3]
+      x-priority: Should
+      parameters:
+        - { name: unreadOnly, in: query, schema: { type: boolean } }
+        - { $ref: '#/components/parameters/Limit' }
+        - { $ref: '#/components/parameters/Cursor' }
+      responses:
+        '200':
+          description: Notifications
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items, unreadCount]
+                properties:
+                  items: { type: array, items: { $ref: '#/components/schemas/Notification' } }
+                  unreadCount: { type: integer }
+                  nextCursor: { type: [string, 'null'] }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+  /notifications/{id}/read:
+    servers: *core
+    parameters:
+      - { $ref: '#/components/parameters/Id' }
+    post:
+      tags: [Notifications]
+      operationId: markNotificationRead
+      summary: Mark a notification read
+      x-roles: [Admin, Manager, Agent]
+      x-stories: [F2, F3]
+      x-priority: Should
+      responses:
+        '204': { description: "Saved" }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  # ---------------------------------------------------------------- Reward effects (core-api)
+  /api/rewards/results:
+    servers: *core
+    post:
+      tags: [RewardEffects]
+      operationId: receiveRewardResult
+      summary: Receive a monthly reward result from rewards-api (service key only)
+      description: |
+        One result per client per period; a resend replaces the earlier result. Each save appends
+        a status-history row and logs the effects. `status` must match the thresholds for `points`.
+        401: missing or invalid key. 403: a valid token that is not the service key (any user token).
+        404: client not found or not a client.
+      security:
+        - serviceKey: []
+      x-roles: [service]
+      x-scope: reward:write
+      x-stories: [G4, G5]
+      x-priority: Must
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/RewardResultInput' }
+            example: { client_id: 7b0c7f0e-5d7e-4d32-9a65-2f4f9c1f8a11, period: '2026-11', points: 430, status: Gold }
+      responses:
+        '201':
+          description: Saved (or replaced)
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [client_id, period, status, replaced]
+                properties:
+                  client_id: { type: string, format: uuid }
+                  period: { type: string }
+                  status: { $ref: '#/components/schemas/RewardStatus' }
+                  replaced: { type: boolean }
+        '400': { $ref: '#/components/responses/Validation' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /me/reward-effects:
+    servers: *core
+    get:
+      tags: [RewardEffects]
+      operationId: getMyRewardEffects
+      summary: My current level and its effects (client only)
+      x-roles: [Client]
+      x-stories: [G5]
+      x-priority: Should
+      responses:
+        '200':
+          description: Effects
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/RewardEffectsClient' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+  /internal/clients/{id}/reward-effects:
+    servers: *core
+    parameters:
+      - { $ref: '#/components/parameters/Id' }
+    get:
+      tags: [Internal]
+      operationId: getClientRewardEffectsInternal
+      summary: A client's level and effect text, for the Rewards app status screen (rewards-api)
+      security:
+        - serviceKey: []
+      x-roles: [service]
+      x-scope: reward:read-effects
+      x-stories: [G5]
+      x-priority: Should
+      responses:
+        '200':
+          description: Effects
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/RewardEffectsClient' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  # ---------------------------------------------------------------- Rewards app (rewards-api)
+  /rewards/today:
+    servers: *rewards
+    get:
+      tags: [Rewards]
+      operationId: getRewardsToday
+      summary: Today's steps and points
+      security:
+        - rewardsBearer: []
+      x-roles: [Client]
+      x-stories: [G2]
+      x-priority: Must
+      responses:
+        '200':
+          description: Today
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/StepDay' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+  /rewards/steps:
+    servers: *rewards
+    get:
+      tags: [Rewards]
+      operationId: listStepDays
+      summary: Step days in a range (weekly bars)
+      security:
+        - rewardsBearer: []
+      x-roles: [Client]
+      x-stories: [G2]
+      x-priority: Must
+      parameters:
+        - { name: from, in: query, required: true, schema: { type: string, format: date } }
+        - { name: to, in: query, required: true, schema: { type: string, format: date } }
+      responses:
+        '200':
+          description: Days
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items: { type: array, items: { $ref: '#/components/schemas/StepDay' } }
+        '400': { $ref: '#/components/responses/Validation' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+  /rewards/steps/{day}:
+    servers: *rewards
+    parameters:
+      - { name: day, in: path, required: true, schema: { type: string, format: date } }
+    put:
+      tags: [Rewards]
+      operationId: recordSteps
+      summary: Record the step count for a day (from the phone sensor)
+      description: Rejected with 409 INVALID_STATE once the day is closed (locked).
+      security:
+        - rewardsBearer: []
+      x-roles: [Client]
+      x-stories: [G2]
+      x-priority: Must
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [steps]
+              properties:
+                steps: { type: integer, minimum: 0, maximum: 100000 }
+      responses:
+        '200':
+          description: Saved
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/StepDay' }
+        '400': { $ref: '#/components/responses/Validation' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '409': { $ref: '#/components/responses/InvalidState' }
+  /rewards/summary:
+    servers: *rewards
+    get:
+      tags: [Rewards]
+      operationId: getRewardsSummary
+      summary: This month's points, level and points to the next level
+      security:
+        - rewardsBearer: []
+      x-roles: [Client]
+      x-stories: [G3, G4]
+      x-priority: Must
+      responses:
+        '200':
+          description: Summary
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/RewardSummary' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+  /rewards/effect:
+    servers: *rewards
+    get:
+      tags: [Rewards]
+      operationId: getRewardsEffect
+      summary: The effect of my level in plain words (read from core-api)
+      security:
+        - rewardsBearer: []
+      x-roles: [Client]
+      x-stories: [G5]
+      x-priority: Should
+      responses:
+        '200':
+          description: Effect
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/RewardEffectsClient' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+  /rewards/demo/sample-steps:
+    servers: *rewards
+    post:
+      tags: [Rewards]
+      operationId: generateSampleSteps
+      summary: Fill this month's past days with sample steps (Demo only)
+      security:
+        - rewardsBearer: []
+      x-roles: [Client]
+      x-stories: [G2]
+      x-priority: Should
+      x-demo: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                targetLevel: { $ref: '#/components/schemas/RewardStatus' }
+      responses:
+        '200':
+          description: Generated
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/RewardSummary' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+  /rewards/demo/close-period:
+    servers: *rewards
+    post:
+      tags: [Rewards]
+      operationId: closePeriodNow
+      summary: Close my current period now and send the result (Demo only)
+      security:
+        - rewardsBearer: []
+      x-roles: [Client]
+      x-stories: [G3, G4]
+      x-priority: Should
+      x-demo: true
+      responses:
+        '200':
+          description: Closed; the result is queued for delivery
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/RewardSummary' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: User access token from auth (aud core-api for core-api and auth routes).
+    rewardsBearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Rewards app access token from SSO (aud rewards-api, Client only).
+    serviceKey:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Service-account token from POST /service/token. Never accepted by user routes.
+
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+    Limit:
+      name: limit
+      in: query
+      schema: { type: integer, minimum: 1, maximum: 100, default: 20 }
+    Cursor:
+      name: cursor
+      in: query
+      schema: { type: string }
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: false
+      description: Repeating a request with the same key returns the first result.
+      schema: { type: string, maxLength: 100 }
+
+  responses:
+    Validation:
+      description: Invalid input (VALIDATION)
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    Unauthorized:
+      description: No valid token (UNAUTHORIZED)
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    Forbidden:
+      description: Valid token without permission (FORBIDDEN)
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    NotFound:
+      description: Missing or hidden record (NOT_FOUND)
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    Conflict:
+      description: Already exists or clashes with the current data (CONFLICT)
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    InvalidState:
+      description: Not allowed in the record's current status (INVALID_STATE)
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    NoAgentAssigned:
+      description: The client is waiting for an agent (NO_AGENT_ASSIGNED)
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    AccountBlocked:
+      description: Too many failed logins (ACCOUNT_BLOCKED)
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    RateLimited:
+      description: Too many requests (RATE_LIMITED)
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    AiUnavailable:
+      description: The assistant cannot answer right now (AI_UNAVAILABLE)
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+
+  schemas:
+    # -------------------------------------------------------------- shared
+    Health:
+      type: object
+      required: [status, service]
+      properties:
+        status: { type: string, enum: [ok] }
+        service: { type: string, enum: [auth, core-api, rewards-api] }
+        version: { type: string }
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message, requestId]
+          properties:
+            code:
+              type: string
+              enum: [UNAUTHORIZED, FORBIDDEN, NOT_FOUND, VALIDATION, CONFLICT, ACCOUNT_BLOCKED, RATE_LIMITED, AI_UNAVAILABLE, NO_AGENT_ASSIGNED, INVALID_STATE, INTERNAL]
+            message: { type: string }
+            requestId: { type: string }
+            fields:
+              type: object
+              description: Field errors for VALIDATION
+              additionalProperties: { type: string }
+            retryAfterSeconds: { type: integer, description: "For ACCOUNT_BLOCKED and RATE_LIMITED" }
+    Money:
+      type: string
+      pattern: '^-?\d+\.\d{2}$'
+      description: Pesos with two decimals
+      example: '1818.88'
+    Period:
+      type: string
+      pattern: '^\d{4}-(0[1-9]|1[0-2])$'
+      example: '2026-11'
+    Role:
+      type: string
+      enum: [Client, Agent, Manager, Admin]
+    UserStatus:
+      type: string
+      enum: [Active, Deactivated]
+    Availability:
+      type: string
+      enum: [Available, Away]
+    AgentStatus:
+      type: string
+      enum: [Assigned, Waiting]
+      description: Waiting means no agent is assigned yet
+    RewardStatus:
+      type: string
+      enum: [Bronze, Silver, Gold, Platinum]
+    PersonRef:
+      type: object
+      required: [id, fullName]
+      properties:
+        id: { type: string, format: uuid }
+        fullName: { type: string }
+
+    # -------------------------------------------------------------- auth
+    RegisterRequest:
+      type: object
+      required: [fullName, email, password, acceptTerms]
+      properties:
+        fullName: { type: string, minLength: 2, maxLength: 100 }
+        email: { type: string, format: email, maxLength: 254 }
+        password:
+          type: string
+          minLength: 8
+          maxLength: 128
+          description: At least 8 characters with a letter and a number
+        acceptTerms: { type: boolean, const: true }
+        client: { $ref: '#/components/schemas/ClientKind' }
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email: { type: string, format: email }
+        password: { type: string, minLength: 1, maxLength: 128 }
+        client: { $ref: '#/components/schemas/ClientKind' }
+    ClientKind:
+      type: string
+      enum: [web, mobile]
+      default: web
+      description: web gets the refresh token as an httpOnly cookie; mobile in the body
+    RefreshRequest:
+      type: object
+      properties:
+        refreshToken: { type: string, description: "Mobile only; web uses the cookie" }
+    TokenPair:
+      type: object
+      required: [accessToken, expiresInSeconds]
+      properties:
+        accessToken: { type: string }
+        expiresInSeconds: { type: integer, example: 900 }
+        refreshToken: { type: string, description: "Present for mobile and the Rewards app" }
+    AuthResult:
+      allOf:
+        - { $ref: '#/components/schemas/TokenPair' }
+        - type: object
+          required: [user]
+          properties:
+            user: { $ref: '#/components/schemas/User' }
+    User:
+      type: object
+      required: [id, email, fullName, role, status, mustChangePassword]
+      properties:
+        id: { type: string, format: uuid }
+        email: { type: string, format: email }
+        fullName: { type: string }
+        role: { $ref: '#/components/schemas/Role' }
+        status: { $ref: '#/components/schemas/UserStatus' }
+        mustChangePassword: { type: boolean }
+        reportsTo: { oneOf: [{ $ref: '#/components/schemas/PersonRef' }, { type: 'null' }] }
+        agentStatus: { $ref: '#/components/schemas/AgentStatus', description: "Clients only" }
+        availability: { $ref: '#/components/schemas/Availability', description: "Agents only" }
+        maxClients: { type: integer, minimum: 1, maximum: 100, description: "Agents only" }
+        createdAt: { type: string, format: date-time }
+    ChangePasswordRequest:
+      type: object
+      required: [currentPassword, newPassword]
+      properties:
+        currentPassword: { type: string, minLength: 1 }
+        newPassword: { type: string, minLength: 8, maxLength: 128 }
+    StaffDirectoryEntry:
+      type: object
+      description: Account as seen by Admin and Manager. No reward data.
+      required: [id, email, fullName, role, status]
+      properties:
+        id: { type: string, format: uuid }
+        email: { type: string, format: email }
+        fullName: { type: string }
+        role: { $ref: '#/components/schemas/Role' }
+        status: { $ref: '#/components/schemas/UserStatus' }
+        reportsTo: { oneOf: [{ $ref: '#/components/schemas/PersonRef' }, { type: 'null' }] }
+        availability: { $ref: '#/components/schemas/Availability' }
+        maxClients: { type: integer }
+        clientCount: { type: integer, description: "Agents only" }
+        waitingSince: { type: [string, 'null'], format: date-time, description: "Clients waiting for an agent" }
+        createdAt: { type: string, format: date-time }
+    StaffDirectoryPage:
+      type: object
+      required: [items]
+      properties:
+        items: { type: array, items: { $ref: '#/components/schemas/StaffDirectoryEntry' } }
+        nextCursor: { type: [string, 'null'] }
+    CreateUserRequest:
+      type: object
+      required: [fullName, email, role, temporaryPassword]
+      properties:
+        fullName: { type: string, minLength: 2, maxLength: 100 }
+        email: { type: string, format: email }
+        role: { type: string, enum: [Manager, Agent] }
+        reportsTo: { type: string, format: uuid, description: "Required for an Agent (a Manager id)" }
+        temporaryPassword: { type: string, minLength: 8, maxLength: 128 }
+        maxClients: { type: integer, minimum: 1, maximum: 100 }
+    UpdateUserRequest:
+      type: object
+      minProperties: 1
+      properties:
+        fullName: { type: string, minLength: 2, maxLength: 100 }
+        role: { $ref: '#/components/schemas/Role' }
+        reportsTo: { type: [string, 'null'], format: uuid }
+        status: { $ref: '#/components/schemas/UserStatus' }
+        maxClients: { type: integer, minimum: 1, maximum: 100 }
+    SsoAuthorizeRequest:
+      type: object
+      required: [clientId, codeChallenge, codeChallengeMethod]
+      properties:
+        clientId: { type: string, enum: [rewards] }
+        codeChallenge: { type: string, minLength: 43, maxLength: 128 }
+        codeChallengeMethod: { type: string, enum: [S256] }
+    SsoTokenRequest:
+      type: object
+      required: [code, codeVerifier, clientId]
+      properties:
+        code: { type: string }
+        codeVerifier: { type: string, minLength: 43, maxLength: 128 }
+        clientId: { type: string, enum: [rewards] }
+    ServiceTokenRequest:
+      type: object
+      required: [clientId, clientSecret]
+      properties:
+        clientId: { type: string, example: rewards-api }
+        clientSecret: { type: string }
+    DirectoryEvent:
+      type: object
+      required: [type, userId, version, occurredAt]
+      properties:
+        type: { type: string, enum: [user.created, user.updated, user.deactivated, user.reassigned, agent.availability, client.waiting] }
+        userId: { type: string, format: uuid }
+        version: { type: integer, minimum: 1 }
+        occurredAt: { type: string, format: date-time }
+        user:
+          type: object
+          description: Snapshot of the directory fields (no email, no password)
+          properties:
+            fullName: { type: string }
+            role: { $ref: '#/components/schemas/Role' }
+            reportsTo: { type: [string, 'null'], format: uuid }
+            status: { $ref: '#/components/schemas/UserStatus' }
+            availability: { oneOf: [{ $ref: '#/components/schemas/Availability' }, { type: 'null' }] }
+            maxClients: { type: [integer, 'null'] }
+
+    # -------------------------------------------------------------- dashboard
+    Dashboard:
+      oneOf:
+        - { $ref: '#/components/schemas/ClientDashboard' }
+        - { $ref: '#/components/schemas/AgentDashboardStaff' }
+        - { $ref: '#/components/schemas/ManagerDashboardStaff' }
+        - { $ref: '#/components/schemas/AdminDashboardStaff' }
+      discriminator:
+        propertyName: role
+        mapping:
+          Client: '#/components/schemas/ClientDashboard'
+          Agent: '#/components/schemas/AgentDashboardStaff'
+          Manager: '#/components/schemas/ManagerDashboardStaff'
+          Admin: '#/components/schemas/AdminDashboardStaff'
+    ClientDashboard:
+      type: object
+      required: [role, agentStatus, unreadMessages, policies, draftEstimates, openClaims]
+      properties:
+        role: { type: string, const: Client }
+        agentStatus: { $ref: '#/components/schemas/AgentStatus' }
+        agent:
+          oneOf:
+            - type: object
+              required: [id, fullName, availability]
+              properties:
+                id: { type: string, format: uuid }
+                fullName: { type: string }
+                availability: { $ref: '#/components/schemas/Availability' }
+            - type: 'null'
+        unreadMessages: { type: integer }
+        policies: { type: array, items: { $ref: '#/components/schemas/PolicyClient' } }
+        nextPayment: { oneOf: [{ $ref: '#/components/schemas/ScheduleItemClient' }, { type: 'null' }] }
+        draftEstimates: { type: array, items: { $ref: '#/components/schemas/Estimate' } }
+        openClaims: { type: array, items: { $ref: '#/components/schemas/ClaimClient' } }
+        rewardStatus: { $ref: '#/components/schemas/RewardStatus' }
+        rewardNote: { type: [string, 'null'], description: "'For example \"Your Gold level gives you 14 extra days to pay each premium.\"'" }
+    AgentDashboardStaff:
+      type: object
+      required: [role, availability, clientCount, maxClients, unreadConversations, pendingEstimates, openClaims]
+      properties:
+        role: { type: string, const: Agent }
+        availability: { $ref: '#/components/schemas/Availability' }
+        clientCount: { type: integer }
+        maxClients: { type: integer }
+        unreadConversations: { type: integer }
+        pendingEstimates: { type: integer }
+        openClaims: { type: integer }
+    ManagerDashboardStaff:
+      type: object
+      required: [role, agents, openEscalations, waitingClients, unreadNotifications]
+      properties:
+        role: { type: string, const: Manager }
+        agents: { type: array, items: { $ref: '#/components/schemas/TeamAgentStaff' } }
+        openEscalations: { type: integer }
+        waitingClients: { type: integer }
+        unreadNotifications: { type: integer }
+    AdminDashboardStaff:
+      type: object
+      required: [role, usersByRole, waitingClients, conversations, messagesLast7Days, estimatesByStatus, claimsByStatus, unreadNotifications]
+      properties:
+        role: { type: string, const: Admin }
+        usersByRole: { type: object, additionalProperties: { type: integer } }
+        waitingClients: { type: integer }
+        conversations: { type: integer, description: "Count only; no chat content" }
+        messagesLast7Days: { type: integer }
+        estimatesByStatus: { type: object, additionalProperties: { type: integer } }
+        claimsByStatus: { type: object, additionalProperties: { type: integer } }
+        unreadNotifications: { type: integer }
+    TeamAgentStaff:
+      type: object
+      required: [id, fullName, availability, clientCount, maxClients, openConversations, pendingEstimates, openClaims]
+      properties:
+        id: { type: string, format: uuid }
+        fullName: { type: string }
+        availability: { $ref: '#/components/schemas/Availability' }
+        clientCount: { type: integer }
+        maxClients: { type: integer }
+        openConversations: { type: integer }
+        pendingEstimates: { type: integer }
+        openClaims: { type: integer }
+
+    # -------------------------------------------------------------- chat
+    ConversationSummary:
+      type: object
+      required: [id, client, unreadCount]
+      properties:
+        id: { type: string, format: uuid }
+        client: { $ref: '#/components/schemas/PersonRef' }
+        agent: { oneOf: [{ $ref: '#/components/schemas/PersonRef' }, { type: 'null' }], description: null while the client waits }
+        lastMessage: { oneOf: [{ $ref: '#/components/schemas/Message' }, { type: 'null' }] }
+        unreadCount: { type: integer }
+        openEscalation: { oneOf: [{ $ref: '#/components/schemas/Escalation' }, { type: 'null' }] }
+    MessageKind:
+      type: string
+      enum: [Text, System, Handoff]
+    Message:
+      type: object
+      required: [id, conversationId, kind, body, createdAt]
+      properties:
+        id: { type: string, format: uuid }
+        conversationId: { type: string, format: uuid }
+        sender: { oneOf: [{ $ref: '#/components/schemas/PersonRef' }, { type: 'null' }], description: null for System messages }
+        senderRole: { oneOf: [{ $ref: '#/components/schemas/Role' }, { type: 'null' }] }
+        kind: { $ref: '#/components/schemas/MessageKind' }
+        body: { type: string }
+        clientMessageId: { type: [string, 'null'] }
+        createdAt: { type: string, format: date-time }
+    SendMessageRequest:
+      type: object
+      required: [body, clientMessageId]
+      properties:
+        body: { type: string, minLength: 1, maxLength: 2000 }
+        clientMessageId: { type: string, minLength: 1, maxLength: 64 }
+    EscalationStatus:
+      type: string
+      enum: [Open, Resolved]
+    Escalation:
+      type: object
+      required: [id, conversationId, client, escalatedBy, reason, status, createdAt]
+      properties:
+        id: { type: string, format: uuid }
+        conversationId: { type: string, format: uuid }
+        client: { $ref: '#/components/schemas/PersonRef' }
+        escalatedBy: { $ref: '#/components/schemas/PersonRef' }
+        reason: { type: string }
+        status: { $ref: '#/components/schemas/EscalationStatus' }
+        createdAt: { type: string, format: date-time }
+        resolvedAt: { type: [string, 'null'], format: date-time }
+
+    # -------------------------------------------------------------- AI
+    AiMessage:
+      type: object
+      required: [id, role, body, createdAt]
+      properties:
+        id: { type: string, format: uuid }
+        role: { type: string, enum: [User, Assistant] }
+        body: { type: string }
+        refused: { type: boolean }
+        createdAt: { type: string, format: date-time }
+    AiConversation:
+      type: object
+      required: [id, messages]
+      properties:
+        id: { type: string, format: uuid }
+        messages: { type: array, items: { $ref: '#/components/schemas/AiMessage' } }
+    AiReply:
+      type: object
+      required: [userMessage, reply, handoffSuggested]
+      properties:
+        userMessage: { $ref: '#/components/schemas/AiMessage' }
+        reply: { $ref: '#/components/schemas/AiMessage' }
+        handoffSuggested: { type: boolean, description: "True after two \"I don't know\" answers in a row" }
+        source: { type: string, enum: [model, fallback] }
+
+    # -------------------------------------------------------------- estimates
+    EstimateStatus:
+      type: string
+      enum: [Draft, Sent, ChangesRequested, Approved]
+    EstimateInput:
+      type: object
+      required: [age, coverageAmount, termYears]
+      properties:
+        age: { type: integer, minimum: 18, maximum: 65 }
+        coverageAmount: { type: integer, minimum: 500000, maximum: 20000000, description: "Whole pesos" }
+        termYears: { type: integer, enum: [10, 20, 30] }
+    PremiumBreakdown:
+      type: object
+      required: [base, ageAdjustment, termAdjustment, monthlyPremium, formulaVersion]
+      description: No reward discount exists (decision D1).
+      properties:
+        base: { $ref: '#/components/schemas/Money' }
+        ageAdjustment: { $ref: '#/components/schemas/Money' }
+        termAdjustment: { $ref: '#/components/schemas/Money' }
+        monthlyPremium: { $ref: '#/components/schemas/Money' }
+        formulaVersion: { type: string, example: v1 }
+    Estimate:
+      type: object
+      required: [id, age, coverageAmount, termYears, monthlyPremium, breakdown, formulaVersion, status, createdAt, updatedAt]
+      properties:
+        id: { type: string, format: uuid }
+        age: { type: integer }
+        coverageAmount: { type: integer }
+        termYears: { type: integer }
+        monthlyPremium: { $ref: '#/components/schemas/Money' }
+        breakdown: { $ref: '#/components/schemas/PremiumBreakdown' }
+        formulaVersion: { type: string }
+        status: { $ref: '#/components/schemas/EstimateStatus' }
+        reviewNote: { type: [string, 'null'] }
+        policyId: { type: [string, 'null'], format: uuid }
+        sentAt: { type: [string, 'null'], format: date-time }
+        reviewedAt: { type: [string, 'null'], format: date-time }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+    EstimatePage:
+      type: object
+      required: [items]
+      properties:
+        items: { type: array, items: { $ref: '#/components/schemas/Estimate' } }
+        nextCursor: { type: [string, 'null'] }
+    EstimateStaff:
+      type: object
+      required: [id, client, age, coverageAmount, termYears, monthlyPremium, breakdown, formulaVersion, status, createdAt]
+      properties:
+        id: { type: string, format: uuid }
+        client: { $ref: '#/components/schemas/PersonRef' }
+        age: { type: integer }
+        coverageAmount: { type: integer }
+        termYears: { type: integer }
+        monthlyPremium: { $ref: '#/components/schemas/Money' }
+        breakdown: { $ref: '#/components/schemas/PremiumBreakdown' }
+        formulaVersion: { type: string }
+        status: { $ref: '#/components/schemas/EstimateStatus' }
+        reviewNote: { type: [string, 'null'] }
+        sentAt: { type: [string, 'null'], format: date-time }
+        createdAt: { type: string, format: date-time }
+
+    # -------------------------------------------------------------- policies
+    PolicyStatus:
+      type: string
+      enum: [Active, Lapsed, Closed]
+    PaymentDisplayStatus:
+      type: string
+      enum: [Upcoming, Paid, Overdue]
+    Beneficiary:
+      type: object
+      required: [name, relationship, sharePercent]
+      properties:
+        name: { type: string }
+        relationship: { type: string }
+        sharePercent: { type: integer, minimum: 1, maximum: 100 }
+    PolicyClient:
+      type: object
+      required: [id, policyNumber, productName, coverageAmount, termYears, monthlyPremium, startDate, status]
+      properties:
+        id: { type: string, format: uuid }
+        policyNumber: { type: string, example: INS-4829 }
+        productName: { type: string, example: 20-Year Term Life }
+        coverageAmount: { $ref: '#/components/schemas/Money' }
+        termYears: { type: integer }
+        monthlyPremium: { $ref: '#/components/schemas/Money' }
+        startDate: { type: string, format: date }
+        status: { $ref: '#/components/schemas/PolicyStatus' }
+        agent: { oneOf: [{ $ref: '#/components/schemas/PersonRef' }, { type: 'null' }] }
+        beneficiaries: { type: array, items: { $ref: '#/components/schemas/Beneficiary' } }
+        nextPayment: { oneOf: [{ $ref: '#/components/schemas/ScheduleItemClient' }, { type: 'null' }] }
+        rewardStatus: { $ref: '#/components/schemas/RewardStatus' }
+        rewardNote: { type: [string, 'null'], description: "'For example \"Due date extended by 14 days. Based on your Rewards activity.\"'" }
+    ScheduleItemClient:
+      type: object
+      required: [id, sequence, dueDate, effectiveDueDate, amount, displayStatus]
+      properties:
+        id: { type: string, format: uuid }
+        sequence: { type: integer }
+        dueDate: { type: string, format: date }
+        effectiveDueDate: { type: string, format: date, description: "Due date plus the extension for the level on the due date" }
+        amount: { $ref: '#/components/schemas/Money' }
+        displayStatus: { $ref: '#/components/schemas/PaymentDisplayStatus' }
+        paidAt: { type: [string, 'null'], format: date-time }
+        reasonLabel: { type: [string, 'null'], description: "'\"Based on your Rewards activity\" when extended'" }
+    PolicyStaff:
+      type: object
+      description: Policy as seen by the agent. Original due dates only; no reward fields.
+      required: [id, policyNumber, client, productName, coverageAmount, termYears, monthlyPremium, startDate, status]
+      properties:
+        id: { type: string, format: uuid }
+        policyNumber: { type: string }
+        client: { $ref: '#/components/schemas/PersonRef' }
+        productName: { type: string }
+        coverageAmount: { $ref: '#/components/schemas/Money' }
+        termYears: { type: integer }
+        monthlyPremium: { $ref: '#/components/schemas/Money' }
+        startDate: { type: string, format: date }
+        status: { $ref: '#/components/schemas/PolicyStatus' }
+        paidCount: { type: integer }
+        nextDueDate: { type: [string, 'null'], format: date, description: "Original due date" }
+
+    # -------------------------------------------------------------- claims
+    ClaimType:
+      type: string
+      enum: [Death, CriticalIllness, Disability]
+    ClaimStatus:
+      type: string
+      enum: [Draft, Submitted, UnderReview, NeedsInfo, Approved, Paid, Rejected]
+    ClaimInput:
+      type: object
+      required: [policyId, claimType, eventDate, amountRequested, description]
+      properties:
+        policyId: { type: string, format: uuid }
+        claimType: { $ref: '#/components/schemas/ClaimType' }
+        eventDate: { type: string, format: date, description: "Not in the future" }
+        amountRequested: { $ref: '#/components/schemas/Money' }
+        description: { type: string, minLength: 1, maxLength: 2000 }
+    ClaimDocument:
+      type: object
+      required: [id, fileName, fileSizeBytes, mimeType, createdAt]
+      properties:
+        id: { type: string, format: uuid }
+        fileName: { type: string }
+        fileSizeBytes: { type: integer }
+        mimeType: { type: string }
+        createdAt: { type: string, format: date-time }
+    ClaimEvent:
+      type: object
+      required: [toStatus, createdAt]
+      properties:
+        fromStatus: { oneOf: [{ $ref: '#/components/schemas/ClaimStatus' }, { type: 'null' }] }
+        toStatus: { $ref: '#/components/schemas/ClaimStatus' }
+        note: { type: [string, 'null'] }
+        actor: { oneOf: [{ $ref: '#/components/schemas/PersonRef' }, { type: 'null' }] }
+        createdAt: { type: string, format: date-time }
+    ClaimClient:
+      type: object
+      required: [id, policyId, policyNumber, claimType, eventDate, amountRequested, description, status, documents, timeline, createdAt]
+      properties:
+        id: { type: string, format: uuid }
+        claimNumber: { type: [string, 'null'], example: CLM-1042, description: "Set at submit" }
+        policyId: { type: string, format: uuid }
+        policyNumber: { type: string }
+        claimType: { $ref: '#/components/schemas/ClaimType' }
+        eventDate: { type: string, format: date }
+        amountRequested: { $ref: '#/components/schemas/Money' }
+        amountApproved: { oneOf: [{ $ref: '#/components/schemas/Money' }, { type: 'null' }] }
+        description: { type: string }
+        status: { $ref: '#/components/schemas/ClaimStatus' }
+        documents: { type: array, items: { $ref: '#/components/schemas/ClaimDocument' } }
+        timeline: { type: array, items: { $ref: '#/components/schemas/ClaimEvent' } }
+        payoutDueDate: { type: [string, 'null'], format: date, description: "Client only" }
+        payoutDelayDays: { type: integer, description: "Client only" }
+        reasonLabel: { type: [string, 'null'], description: "'\"Based on your Rewards activity\" when delayed'" }
+        submittedAt: { type: [string, 'null'], format: date-time }
+        decidedAt: { type: [string, 'null'], format: date-time }
+        createdAt: { type: string, format: date-time }
+    ClaimStaff:
+      type: object
+      description: Claim as seen by the agent. No payout date and no reward data.
+      required: [id, claimNumber, client, policyNumber, claimType, eventDate, amountRequested, description, status, documents, timeline]
+      properties:
+        id: { type: string, format: uuid }
+        claimNumber: { type: string }
+        client: { $ref: '#/components/schemas/PersonRef' }
+        policyNumber: { type: string }
+        claimType: { $ref: '#/components/schemas/ClaimType' }
+        eventDate: { type: string, format: date }
+        amountRequested: { $ref: '#/components/schemas/Money' }
+        amountApproved: { oneOf: [{ $ref: '#/components/schemas/Money' }, { type: 'null' }] }
+        description: { type: string }
+        status: { $ref: '#/components/schemas/ClaimStatus' }
+        documents: { type: array, items: { $ref: '#/components/schemas/ClaimDocument' } }
+        timeline: { type: array, items: { $ref: '#/components/schemas/ClaimEvent' } }
+        submittedAt: { type: [string, 'null'], format: date-time }
+        decidedAt: { type: [string, 'null'], format: date-time, description: "Approval or rejection date" }
+    ClaimDecisionRequest:
+      type: object
+      required: [action]
+      properties:
+        action: { type: string, enum: [StartReview, Approve, RequestInfo, Reject, MarkPaid] }
+        amountApproved: { $ref: '#/components/schemas/Money' }
+        note: { type: string, maxLength: 1000 }
+
+    # -------------------------------------------------------------- settings
+    EstimateRateInput:
+      type: object
+      required: [baseRate, ageFactorPerYear, ageFreeUntil, termFactorPerYear]
+      properties:
+        baseRate: { type: number, exclusiveMinimum: 0, maximum: 100 }
+        ageFactorPerYear: { type: number, minimum: 0, maximum: 1 }
+        ageFreeUntil: { type: integer, minimum: 18, maximum: 65 }
+        termFactorPerYear: { type: number, minimum: 0, maximum: 1 }
+    EstimateRate:
+      allOf:
+        - { $ref: '#/components/schemas/EstimateRateInput' }
+        - type: object
+          required: [formulaVersion]
+          properties:
+            formulaVersion: { type: string, example: v1 }
+            updatedAt: { type: string, format: date-time }
+    RewardRules:
+      type: object
+      required: [dailyPoints, tiers, applyEffects]
+      properties:
+        dailyPoints:
+          type: array
+          minItems: 1
+          items:
+            type: object
+            required: [minSteps, points]
+            properties:
+              minSteps: { type: integer, minimum: 0 }
+              points: { type: integer, minimum: 0, maximum: 1000 }
+        tiers:
+          type: array
+          minItems: 4
+          maxItems: 4
+          items:
+            type: object
+            required: [status, minPoints, extensionDays, payoutDelayDays]
+            properties:
+              status: { $ref: '#/components/schemas/RewardStatus' }
+              minPoints: { type: integer, minimum: 0 }
+              extensionDays: { type: integer, minimum: 0, maximum: 60 }
+              payoutDelayDays: { type: integer, minimum: 0, maximum: 60 }
+        applyEffects: { type: boolean, description: "'\"Apply reward effects\" toggle'" }
+    ClaimsProcessingSetting:
+      type: object
+      required: [standardProcessingDays]
+      properties:
+        standardProcessingDays: { type: integer, minimum: 1, maximum: 60, default: 7 }
+    AssignmentSetting:
+      type: object
+      required: [defaultMaxClients]
+      properties:
+        defaultMaxClients: { type: integer, minimum: 1, maximum: 100, default: 10 }
+    Preferences:
+      type: object
+      required: [notifications]
+      properties:
+        notifications:
+          type: object
+          required: [chatMessages, estimateUpdates, claimUpdates]
+          properties:
+            chatMessages: { type: boolean }
+            estimateUpdates: { type: boolean }
+            claimUpdates: { type: boolean }
+
+    # -------------------------------------------------------------- notifications
+    Notification:
+      type: object
+      required: [id, type, body, createdAt]
+      properties:
+        id: { type: string, format: uuid }
+        type: { type: string, enum: [NoAgentAvailable, ClientAssigned] }
+        body: { type: string, example: A client is waiting for an agent }
+        relatedUserId: { type: [string, 'null'], format: uuid }
+        readAt: { type: [string, 'null'], format: date-time }
+        createdAt: { type: string, format: date-time }
+
+    # -------------------------------------------------------------- rewards
+    RewardResultInput:
+      type: object
+      required: [client_id, period, points, status]
+      additionalProperties: false
+      properties:
+        client_id: { type: string, format: uuid }
+        period: { $ref: '#/components/schemas/Period' }
+        points: { type: integer, minimum: 0 }
+        status: { $ref: '#/components/schemas/RewardStatus' }
+    RewardEffectsClient:
+      type: object
+      required: [rewardStatus, extensionDays, payoutDelayDays, applyEffects, rewardNote, simulated]
+      properties:
+        rewardStatus: { $ref: '#/components/schemas/RewardStatus' }
+        period: { oneOf: [{ $ref: '#/components/schemas/Period' }, { type: 'null' }] }
+        rewardPoints: { type: [integer, 'null'] }
+        extensionDays: { type: integer }
+        payoutDelayDays: { type: integer }
+        applyEffects: { type: boolean }
+        rewardNote:
+          type: string
+          example: Your Gold level gives you 14 extra days to pay each premium and delays claim payouts by 5 days.
+        simulated: { type: boolean, const: true, description: "Screens say \"Simulated for this course demo\"" }
+    StepSource:
+      type: string
+      enum: [Sensor, Sample]
+    StepDay:
+      type: object
+      required: [day, steps, points, locked]
+      properties:
+        day: { type: string, format: date }
+        steps: { type: integer }
+        points: { type: integer, enum: [0, 10, 20, 30], description: "Sample bands; follows the reward rules" }
+        source: { $ref: '#/components/schemas/StepSource' }
+        locked: { type: boolean }
+    SyncStatus:
+      type: string
+      enum: [Synced, Pending, Failed]
+    RewardSummary:
+      type: object
+      required: [period, points, status, todayPoints, syncStatus]
+      properties:
+        period: { $ref: '#/components/schemas/Period' }
+        points: { type: integer, description: "This month's points (reset each month)" }
+        status: { $ref: '#/components/schemas/RewardStatus' }
+        nextLevel: { oneOf: [{ $ref: '#/components/schemas/RewardStatus' }, { type: 'null' }] }
+        pointsToNextLevel: { type: [integer, 'null'] }
+        todayPoints: { type: integer }
+        syncStatus: { $ref: '#/components/schemas/SyncStatus' }
+        lastSyncedAt: { type: [string, 'null'], format: date-time }
