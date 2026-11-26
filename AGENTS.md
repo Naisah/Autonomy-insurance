@@ -5,7 +5,7 @@ Project: Autonomy Insurance (life insurance communication system). Read specs/00
 ## Workflow
 1. Work only on the task file you were given in specs/tasks/. If none, stop and ask.
 2. Contract first. Only a contract task edits packages/contracts/openapi.yaml. Everyone else builds against the generated clients and the mock server.
-3. One task = one branch = one worktree: `agent/<task-id>-<short-name>`. Never commit to main and never merge your own branch.
+3. One task = one branch = one worktree: `agent/<task-id>-<short-name>`. Never commit to main and never merge your own branch. Only the Merge gate automation merges, and only low-risk PRs (docs/orca-bots.md section 4).
 4. File boundary: edit only the paths listed under "Owns" in the task, plus your own tests. Touching anything else is a failed task.
 5. Do not invent behavior. If the spec is silent, stop and write the question in the task file's Questions section.
 6. No new dependencies without writing the reason in the task file.
