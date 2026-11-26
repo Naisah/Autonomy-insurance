@@ -12,7 +12,7 @@ Status: Approved v2, Nov 26, 2026, by Atlas for the team lead (docs/decisions.md
 
 ## 2. Size and coverage
 - Before the patch: 62 paths, 74 operations. After the changes in section 8 the totals change (new: availability, notifications, rewards result, demo actions, AI clear; removed: goal, milestones, health-score, internal reward-results). Recount when T014 lands; do not trust the old numbers.
-- Every story in spec 02 has at least one operation except A2 (rules, covered by the test matrix and `/internal/directory-events`), A5 (device-only, no endpoint by design) and B5 (attachments, Could, left out until the team decides to build it).
+- Every story in spec 02 has at least one operation except A2 (rules, covered by the test matrix and `/internal/directory-events`), A5 (device-only, no endpoint by design).
 
 ## 3. Endpoint groups by story
 
@@ -45,7 +45,7 @@ All decided on Nov 26, 2026 by Atlas for the team lead; the answers are in docs/
 - `user_preferences` is now in spec 04. Spec 04 v2 also adds `notifications`, `reward_status_history`, agent `availability` and `max_clients`, and renames `service_clients`, `step_days` and `health_scores` to `service_accounts`, `daily_steps` and `period_summary`.
 - Spec 03 sections 5.1, 9.2 and 9.3 define assignment, the rewards endpoint and the effect rules that this contract exposes.
 - The forgot-password endpoint is Could and depends on decision D3. Leave it unbuilt unless approved.
-- Attachments (B5) are not in the contract; adding them later needs `POST /conversations/{id}/attachments` and a files table.
+- Attachments (B5) are built: section 8 adds the two operations; spec 04 adds `message_attachments`.
 
 ## 6. Contract-first workflow for agents
 1. Any change to a request or response shape edits `openapi.yaml` first, in its own task and commit, then regenerates clients.
@@ -58,7 +58,7 @@ All decided on Nov 26, 2026 by Atlas for the team lead; the answers are in docs/
 - D2 (closed): delay only. `payoutReductionPercent` is removed from schemas and settings.
 - D3: forgot-password is marked Could.
 - D4: agent claims review is web only for now; the endpoints are the same for a future mobile screen.
-- B5: attachments are not defined yet.
+- B5: attachments are defined in section 8 (decided Nov 26, 2026).
 
 ## 8. Change list for `openapi.yaml` (task T014)
 The contract task makes exactly these edits, in one commit, then regenerates clients and runs `contract:check`.
@@ -76,6 +76,9 @@ The contract task makes exactly these edits, in one commit, then regenerates cli
 - `PUT /me/availability` (auth, Agent) and `maxClients` on `PATCH /users/{id}` (Admin; Manager for own team). `User` and `StaffDirectoryEntry` gain `availability` and `maxClients` for agents.
 - `GET /notifications` and `POST /notifications/{id}/read` (core-api, Admin and Manager; Agent for `ClientAssigned` if built).
 - `DELETE /ai/conversation/messages` (client clears their own bot chat).
+- `POST /conversations/{id}/attachments` (core-api, Client and Agent; `x-stories: B5`, `x-priority: Should`): `multipart/form-data` with `file` (binary, max 5,242,880 bytes, JPEG, PNG or PDF), `clientMessageId`, optional `body` (0 to 2,000). Responses 201 `Message`, 400 VALIDATION (reason `FILE_TOO_LARGE` or `FILE_TYPE_NOT_ALLOWED`), 401, 404, 409 NO_AGENT_ASSIGNED, 429.
+- `GET /attachments/{id}/content` (core-api, Client, Agent, Manager while escalation Open): 200 binary with the stored content type; 401, 404.
+- `Message` gains `attachment` (nullable `Attachment { id, fileName, mimeType, sizeBytes }`) and `kind` gains `Attachment`; the `message:new` Socket.IO event carries the same field.
 - Admin settings: `reward-rules` schema gets `dailyPoints` and four tiers with `minPoints`, `extensionDays`, `payoutDelayDays`; new `claims/processing` (`standardProcessingDays`) and `assignment` (`defaultMaxClients`) settings.
 - `ClientDashboard` and `ClientProfile` gain `agentStatus` (`Assigned` or `Waiting`); `Estimate` send and conversation send return `NO_AGENT_ASSIGNED` while waiting.
 

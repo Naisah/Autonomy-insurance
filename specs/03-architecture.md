@@ -142,7 +142,12 @@ Conventions:
 - Reassignment (B3, F2): the conversation belongs to the client, not to the agent. When reports_to changes, the old agent loses access immediately (their sockets are removed from the room by an event), and the new agent sees the full history.
 - Escalation (B4): `POST /conversations/{id}/escalate {reason}` sets an Open escalation and posts a system message "A manager has been added to this chat" for the client. Manager reads the thread only while the escalation is Open (see open decision A1).
 - Typing and online state: Could, not in scope.
-- Attachments (B5): Could. If built, files are stored on local disk behind an authenticated route, same chat access rules.
+- Attachments (B5): `POST /conversations/{id}/attachments` (multipart: `file`, `clientMessageId`, optional `body` caption 0 to 2,000 chars) creates one message of kind Attachment with one file. Same write rule as sending a message; a waiting client gets NO_AGENT_ASSIGNED.
+  - Checks before anything is stored: size 1 byte to 5 MB (5,242,880 bytes, enforced by the multipart limit); type is JPEG, PNG or PDF by file signature (magic bytes), and the declared MIME type and file extension must match it. Otherwise 400 VALIDATION with reason `FILE_TOO_LARGE` or `FILE_TYPE_NOT_ALLOWED`. Rate limit 20 uploads per user per hour.
+  - Storage: through a `FileStore` interface in core-api. Driver `local` (disk folder outside the repo tree, for dev and the docker fallback) or `supabase` (private bucket `chat-attachments`, hosted). The object key is `conv/{conversationId}/{attachmentId}`; the original file name is kept only in the database, trimmed to 255 characters and shown as text, never used as a path.
+  - Order: store the object, then write message and attachment rows in one transaction, then emit `message:new` with `attachment { id, fileName, mimeType, sizeBytes }`. If the transaction fails, the object is deleted. Dedupe by `clientMessageId` as for text.
+  - Read: `GET /attachments/{id}/content` streams the file after the same read check as the conversation (section 5): the client, the current agent, the manager only while an escalation is Open. Others get 404 (A5). Headers: the stored MIME type, `X-Content-Type-Options: nosniff`, `Content-Disposition: inline` for images and `attachment` for PDF, `Cache-Control: private, no-store`.
+  - Never: files to the AI provider or in a handoff summary; admin code reading attachments; file names or bytes in logs. No virus scanning in the demo (simulated documents only).
 
 ## 8. Estimates, policies, claims flow (C, D)
 
@@ -234,6 +239,8 @@ CORS: auth and core-api allow only the web origin from config. Rate limits: 100 
 
 ## 12. Configuration and environments
 - Time zone (Q6): timestamps are stored in UTC. Business dates (a step day closing at midnight, premium due dates, Overdue, claim approval dates, the month a period covers) use Asia/Manila.
+- File storage (B5): `STORAGE_DRIVER` is `local` or `supabase`. The Supabase service key lives only in core-api's host env settings.
+- Hosting for the demo: docs/deployment-plan.md (free tiers, local docker compose fallback).
 - Shared server code (Q11): each service keeps its own copy of the error model, JWT verification and request-id code. There is no shared server package.
 - `.env.example` in each service lists every variable (ports, DB URLs, JWT key paths, Gemini key, CORS origin, service client secrets). No secrets in git.
 - Local run: `docker compose up` starts Postgres; each service has `npm run dev`; seed scripts create demo users for every role (X6): one admin, two managers, three agents (one Away, one at its client limit), six clients (one waiting for an agent). `DEMO_MODE=true` enables the demo-only reward actions.

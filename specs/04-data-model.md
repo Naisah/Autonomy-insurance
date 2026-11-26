@@ -143,11 +143,26 @@ The current agent is not stored here. It is `directory_users.reports_to` of the 
 | id | uuid | PK, time-ordered (uuidv7) so ordering and cursor paging are simple |
 | conversation_id | uuid | FK conversations, index `(conversation_id, id desc)` |
 | sender_user_id | uuid null | null for system messages |
-| kind | enum MessageKind (Text, System, Handoff) | System: escalation and manager notes. Handoff: AI summary (E2) |
-| body | text | 1 to 2,000 chars, not empty |
+| kind | enum MessageKind (Text, System, Handoff, Attachment) | System: escalation and manager notes. Handoff: AI summary (E2). Attachment: one file (B5) |
+| body | text | 1 to 2,000 chars, not empty; for Attachment 0 to 2,000 chars (caption, may be empty) |
 | client_message_id | text null | unique with `(conversation_id, sender_user_id)` for dedupe |
 | created_at | timestamptz | |
-No edit or delete in the demo. Attachments (B5, Could) would add `message_attachments` later.
+No edit or delete in the demo.
+
+### message_attachments (B5)
+| Column | Type | Rules |
+|---|---|---|
+| id | uuid | PK |
+| message_id | uuid | FK messages, unique (one file per message) |
+| conversation_id | uuid | FK conversations, index; equals the message's conversation |
+| uploaded_by_user_id | uuid | the sender |
+| file_name | text | 1 to 255 chars, display only |
+| mime_type | enum AttachmentType (ImageJpeg, ImagePng, Pdf) | checked by file signature on upload |
+| size_bytes | integer | check 1 to 5,242,880 |
+| storage_key | text | unique; `conv/{conversationId}/{id}` |
+| sha256 | text | 64 hex chars |
+| created_at | timestamptz | |
+No update or delete. A message of kind Attachment must have exactly one row here (checked in the same transaction).
 
 ### escalations (B4)
 | Column | Type | Rules |

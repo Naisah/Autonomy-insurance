@@ -101,8 +101,12 @@ B4 Escalate a chat to the manager. Agent. Should. 3 points. W, M. Screens: web/a
 - The agent's manager can read that conversation only while the escalation is Open. After Resolved the manager sees the metadata only. One Open escalation per conversation.
 - The manager sees escalations with client, agent, reason, time and status, and can resolve them or reassign the client within the team (F2).
 
-B5 Attachments in chat. Client, Agent. Could. 3 points. W, M. Not in the API contract yet.
-- Image or PDF up to 5 MB; other types rejected. Access follows the chat rules. Left out until the team decides to build it.
+B5 Attachments in chat. Client, Agent. Should. 3 points. W, M. Screens: web/client-chat, web/agent-dashboard, mobile/client-chat, mobile/agent-chat.
+- The client or the assigned agent can attach one file to a message: JPEG, PNG or PDF, up to 5 MB, with an optional caption.
+- Any other type, a file whose content does not match its type, or a larger file is rejected with a clear message; nothing is stored.
+- Who can open a file: the client, the agent currently assigned to that client, and the manager while an escalation of that chat is Open. A reassigned-away agent loses access at once. Admin never sees chat files. The AI chatbot never receives files, and an AI handoff summary never contains one.
+- Files show in the thread as a chip with name and size; images open a preview, PDFs download. A waiting client (no agent) cannot send a file (NO_AGENT_ASSIGNED), like a message.
+- Files are never edited or deleted in the demo. They are simulated insurance documents; the UI tells users not to upload real personal documents.
 
 ### C. Policy and Estimate
 
@@ -259,10 +263,10 @@ Other rules:
 |---|---|---|
 | Sprint 2 (Must core) | A1 5, A2 8, A3 3, A4 8, B1 8, B2 5, B3 3, C1 5, C2 3, C3 3, C4 5, F4 3 (basic) | 59 |
 | Sprint 3 (Must) | E1 8, F1 5, G1 8, G2 3, G3 5, G4 5 | 34 |
-| Should | A5 5, B4 3, C5 3, D1 5, D2 3, D3 5, E2 3, F2 5, F3 5, G5 5 | 42 |
-| Could | A6 3, B5 3 | 6 |
+| Should | A5 5, B4 3, B5 3, C5 3, D1 5, D2 3, D3 5, E2 3, F2 5, F3 5, G5 5 | 45 |
+| Could | A6 3 | 3 |
 | Total | 30 stories | 141 |
-Must total: 93 points. Sprint 2 is the heaviest. Build the contract and Auth first, and move C4 to Sprint 3 if Sprint 2 slips. If time runs short, cut in this order: B5, A6, claims on mobile, G5 screens, manager reports, then the rest of the Should list.
+Must total: 93 points. Sprint 2 is the heaviest. Build the contract and Auth first, and move C4 to Sprint 3 if Sprint 2 slips. If time runs short, cut in this order: A6, claims on mobile, B5, G5 screens, manager reports, then the rest of the Should list.
 
 ## 8. Definition of Ready (a story can enter a sprint when)
 - Acceptance criteria and screens are listed here and the spec is Approved.
@@ -285,6 +289,8 @@ Closed by the updated high-level logic and the team lead's answers:
 - [D3] Forgot password is a Could (A6). The client dashboard is its own story (F4).
 - Estimate formula stays the team's linear version (baseRate 0.70, example 1,818.88) so the data model and test vectors agree. Earlier idea of compounding age factors and a maturity-age rule is dropped; revisit only through a formula version change.
 
+Decided on Nov 26, 2026 by the team lead: B5 attachments are built (Should). The course has a live demo, hosted on free tiers where possible (docs/deployment-plan.md).
+
 Decided on Nov 26, 2026 by Atlas for the team lead (docs/decisions.md):
 - Chatbot technology: Gemini behind the `AiProvider` interface; tests use the fake provider only. The free tier is enough for manual testing.
 - Coding agents and their quota: spec 01 and docs/orca-bots.md; the quota numbers are data filled in P0.8.
@@ -293,8 +299,5 @@ Decided on Nov 26, 2026 by Atlas for the team lead (docs/decisions.md):
 - Screens and states with no Stitch export (waiting banner, Available/Away toggle, notification bell, Rewards status) are built from spec 06 and design/design-system.md without new exports (Q5).
 - Step data: "Use sample data" is enough for the demo; no real phone is required (Q10, matches G2).
 
-Still open (changes what users get or how the course grades it):
-- B5 attachments: build them, or leave them out as spec 07 already plans?
-- Does the course require a live demo or presentation, and in what form?
 
 Team facts still needed (not product decisions): who owns the Gemini API key (Q13); Orca quotas (P0.8).

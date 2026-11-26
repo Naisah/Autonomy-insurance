@@ -1,6 +1,6 @@
 # Task board
 
-Kept by Atlas. Updated Nov 26, 2026 (P0.5). Specs 00 to 07 Approved Nov 26, 2026 (PR #2). A Ready task starts once PR #2 and its Needs are merged.
+Kept by Atlas. Updated Nov 26, 2026 (P0.5, then B5 and hosting). Specs 00 to 07 Approved Nov 26, 2026. A Ready task starts once its Needs are merged.
 
 ## In progress
 (none)
@@ -46,6 +46,12 @@ Kept by Atlas. Updated Nov 26, 2026 (P0.5). Specs 00 to 07 Approved Nov 26, 2026
 | [T080](../../specs/tasks/T080-dart-shared-client.md) dart_shared: generated client, models, token storage, premium | 2 | T2 | Flutterby | T007, T001, T002, T014 |
 | [T081](../../specs/tasks/T081-mobile-shell.md) Mobile shell: secure storage, refresh, role tabs, states | 2 | T2 | Flutterby | T007, T009, T080 |
 | [T083](../../specs/tasks/T083-mobile-auth-screens.md) Mobile sign-in and register | 2 | T3 | Flutterby | T081, T020 |
+| [T033b](../../specs/tasks/T033b-chat-attachments-api.md) Chat attachments API (B5) | 3 | T1 | Forge | T033, T034, T011, T014 |
+| [T063b](../../specs/tasks/T063b-web-chat-attachments.md) Web chat attachments (B5) | 3 | T2 | Pixel | T063, T068, T033b |
+| [T085c](../../specs/tasks/T085c-mobile-chat-attachments.md) Mobile chat attachments (B5) | 3 | T2 | Flutterby | T085a, T090a, T033b |
+| [T115](../../specs/tasks/T115-staging-deploy.md) Staging deploy on the free hosts | 2 | T2 | Forge | T020, T021, T022, T023, T024a, T025, T026, T027, T030, T031, T032, T060, T061, T080, T081, T083, T013 |
+| [T116](../../specs/tasks/T116-demo-deploy.md) Demo deploy and local fallback | 8 | T2 | Forge | T115, T110, T111 |
+| [T117](../../specs/tasks/T117-signed-apks.md) Signed release APKs for the demo | 8 | T2 | Flutterby | T116, T091, T100 |
 
 ## Done
 (none)

@@ -100,6 +100,8 @@ Columns: Tier (spec 01), Lane (for parallel work, section 6), Needs (must be mer
 | T081 | Mobile shell: secure storage, refresh, role tabs, states | T2 | Mobile | T080 | Widget tests for expired session and role tabs |
 | T083 | Mobile sign-in and register | T3 | Mobile | T081 | Same checks as T061 |
 
+After the Phase 2 exit demo: T115 staging deploy on the free hosts (docs/deployment-plan.md).
+
 ### Phase 3: Chat and dashboards (Dec 4 to Dec 7)
 | Task | What | Tier | Lane | Needs | Key checks |
 |---|---|---|---|---|---|
@@ -112,6 +114,9 @@ Columns: Tier (spec 01), Lane (for parallel work, section 6), Needs (must be mer
 | T084 | Mobile client dashboard | T2 | Mobile | T081, T039 | Banner when Waiting |
 | T085a | Mobile client chat, agent tab | T2 | Mobile | T081, T034 | Same as T063 on mobile |
 | T090a | Mobile agent home and chat (with Available/Away toggle) | T2 | Mobile | T081, T034, T027 | No reward element on any agent screen |
+| T033b | Chat attachments API (B5): FileStore, upload, content route | T1 | Core | T033, T034, T011, T014 | Spoofed type and 5 MB + 1 rejected; access as chat |
+| T063b | Web chat attachments | T2 | Web | T063, T068, T033b | Reason shown on reject; disabled while waiting |
+| T085c | Mobile chat attachments | T2 | Mobile | T085a, T090a, T033b | Same as T063b |
 
 ### Phase 4: Estimates and policies (Dec 8 to Dec 10)
 | Task | What | Tier | Lane | Needs | Key checks |
@@ -152,7 +157,7 @@ Mobile lane: T082 (biometric unlock), T088 (claims), T089 (profile with Rewards 
 Exit demo: claim filed on mobile, decided on web, payout date visible only to the client; escalation, manager join and reassign; admin changes a rule and a new estimate uses formula v2.
 
 ### Phase 8: Hardening and demo (Dec 22 to Jan 4)
-T120 (security review, Antigravity), T110 (Playwright smoke per role), T111 (demo script and one-command reset), T112 (UI/UX pass). Course documentation tasks T113 and T114 follow, outside the build.
+T120 (security review, Antigravity), T110 (Playwright smoke per role), T111 (demo script and one-command reset), T112 (UI/UX pass), T116 (demo deploy on the free hosts, local fallback), T117 (signed APKs). Course documentation tasks T113 and T114 follow, outside the build.
 
 ## 6. Parallel lanes and the critical path
 Run one agent per lane at a time; lanes never own the same paths.
