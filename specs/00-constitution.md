@@ -1,6 +1,6 @@
 # 00 Constitution: Autonomy Insurance
 
-Status: Draft v2 (updated Nov 26, 2026 for the high-level logic; needs team confirmation). Source of truth for decisions. If code or another spec disagrees with this file, this file wins until it is changed here first.
+Status: Approved v2, Nov 26, 2026, by Atlas for the team lead (docs/decisions.md). Source of truth for decisions. If code or another spec disagrees with this file, this file wins until it is changed here first.
 
 ## 1. Product in one paragraph
 Life insurance communication system. Main feature: Chat with Agent. Also: policy estimates reviewed by the agent, claims, an AI chatbot that hands off to the agent, and a separate mobile-only Rewards app (step-based) whose results affect premium collection periods and claims payouts. Course requirement: a working web app and a working mobile app using the same credentials, plus written documentation.
@@ -33,7 +33,7 @@ Life insurance communication system. Main feature: Chat with Agent. Also: policy
 |---|---|---|
 | Back end language | TypeScript on Node 22 | One language for API and web; agents are strongest here |
 | API framework | Fastify with Zod validation | Small, fast, schema-first |
-| Database | PostgreSQL (local Docker for dev; Supabase or Neon free tier if hosting is wanted) | Relational fit for role and reports_to hierarchy and ERD |
+| Database | PostgreSQL 16 (local Docker for dev; Supabase or Neon free tier if hosting is wanted) | Relational fit for role and reports_to hierarchy and ERD |
 | ORM and migrations | Prisma | Schema file doubles as ERD source |
 | Real-time chat | Socket.IO | Simple server; Flutter and React clients exist |
 | AI chatbot | Gemini API free tier behind an AiProvider interface, answering from a small markdown knowledge base | Free; replaceable; stays inside "no legal or financial advice" |
