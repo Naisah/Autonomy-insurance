@@ -1,6 +1,6 @@
 # 07 Task breakdown for Orca: Autonomy Insurance
 
-Status: Draft v2 for team approval, patched Nov 26, 2026 for the updated logic (monthly points, four levels, delay-only payouts, assignment and waiting queue, service key, new tasks T014, T015, T026, T027, T049; T104 merged into T103). Turns specs 00 to 06 into small tasks that one agent can finish in one worktree. Agents are assigned by tier only (spec 01); fill the Agent column when quotas are known.
+Status: Approved v2, Nov 26, 2026, by Atlas for the team lead (docs/decisions.md), patched Nov 26, 2026 for the updated logic (monthly points, four levels, delay-only payouts, assignment and waiting queue, service key, new tasks T014, T015, T026, T027, T049; T104 merged into T103). Turns specs 00 to 06 into small tasks that one agent can finish in one worktree. Agents are assigned by tier only (spec 01); fill the Agent column when quotas are known.
 
 ## 1. How tasks work
 - One task = one file `specs/tasks/T###-short-name.md` = one branch `agent/T###-short-name` = one Orca worktree = one pull request.
@@ -31,6 +31,8 @@ Handoff: (agent fills in: what changed, how to run checks, what is left)
 - Shared files with a single owner: `packages/contracts/openapi.yaml` (contract tasks only), each service's `prisma/schema.prisma` (schema tasks only), root `package.json` and workspace files (you).
 
 ## 2. Waves and dates
+Phases 0 to 8 in docs/implementation-plan.md sections 3 to 5 replace these waves (same tasks; Phase 0 added; estimates move to Phase 4). The wave names below stay only for reference; the phase is the schedule. Deadline Jan 4, 2027 (Q2).
+
 Dates follow the schedule in the constitution (about Jan 4, 2027 deadline, not confirmed).
 | Wave | Dates | Goal |
 |---|---|---|
@@ -72,7 +74,8 @@ If the schedule slips, cut in this order: B5 and forgot-password (already out), 
 | T021 | Refresh rotation, reuse detection, logout, logout-all, `GET /auth/me`, JWKS endpoint, web cookie vs mobile body | T1 | `services/auth/src/modules/{session,jwks}/**`, tests | T020 | A3 | Tests: old refresh token reuse revokes session; logout-all revokes every session; JWKS verifies a token offline |
 | T022 | Accounts: `GET/POST /users`, `PATCH /users/{id}`, change-password, must-change-password flow, role/parent validation | T2 | `services/auth/src/modules/accounts/**`, tests | T021 | A4 | Tests: only Admin may create; Agent needs a manager; deactivated user cannot log in; non-admin gets 403 |
 | T023 | Directory outbox: write `auth_events` in the same transaction as user changes; worker posts to core-api with retry; service-client credentials | T1 | `services/auth/src/modules/directory/**`, tests | T022 | A2 | Test: events delivered in order, duplicates ignored by version; failed delivery retried |
-| T024 | SSO: `/sso/authorize`, `/sso/token` with PKCE, `/service/token`, `/internal/users/{id}/reports-to`, child sessions revoked on parent logout | T1 | `services/auth/src/modules/sso/**`, tests | T021 | G1, G4, F2 | Tests: code is single use and expires in 60 s; non-client gets 403; wrong verifier fails; parent logout revokes the Rewards session |
+| T024a | Service accounts and `POST /service/token` (RS256, 15 minutes, audience and `scope` claim, no refresh) | T1 | `services/auth/src/modules/service-token/**`, tests | T021 | A2, G4 | Tests: valid secret gives a scoped token; wrong secret 401; service token rejected on user routes; only the secret hash is stored |
+| T024b | SSO: `/sso/authorize`, `/sso/token` with PKCE, `/internal/users/{id}/reports-to`, child sessions revoked on parent logout | T1 | `services/auth/src/modules/sso/**`, tests | T021, T024a | G1, G4, F2 | Tests: code is single use and expires in 60 s; non-client gets 403; wrong verifier fails; parent logout revokes the Rewards session |
 | T025 | Auth acceptance suite for A1 and A3 (HTTP-level tests from the stories) | T2 | `services/auth/test/acceptance/**` | T021 | A1, A3 | Every A1 and A3 acceptance bullet maps to a passing test |
 | T026 | Agent assignment and waiting queue: rule in one transaction with the client-count check, `waiting_since`, `client.waiting` and `user.reassigned` events, re-run triggers (agent Available, new or activated agent, limit raised, client reassigned away) | T1 | `services/auth/src/modules/assignment/**`, tests | T022, T023 | A1, A4 | Tests: fewest clients wins, ties by oldest account; Away or full agents skipped; two simultaneous registrations cannot overfill an agent; waiting clients served oldest first when room appears |
 | T027 | Availability and limits: `PUT /me/availability`, `maxClients` on `PATCH /users/{id}` (Admin, and Manager for own team), default from the assignment setting | T2 | `services/auth/src/modules/availability/**`, tests | T026 | A4, F1 | Agent can set only own availability; manager cannot change another team's limit; raising a limit assigns waiting clients |
@@ -103,9 +106,10 @@ If the schedule slips, cut in this order: B5 and forgot-password (already out), 
 ### Core API
 | ID | Task | Tier | Owns | Needs | Stories | Done when |
 |---|---|---|---|---|---|---|
-| T042 | AI chat: `AiProvider` interface, Gemini provider, `FakeAiProvider`, knowledge base folder from landing FAQ, system prompt rules, output filter, rate limit 20 per hour, routes | T2 (reviewed by Tier A agent) | `services/core-api/src/modules/ai/**`, `services/core-api/knowledge/**`, tests | T032 | E1 | Fake provider tests: refuses legal and financial advice; labels itself AI; says it does not know and offers agent; AI_UNAVAILABLE returns friendly error; no cross-user access; two consecutive 'I don't know' answers trigger a handoff; clear-my-chat route; keyword fallback when the provider fails |
+| T042a | Knowledge base content: about 20 FAQ entries from the landing FAQ, human-checked for no legal or financial advice | T3 | `services/core-api/knowledge/**` | none | E1 | Reviewed by a group member; logged in docs/ai-use-log.md |
+| T042 | AI chat: `AiProvider` interface, Gemini provider, `FakeAiProvider`, knowledge base loader, system prompt rules, output filter, rate limit 20 per hour, routes | T2 (reviewed by Tier A agent) | `services/core-api/src/modules/ai/**`, tests | T032, T042a | E1 | Fake provider tests: refuses legal and financial advice; labels itself AI; says it does not know and offers agent; AI_UNAVAILABLE returns friendly error; no cross-user access; two consecutive 'I don't know' answers trigger a handoff; clear-my-chat route; keyword fallback when the provider fails |
 | T043 | AI handoff: summary message into agent chat, NO_AGENT_ASSIGNED case | T2 | `services/core-api/src/modules/ai-handoff/**`, tests | T042, T033 | E2 | Agent sees only the summary, never the AI transcript; with no agent the summary waits in the conversation and is visible once an agent is assigned |
-| T044 | Reward result intake: `POST /api/rewards/results` (service key only), validation, replace on resend, status history, `reward_effects` log | T1 | `services/core-api/src/modules/rewards/**`, tests | T038, T024, T014 | G4, G5 | 201, 400 (including a status that does not match the points), 401, 403 (any user token), 404; resend replaces and keeps history; service key rejected on client routes; extension follows the status on the due date (+7, +14, +21) |
+| T044 | Reward result intake: `POST /api/rewards/results` (service key only), validation, replace on resend, status history, `reward_effects` log | T1 | `services/core-api/src/modules/rewards/**`, tests | T038, T024a, T014 | G4, G5 | 201, 400 (including a status that does not match the points), 401, 403 (any user token), 404; resend replaces and keeps history; service key rejected on client routes; extension follows the status on the due date (+7, +14, +21) |
 | T045 | Client reward-effects routes and internal effect read for rewards-api | T2 | `services/core-api/src/modules/reward-effects/**`, tests | T044 | G5 | Client sees own effects only; agent token gets 403 |
 | T046 | Preferences routes (`/me/preferences`) | T3 | `services/core-api/src/modules/preferences/**`, tests | T032 | A3 | Round trip works; other user's preferences unreachable |
 | T049 | Notifications: handle `client.waiting` by creating NoAgentAvailable notices for the Admin and every Manager; `GET /notifications`, `POST /notifications/{id}/read` | T2 | `services/core-api/src/modules/notifications/**`, tests | T031, T032 | A4, F2, F3 | Admin and each Manager get one notice per waiting client; other roles get 403; notice text has no chat content |
@@ -113,7 +117,7 @@ If the schedule slips, cut in this order: B5 and forgot-password (already out), 
 ### Rewards service
 | ID | Task | Tier | Owns | Needs | Stories | Done when |
 |---|---|---|---|---|---|---|
-| T050 | rewards-api token verification (audience rewards-api, client role only) | T2 | `services/rewards-api/src/plugins/auth/**`, tests | T005, T024 | G1 | Main-app token rejected; non-client rejected |
+| T050 | rewards-api token verification (audience rewards-api, client role only) | T2 | `services/rewards-api/src/plugins/auth/**`, tests | T005, T024b | G1 | Main-app token rejected; non-client rejected |
 | T051 | Steps routes: today, record steps, sample steps (demo), locked-day rule (409), daily points from the rules | T2 | `services/rewards-api/src/modules/steps/**`, tests | T050, T012, T015 | G2 | Update after midnight rejected; points match the T015 vectors; no goal or milestone routes |
 | T052 | Monthly summary and level: sum of daily points, level thresholds, points to next level, day-close job, demo close-period | T2 | `services/rewards-api/src/modules/summary/**`, tests | T051, T015 | G3 | Table-driven tests at 199/200, 399/400, 599/600; points reset each month |
 | T053 | Outbox and delivery worker: service key, `POST /api/rewards/results`, retry with backoff, sync status, `/rewards/effect` | T1 | `services/rewards-api/src/modules/outbox/**`, tests | T052, T044 | G4, G5 | Delivery survives core-api downtime; 4xx is not retried; resend replaces; sync state changes Pending to Synced |
@@ -126,19 +130,21 @@ If the schedule slips, cut in this order: B5 and forgot-password (already out), 
 | T064 | Web chat AI tab and handoff | T2 | `apps/web/src/features/client-ai/**` | T063, T043 | E1, E2 | AI label visible; unavailable state keeps agent button |
 | T065 | Web client estimate (live premium from shared formula, breakdown, past estimates, send) with D1 discount removed | T2 | `apps/web/src/features/client-estimate/**` | T060, T036, T002 | C1 to C4 | Shows no discount; matches server preview for all vectors; Send to agent disabled while waiting |
 | T066 | Web client policy and schedule | T2 | `apps/web/src/features/client-policy/**` | T060, T038 | C5 | Extension card only when `rewardNote` present; Overdue chip once the extended date has passed |
-| T068 | Web agent dashboard part 1: client list, chat panel, unread, search | T2 | `apps/web/src/features/agent-clients/**` | T060, T034 | B2, F1 | Only assigned clients; counts match; Available/Away toggle |
+| T068 | Web agent dashboard part 1: client list, chat panel, unread, search, Available/Away toggle | T2 | `apps/web/src/features/agent-clients/**` | T060, T034, T027 | B2, F1 | Only assigned clients; counts match; Available/Away toggle |
 | T069 | Web agent dashboard part 2: pending estimates, approve, request changes, escalate action | T2 | `apps/web/src/features/agent-estimates/**` | T068, T037 | C4 | Request changes blocks without a note; approve shows policy number |
 
 ### Mobile and Rewards screens
 | ID | Task | Tier | Owns | Needs | Stories | Done when |
 |---|---|---|---|---|---|---|
 | T084 | Mobile client dashboard | T3 | `apps/mobile/lib/features/dashboard/**` | T081, T039 | F4 | Same as T062; waiting banner |
-| T085 | Mobile client chat and AI toggle | T2 | `apps/mobile/lib/features/chat/**` | T081, T034, T042 | B1, E1 | Reconnect and queue test; waiting state disables the agent tab |
+| T085a | Mobile client chat, agent tab | T2 | `apps/mobile/lib/features/chat/**` | T081, T034 | B1 | Reconnect and queue test; waiting state disables the agent tab |
+| T085b | Mobile AI tab and handoff | T2 | `apps/mobile/lib/features/ai-chat/**` | T085a, T043 | E1, E2 | Waiting client can still use the AI tab; handoff works |
 | T086 | Mobile estimate | T2 | `apps/mobile/lib/features/estimate/**` | T081, T036, T080 | C1 to C4 | Same vectors pass on device; Send to agent disabled while waiting |
 | T087 | Mobile policy | T3 | `apps/mobile/lib/features/policy/**` | T081, T038 | C5 | Schedule list with chips |
-| T090 | Mobile agent home, chat, review estimate | T2 | `apps/mobile/lib/features/agent/**` | T081, T034, T037 | B2, C4, F1 | No reward element anywhere; Available/Away toggle |
-| T091 | Main mobile app SSO authorizer: deep link handler, confirm screen "Open Rewards as [name]", `/sso/authorize` call | T1 | `apps/mobile/lib/features/sso/**` | T081, T024 | G1 | Never sends or reads a password; non-client path unreachable |
-| T100 | Rewards shell and SSO sign-in: PKCE verifier, deep link callback, token exchange, email and password fallback, logout detection on resume | T1 | `apps/rewards/lib/{app,features/auth}/**` | T008, T024, T091 | G1 | Parent logout makes next resume return to sign-in; non-client sees client-only screen |
+| T090a | Mobile agent home and chat, Available/Away toggle | T2 | `apps/mobile/lib/features/agent/**` | T081, T034, T027 | B2, F1 | No reward element anywhere; Available/Away toggle works |
+| T090b | Mobile agent review estimate | T2 | `apps/mobile/lib/features/agent-estimates/**` | T090a, T037 | C4 | Same checks as T069; no reward element |
+| T091 | Main mobile app SSO authorizer: deep link handler, confirm screen "Open Rewards as [name]", `/sso/authorize` call | T1 | `apps/mobile/lib/features/sso/**` | T081, T024b | G1 | Never sends or reads a password; non-client path unreachable |
+| T100 | Rewards shell and SSO sign-in: PKCE verifier, deep link callback, token exchange, email and password fallback, logout detection on resume | T1 | `apps/rewards/lib/{app,features/auth}/**` | T008, T024b, T091 | G1 | Parent logout makes next resume return to sign-in; non-client sees client-only screen |
 | T102 | Rewards home: steps, sample data mode, weekly bars, points today, month points, level | T2 | `apps/rewards/lib/features/home/**` | T100, T051 | G2, G3 | Sample mode works offline; locked day message; no custom goal |
 | T103 | Rewards status screen: level, month points, points to next level, plain-words effect, sync chip | T2 | `apps/rewards/lib/features/status/**` | T100, T052, T053 | G3, G4, G5 | Sync chip reflects Pending, Synced, Failed; effect text matches the level; empty state shows Bronze |
 
@@ -181,11 +187,12 @@ If the schedule slips, cut in this order: B5 and forgot-password (already out), 
 - If quota is short, move the lowest-risk T1 tasks (T031, T091) to a Tier B agent with Antigravity as reviewer.
 
 ## 10. Decisions needing approval
+All decided on Nov 26, 2026 by Atlas for the team lead; the answers are in docs/decisions.md.
 - K1 Task sizes and tier caps as listed.
 - K2 The glob-based route loading conventions so parallel agents never edit the same router file.
 - K3 T042 (AI chat) is T2 with a Tier A review rather than T1.
 - K4 Claims on mobile (T088) and the effect text on the Rewards status screen (T103) are first to be dropped if time runs out.
-- K6 T014 creates openapi.yaml from spec 05, because the file does not exist in the repo yet. It runs first in Wave 0 on Antigravity.
+- K6 T014 finishes openapi.yaml starting from the draft in packages/contracts (Q8). It runs first in Phase 1 on Atlas.
 - K7 Assignment and the waiting queue live in auth (T026, T027) because auth is the single writer of reports_to.
 - K8 The Rewards app has four screens (sign-in, client-only, home, status); T104 is merged into T103.
 - K5 You do the GitHub branch protection in T000 yourself.

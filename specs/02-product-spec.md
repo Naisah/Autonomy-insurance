@@ -1,6 +1,6 @@
 # 02 Product spec: stories, acceptance criteria, story points
 
-Status: Draft v2 for team approval. Rewritten on Nov 26, 2026 to match the updated high-level logic (monthly points and four levels, delay-only payouts, automatic agent assignment, service-key separation) and specs 03 to 07. Built from the project guide (feature list A1 to G5), the 38 Stitch screens in design/stitch, and specs/00-constitution.md.
+Status: Approved v2, Nov 26, 2026, by Atlas for the team lead (docs/decisions.md). Rewritten on Nov 26, 2026 to match the updated high-level logic (monthly points and four levels, delay-only payouts, automatic agent assignment, service-key separation) and specs 03 to 07. Built from the project guide (feature list A1 to G5), the 38 Stitch screens in design/stitch, and specs/00-constitution.md.
 
 ## 1. How to read this
 - Each story has an ID that matches the guide's feature list. A6 and F4 are additions (see section 5). Do not renumber.
@@ -285,10 +285,16 @@ Closed by the updated high-level logic and the team lead's answers:
 - [D3] Forgot password is a Could (A6). The client dashboard is its own story (F4).
 - Estimate formula stays the team's linear version (baseRate 0.70, example 1,818.88) so the data model and test vectors agree. Earlier idea of compounding age factors and a maturity-age rule is dropped; revisit only through a formula version change.
 
-Still open:
-- Gemini is proposed. The guide lists the chatbot technology as open, so update the guide once the team confirms.
-- Which coding agents run cleanly and their quota (specs 01).
-- Exact deadline (estimated about Jan 4, 2027) and whether a presentation or demo is required.
-- B5 attachments: build or leave out.
-- openapi.yaml is not in the repo yet. Task T014 writes it from spec 05.
-- The Stitch screens still need edits listed in spec 06 section 7 (remove the discount line, rename the admin toggle, merge the Rewards screens, add waiting banners, availability toggle, notification bell).
+Decided on Nov 26, 2026 by Atlas for the team lead (docs/decisions.md):
+- Chatbot technology: Gemini behind the `AiProvider` interface; tests use the fake provider only. The free tier is enough for manual testing.
+- Coding agents and their quota: spec 01 and docs/orca-bots.md; the quota numbers are data filled in P0.8.
+- Deadline: Jan 4, 2027 (Q2). Android only (Q3).
+- openapi.yaml: the draft is in packages/contracts; T014 finishes it (Q8).
+- Screens and states with no Stitch export (waiting banner, Available/Away toggle, notification bell, Rewards status) are built from spec 06 and design/design-system.md without new exports (Q5).
+- Step data: "Use sample data" is enough for the demo; no real phone is required (Q10, matches G2).
+
+Still open (changes what users get or how the course grades it):
+- B5 attachments: build them, or leave them out as spec 07 already plans?
+- Does the course require a live demo or presentation, and in what form?
+
+Team facts still needed (not product decisions): who owns the Gemini API key (Q13); Orca quotas (P0.8).

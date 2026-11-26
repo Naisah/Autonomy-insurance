@@ -228,13 +228,13 @@ Answered on Nov 26, 2026:
 - **Q8 Contract draft: answered.** T014 starts from the draft in packages/contracts/openapi.yaml (see its README).
 - **Bots: answered.** Orca bots, roles, models and automations are in docs/orca-bots.md.
 
-Still open:
-- **Q5 Designs.** Build the missing screen states (waiting banner, availability toggle, bell, Rewards status) from spec 06 without new Stitch exports?
-- **Q7 Dart client.** Java-based openapi-generator, or a pure-Dart generator?
-- **Q9 SSO fallback.** Keep the system-browser fallback, or rely on deep links plus email and password login in the Rewards app?
-- **Q10 Steps.** Is sample step data acceptable for the demo, or must a real phone count steps?
-- **Q11 Shared server code.** Copy per service, or a shared package?
-- **Q12 Admin close period.** Does the admin console need "Close period now", or only the Rewards app?
-- **Q13 Gemini key.** Who owns the key, and is the free tier enough for testing (tests use the fake provider)?
-- **Q14 Orca quotas.** Fill the quota column in spec 01 before Phase 1 starts.
+Answered on Nov 26, 2026 by Atlas for the team lead (docs/decisions.md):
+- **Q5 Designs: answered.** Build the missing states (waiting banner, availability toggle, bell, Rewards status) from spec 06 and the design system; no new Stitch exports.
+- **Q7 Dart client: answered.** Pure-Dart `swagger_parser`, run inside packages/dart_shared (T080). No Java needed.
+- **Q9 SSO fallback: answered.** No system-browser page. Deep links, with email and password login in the Rewards app as the fallback.
+- **Q10 Steps: answered.** Sample step data is enough for the demo; no real phone required.
+- **Q11 Shared server code: answered.** Copy per service; no shared package.
+- **Q12 Admin close period: answered.** Keep it in the admin console (spec 02 F3); core-api calls rewards-api with a service token scoped `rewards:close-period`.
+- **Q13 Gemini key: partly answered.** Gemini is confirmed; the free tier is enough because tests use the fake provider. Still open: who owns the key.
+- **Q14 Orca quotas: data, not a decision.** Filled in P0.8.
 - Which laptop runs Docker and the Android emulator together for the demo (about 16 GB RAM)?

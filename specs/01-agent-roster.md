@@ -1,6 +1,6 @@
 # 01 Agent roster and orchestration rules: Autonomy Insurance
 
-Status: Draft v2 for team approval (patched for the updated high-level logic; adds the specialty column and a trial test). Follows specs/00-constitution.md (principle 6: small, independent tasks with file boundaries). Used by spec 07 to assign tasks.
+Status: Approved v2, Nov 26, 2026, by Atlas for the team lead (docs/decisions.md) (patched for the updated high-level logic; adds the specialty column and a trial test). Follows specs/00-constitution.md (principle 6: small, independent tasks with file boundaries). Used by spec 07 to assign tasks.
 
 ## 0. Which "agent" is which
 Three different things are called agents in this project. This spec is only about the third.
@@ -81,6 +81,7 @@ Before assigning specialties for good, give three free agents the same small tas
 - Log the test in `docs/ai-use-log.md` (X8), since the work is AI-generated.
 
 ## 9. Decisions needing approval
+All decided on Nov 26, 2026 by Atlas for the team lead; the answers are in docs/decisions.md. The quota column is data, filled in P0.8.
 - R1 Tier assignments in section 1 (proposed, to be tuned after week one).
 - R2 Antigravity reserve rule (70 percent cap before Sprint 3 T1 tasks).
 - R3 Protect `main` on GitHub and require pull requests, even though the team is small.
