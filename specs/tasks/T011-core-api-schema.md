@@ -14,7 +14,7 @@ Do not touch: anything else, especially:
 - other services
 - openapi.yaml, specs/**
 Steps:
-1. Write the tables from spec 04 section 3: directory_users, conversations, conversation_reads, messages, escalations, ai_conversations, ai_messages, estimates, policies, premium_schedule_items, claims, claim_documents, claim_events, reward_results, reward_status_history, reward_effects, settings, user_preferences, notifications; sequences starting at 4829 and 1042.
+1. Write the tables from spec 04 section 3: directory_users, conversations, conversation_reads, messages (MessageKind includes Attachment), message_attachments (B5), escalations, ai_conversations, ai_messages, estimates, policies, premium_schedule_items, claims, claim_documents, claim_events, reward_results, reward_status_history, reward_effects, settings, user_preferences, notifications; sequences starting at 4829 and 1042.
 2. Add the constraints from spec 04 section 5 (checks, unique and partial indexes).
 3. Timestamps stored in UTC; business dates as date columns (Q6, Asia/Manila).
 4. Create the first migration with `prisma migrate dev`.
@@ -24,6 +24,7 @@ Done when:
 - [ ] Partial unique index allows only one Open escalation per conversation.
 - [ ] Unique (client, period) on reward_results.
 - [ ] No discount or payout-reduction column anywhere (D1, D2).
+- [ ] message_attachments: message_id unique, size_bytes check 1 to 5,242,880, storage_key unique (B5).
 - [ ] Every constraint in spec 04 section 5 for the core database exists.
 Questions: (agent writes here, sets Status to Blocked and stops if the spec is silent)
 Handoff: (agent fills in: what changed, how to run checks, what is left)

@@ -15,13 +15,13 @@ Do not touch: anything else, especially:
 Steps:
 1. Start from the Nov 26 draft already in `packages/contracts/openapi.yaml` (Q8).
 2. Apply the spec 05 section 8 change list in one commit.
-3. Check every story in spec 02 except A2, A5, B5 has an operation, with `x-roles`, `x-stories`, `x-priority`.
+3. Check every story in spec 02 except A2 and A5 has an operation (B5 included: the two attachment operations in spec 05 section 8), with `x-roles`, `x-stories`, `x-priority`.
 4. Include `POST /service/token` (T024a) and the Admin close-period operation through core-api that spec 05 section 8 lists (Q12).
 5. List the Socket.IO events in the description header (spec 03 section 7).
 6. Regenerate clients and run `npm run contract:check`.
 Done when:
 - [ ] `npm run contract:check` passes.
-- [ ] Every story except A2, A5 and B5 has at least one operation (scripted check over `x-stories`).
+- [ ] Every story except A2 and A5 has at least one operation, B5 included (scripted check over `x-stories`).
 - [ ] Lint fails if a `*Staff` schema gains a reward field.
 - [ ] Mock server answers one route per tag.
 - [ ] No `payoutReductionPercent`, `payoutAmount`, `healthScore`, `/rewards/goal`, `/rewards/milestones` remain.

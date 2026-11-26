@@ -111,11 +111,19 @@ Totals: 54 IDs. Decided 52. Retired 2 (D5, D7).
 | Q13 | Chatbot provider and key | Decided in part | Gemini behind `AiProvider`; free tier is enough because tests use the fake provider. Key owner is a team fact still needed | Atlas for the team lead, Nov 26 | 02 s9 |
 | PG | Postgres version | Decided | PostgreSQL 16 | Atlas for the team lead, Nov 26 | 00 s4 |
 | ST | Service token lifetime | Decided | RS256, 15 minutes, audience of the target service, `scope` claim, no refresh | Atlas for the team lead, Nov 26 | 03 s4 |
-| B5 | Chat attachments: build or leave out? | Open | Recommended: leave out (spec 07 already cuts it first) | Team lead | none |
-| DEMO | Does the course require a live demo or presentation, and in what form? | Open | | Team lead | none |
+| B5 | Chat attachments: build or leave out? | Decided | Build them (Should). JPEG, PNG or PDF, 5 MB max, one file per message, type checked by file signature; client, current agent, and manager only while an escalation is Open can open a file; Admin and the AI never | Team lead, Nov 26 (rules: Atlas) | 02 B5 and s7, 03 s7 and s12, 04 message_attachments, 05 s8, 06, 07 |
+| DEMO | Does the course require a live demo or presentation, and in what form? | Decided | Yes: a live demo, hosted on free tiers where possible, with a local fallback | Team lead, Nov 26 | docs/deployment-plan.md |
+| H1 | Web app host | Decided | Cloudflare Pages (free, no card); one Pages Function proxies `/auth/*` so the refresh cookie stays first-party | Atlas for the team lead, Nov 26 | deployment plan s1, s3 |
+| H2 | Node services host (auth, core-api with Socket.IO, rewards-api) | Decided | Render, three free web services, Singapore; sleep after 15 min, about 1 min cold start, 750 h a month shared | Atlas for the team lead, Nov 26 | deployment plan s1, s3 |
+| H3 | Postgres host | Decided | Neon free, one project per service (three), Singapore; scale to zero after 5 min | Atlas for the team lead, Nov 26 | deployment plan s1 |
+| H4 | Attachment file storage | Decided | Supabase Storage free, private bucket `chat-attachments`; `local` driver for laptops and fallback | Atlas for the team lead, Nov 26 | 03 s7 and s12, deployment plan |
+| H5 | Android apps for the demo | Decided | Signed release APKs (keystore outside git) attached to a GitHub Release `demo-v1`; installed on the demo phone the day before; emulator as backup | Atlas for the team lead, Nov 26 | deployment plan s6 |
+| H6 | Environments | Decided | One hosted environment: staging from `main` after Phase 2 (T115), switched to the pinned demo in Phase 8 (T116) | Atlas for the team lead, Nov 26 | deployment plan s5 |
+| H7 | Local fallback | Decided | `docker-compose.demo.yml` runs the full stack on one laptop, plus fallback APKs on the LAN address | Atlas for the team lead, Nov 26 | deployment plan s5, s6 |
+| H8 | Secrets | Decided | Only in the hosts' env settings and local git-ignored `.env`; `render.yaml` uses `sync: false`; secret scan before deploy PRs | Atlas for the team lead, Nov 26 | deployment plan s4 |
+| H9 | Background jobs on free hosts | Decided | Outbox and day-close jobs run in the web process and catch up on start (no free workers) | Atlas for the team lead, Nov 26 | deployment plan s3 |
+| H10 | Migrations on deploy | Decided | `prisma migrate deploy` in each start command; pooled `DATABASE_URL`, direct `DIRECT_URL` | Atlas for the team lead, Nov 26 | deployment plan s3 |
 
 ## What is still open
-Specs 00 to 07 are Approved. These stay with the team:
-- **B5 attachments** (product and grading): build them or leave them out? It is a story in the course feature list.
-- **Demo or presentation** (grading): is one required, and in what form?
-- Team facts, not decisions: who owns the Gemini API key (Q13), Orca quotas (P0.8, Q14), which laptop runs Docker and the emulator for the demo.
+Specs 00 to 07 are Approved, and B5 and the demo are decided (Nov 26, 2026). No product or grading decision is open.
+- Team facts, not decisions: who owns the Gemini API key (Q13), Orca quotas (P0.8, Q14), which laptop runs the local fallback for the demo (about 16 GB RAM).
