@@ -221,3 +221,12 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Node and workspaces
+node_modules/
+.env.*
+!.env.example
+
+# Flutter build output
+.dart_tool/
+apps/*/build/

@@ -1,0 +1,17 @@
+{
+  "name": "autonomy-insurance",
+  "private": true,
+  "workspaces": [
+    "apps/web",
+    "services/*",
+    "packages/contracts"
+  ],
+  "scripts": {
+    "contract:check": "npm run contract:check --workspace packages/contracts",
+    "db:reset": "npm run db:reset --workspaces --if-present",
+    "dev:auth": "npm run dev --workspace services/auth",
+    "dev:core": "npm run dev --workspace services/core-api",
+    "dev:rewards": "npm run dev --workspace services/rewards-api",
+    "dev:web": "npm run dev --workspace apps/web"
+  }
+}
