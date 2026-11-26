@@ -4,6 +4,16 @@ Status: Approved Nov 26, 2026 (team lead asked for a hosted live demo on free ti
 
 Free tiers change often. The limits below were checked on Nov 26, 2026; T115 and T116 re-check them on each host's own pricing page before relying on them, and record any change here.
 
+## 0. Hard rule: free, and no card
+The team lead's rule (Nov 26, 2026): every host must be free and must never ask for a credit card or any payment method, at sign-up or later. If a host starts asking for a card, or a free limit would only be lifted by adding one, do not add it: switch that part to another card-free host or to the local docker compose fallback, and record the change here and in docs/decisions.md.
+
+Checked Nov 26, 2026:
+- Cloudflare Pages: vendor page says "no credit card required".
+- Render (free web services): Render's own article (Apr 23, 2026) says no credit card is required. Without a card, going over a free limit suspends the service until next month; it is never billed.
+- Neon: Neon's free-tier FAQ (updated Nov 9, 2026) says no credit card required; the Free plan has no time limit.
+- Supabase: the pricing page and billing FAQ list no card requirement for the Free plan (cards are only mentioned for paid billing). Confirm at sign-up; if Supabase asks for a card, store attachments in core-api's Neon database instead and cap uploads to stay under 1 GB.
+- Not allowed: Railway, Fly.io and Cloudflare R2 (they need a card), and Render's paid plans.
+
 ## 1. Hosts
 | Part | Host (free tier) | Card needed | Limits that matter | Sleep and cold start |
 |---|---|---|---|---|
