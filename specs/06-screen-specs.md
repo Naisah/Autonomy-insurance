@@ -1,6 +1,6 @@
 # 06 Screen specs: Autonomy Insurance
 
-Status: Draft v2 for team approval (patched for the updated high-level logic). Maps every screen to its stories, API operations (from `packages/contracts/openapi.yaml`), states and checks. Follows specs 00 to 05.
+Status: Approved v2, Nov 26, 2026, by Atlas for the team lead (docs/decisions.md) (patched for the updated high-level logic). Maps every screen to its stories, API operations (from `packages/contracts/openapi.yaml`), states and checks. Follows specs 00 to 05.
 
 Update (Nov 26, 2026): all screens below now exist as files in design/stitch (38 files). In the Design column, New means it was generated after the first import and is now exported; Change means the Stitch screen still needs the edit described here and in section 7. The Rewards app has four target screens; the older health-score, goals-rewards and effect exports stay in design/stitch for reference until their content is merged into rewards/status.
 
@@ -100,6 +100,8 @@ All gap screens from the earlier prompt list now exist in design/stitch. What re
 Prompts: if the team regenerates a screen in Stitch, use the wording above, never "delayed or reduced", "+30 days" or "7-day step goal" (those came from an earlier draft).
 
 ## 8. Decisions that need approval
+All decided on Nov 26, 2026 by Atlas for the team lead; the answers are in docs/decisions.md.
+- Q5: screens and states without a Stitch export (waiting banner, Available/Away toggle, notification bell, rewards/status) are built from this spec and design/design-system.md; no new export is needed.
 - S1 Web profile shows the biometric option as information only; the toggle lives on mobile.
 - S2 Mobile apps cover Client and Agent only; Manager and Admin are web only.
 - S3 The client dashboard needs no endpoint beyond `/dashboard`; if the design needs more, add fields to `ClientDashboard` in the contract first.

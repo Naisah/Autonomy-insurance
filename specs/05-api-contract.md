@@ -1,6 +1,6 @@
 # 05 REST API contract: Autonomy Insurance
 
-Status: Draft v2 for team approval (patched for the updated high-level logic). openapi.yaml itself was not available when this was patched, so section 8 lists exactly what the contract task (T014) must change in it. The contract itself is `packages/contracts/openapi.yaml` (one file for all three services). This note explains how to read it, which decisions it makes, and what it changes in earlier specs. Follows specs 00, 02, 03, 04.
+Status: Approved v2, Nov 26, 2026, by Atlas for the team lead (docs/decisions.md) (patched for the updated high-level logic). A draft openapi.yaml is now in packages/contracts (Q8); section 8 lists exactly what the contract task (T014) must change in it. The contract itself is `packages/contracts/openapi.yaml` (one file for all three services). This note explains how to read it, which decisions it makes, and what it changes in earlier specs. Follows specs 00, 02, 03, 04.
 
 ## 1. How to use it
 - Put the file at `packages/contracts/openapi.yaml`. It is the source of truth for request and response shapes. Code that disagrees with it is wrong, or the contract is changed first (constitution principle 2).
@@ -31,6 +31,7 @@ Status: Draft v2 for team approval (patched for the updated high-level logic). o
 | Assignment and notifications | A1, A4, F2 | agent availability, client limit, notifications list and mark read |
 
 ## 4. Decisions made in the contract (need approval)
+All decided on Nov 26, 2026 by Atlas for the team lead; the answers are in docs/decisions.md.
 - C1 Separate staff routes. Agents use `/agent/claims`, `/agent/estimates`, `/agent/clients/{id}/policies`, and clients use `/claims`, `/policies`. This keeps reward fields out of staff responses by type, not by filtering.
 - C2 One `/dashboard` route returns a different shape per role (discriminated by `role`). Alternative: four routes. One route is simpler for the clients; the server still checks role.
 - C3 The estimate premium is computed on the client for live updates (C2) and by the server on every write. `POST /estimates/preview` exists so tests can compare the two.
@@ -71,7 +72,7 @@ The contract task makes exactly these edits, in one commit, then regenerates cli
 **Add**
 - `POST /api/rewards/results` on core-api. Body `{ client_id, period (YYYY-MM), points (integer, 0 or more), status (Bronze, Silver, Gold, Platinum) }`. Responses 201, 400, 401, 403, 404. Security: service key only (`x-roles`: service). Description: one result per client per period; a resend replaces the earlier result.
 - `GET /rewards/summary` (rewards-api, Client): `{ period, points, status, pointsToNextLevel, nextLevel, todayPoints, syncStatus }`.
-- `POST /rewards/demo/sample-steps` and `POST /rewards/demo/close-period` (rewards-api, demo mode only; sample-steps Client, close-period Admin through core-api or Client for own data; mark `x-priority: Should`, `x-demo: true`).
+- `POST /rewards/demo/sample-steps` and `POST /rewards/demo/close-period` (rewards-api, demo mode only; sample-steps Client, close-period Admin through core-api (core-api calls rewards-api with a service token scoped `rewards:close-period`, Q12) or Client for own data; mark `x-priority: Should`, `x-demo: true`).
 - `PUT /me/availability` (auth, Agent) and `maxClients` on `PATCH /users/{id}` (Admin; Manager for own team). `User` and `StaffDirectoryEntry` gain `availability` and `maxClients` for agents.
 - `GET /notifications` and `POST /notifications/{id}/read` (core-api, Admin and Manager; Agent for `ClientAssigned` if built).
 - `DELETE /ai/conversation/messages` (client clears their own bot chat).

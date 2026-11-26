@@ -1,6 +1,6 @@
 # 03 Architecture and data flow: Autonomy Insurance
 
-Status: Draft v2 for team approval (patched for the updated high-level logic: monthly points and four levels, delay-only payouts, automatic agent assignment, service-key separation). Follows specs/00-constitution.md (stack, services, rules) and specs/02-product-spec.md (stories A1 to G5, rules in section 6). If this file disagrees with the constitution, the constitution wins.
+Status: Approved v2, Nov 26, 2026, by Atlas for the team lead (docs/decisions.md) (patched for the updated high-level logic: monthly points and four levels, delay-only payouts, automatic agent assignment, service-key separation). Follows specs/00-constitution.md (stack, services, rules) and specs/02-product-spec.md (stories A1 to G5, rules in section 6). If this file disagrees with the constitution, the constitution wins.
 
 ## 1. Goals of this spec
 - Show the three tiers, the three back-end services, and who owns what data.
@@ -63,6 +63,7 @@ Every fact has one owning service. Other services keep a read copy only when nee
 ## 4. Tokens and sessions (A1, A3)
 
 - Access token: RS256 JWT, 15 minutes. Claims: `sub` (user id), `role`, `sid` (session id), `aud`, `iss`, `exp`, `iat`. No email or name in the token.
+- Service token (`POST /service/token`): RS256 JWT, 15 minutes, audience of the target service, a `scope` claim, no refresh token; the caller asks for a new one when it expires. Service secrets are stored only as hashes.
 - Refresh token: opaque random string, 7 days, rotated on every use. The server stores only its hash. Reuse of an old refresh token revokes the whole session (replay protection).
 - Audiences: tokens from normal login have `aud = core-api`. Tokens from SSO have `aud = rewards-api` and role must be `client`. Each service rejects tokens with the wrong audience.
 - Key separation: the Rewards service authenticates to core-api with a service key (a service account from auth, scope `reward:write`, `aud = core-api`), never with a client token. `POST /api/rewards/results` rejects every client, agent, manager and admin token (401 or 403). Every client endpoint rejects the service key. Both rules have their own tests.
@@ -179,7 +180,7 @@ Rules:
 - Only users with role `client` get an SSO code. Other roles get 403 and the Rewards app shows the client-only screen.
 - SSO sessions are children of the main session (`parent_sid`). Logging out of the main app, or "sign out of all devices", revokes the children. The Rewards app finds out when its next refresh fails, and also when it returns to the foreground; it then returns to its sign-in screen.
 - If no main-app session exists, the Rewards app offers email and password. It posts credentials to auth only (never to rewards-api).
-- Demo fallback if deep links fail on the emulator: the Rewards app can open a hosted auth page in the system browser and receive the same code through the redirect. Same endpoints.
+- Fallback if deep links fail on the emulator: the Rewards app signs in with email and password (`POST /auth/login` with clientId `rewards`). No hosted system-browser page is built (Q9).
 
 ### 9.2 Reward results to the main system (G4)
 **Points and levels (computed in rewards-api; values are sample settings).**
@@ -203,7 +204,7 @@ Rules:
 - Each applied effect writes a `reward_effects` row (the G5 log). The client DTO includes the reason ("Based on your Rewards activity"), the delay and the payout date. The agent DTO includes the approved amount, approval date and status only; the payout date is client-only.
 - No premium discount and no payout reduction exist anywhere. The admin toggle is named "Apply reward effects" (`applyEffects`).
 - Rule values (daily point bands, level thresholds, extension days, delay days, standard processing days) are Admin-editable settings, so a change is a data change, not code.
-- Demo only (clearly labeled in the UI): "Close period now" and "Generate sample steps" let a 4-week project show a month ending. In the real flow a period closes automatically at month end. Both are enabled only when `DEMO_MODE=true` and are limited to the signed-in client (steps) or Admin (close period).
+- Demo only (clearly labeled in the UI): "Close period now" and "Generate sample steps" let a 4-week project show a month ending. In the real flow a period closes automatically at month end. Both are enabled only when `DEMO_MODE=true` and are limited to the signed-in client (steps) or Admin (close period). Admin's "Close period now" goes to core-api, which calls rewards-api with a service token scoped `rewards:close-period` (Q12).
 
 ## 10. AI chatbot (E1, E2)
 - core-api exposes `POST /ai/conversation/messages`. An `AiProvider` interface has one method `reply(history, knowledge)`. The first implementation calls the Gemini free tier (proposed; the project guide still lists the chatbot technology as open, so update it once the team confirms). A `FakeAiProvider` returns canned answers.
@@ -232,6 +233,8 @@ Session storage: web keeps the refresh token in an httpOnly cookie set by auth (
 CORS: auth and core-api allow only the web origin from config. Rate limits: 100 requests per minute per user on core-api, stricter on auth endpoints.
 
 ## 12. Configuration and environments
+- Time zone (Q6): timestamps are stored in UTC. Business dates (a step day closing at midnight, premium due dates, Overdue, claim approval dates, the month a period covers) use Asia/Manila.
+- Shared server code (Q11): each service keeps its own copy of the error model, JWT verification and request-id code. There is no shared server package.
 - `.env.example` in each service lists every variable (ports, DB URLs, JWT key paths, Gemini key, CORS origin, service client secrets). No secrets in git.
 - Local run: `docker compose up` starts Postgres; each service has `npm run dev`; seed scripts create demo users for every role (X6): one admin, two managers, three agents (one Away, one at its client limit), six clients (one waiting for an agent). `DEMO_MODE=true` enables the demo-only reward actions.
 - Hosting is out of scope (constitution). A demo run needs only a laptop and one emulator.
@@ -254,9 +257,10 @@ CORS: auth and core-api allow only the web origin from config. Rate limits: 100 
 | Reward result resent for the same client and period | Replaces the earlier result; history keeps the earlier status |
 
 ## 15. Decisions in this spec that need approval
+All decided on Nov 26, 2026 by Atlas for the team lead; the answers are in docs/decisions.md.
 - A1 Manager reads an escalated thread only while the escalation is Open (resolved ones show metadata only). Alternative: keep read access after Resolved.
 - A2 core-api keeps a directory projection synced by auth events instead of calling auth on every request.
-- A3 SSO uses PKCE with deep links between the two apps, with a system-browser fallback.
+- A3 SSO uses PKCE with deep links between the two apps; the fallback is email and password login in the Rewards app (Q9).
 - A4 Web refresh token in httpOnly cookie; mobile in secure storage.
 - A5 Return 404 (not 403) for other users' records where existence would leak.
 - A6 Integer-centavo calculation with a shared test-vector file for TS and Dart.
