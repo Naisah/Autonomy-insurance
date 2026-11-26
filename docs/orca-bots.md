@@ -160,6 +160,34 @@ You are Scribe. Read AGENTS.md. After pull requests merge, add one row per task 
 minutes). Keep sentences short and factual. You never edit code, specs or the contract.
 ```
 
+### 3.12 Scout: Nightly human-style QA
+Agent: Antigravity (Pro model; it has a built-in browser). Tier: reviewer. Owns: `docs/bug-log.md`, `docs/qa/**`, and draft bug task files `specs/tasks/BUG-*.md` (Status: Draft).
+```
+You are Scout, the end-of-day QA tester of Autonomy Insurance. You act like a careful human tester who has
+never seen the code: you judge the app only by what a real user would see and do. Read AGENTS.md,
+specs/02-product-spec.md (user stories and acceptance checks), specs/06-screen-specs.md, design/design-system.md
+and docs/bug-log.md first.
+Each run, on a fresh worktree of origin/main:
+1. Start the stack the way docs/dev-setup.md says (docker compose, migrate, seed). If it does not start, that is
+   the first bug: log it and stop.
+2. Web app: open it in your browser. For each role (client, agent, manager, admin) log in with the seed users from
+   docs/seed-readme.md and walk every story in spec 02 that is merged so far, start to finish, the way a person would:
+   click, type, go back, refresh, try wrong input, empty fields, double clicks, slow network, a 375px phone width.
+3. Android apps: if the emulator is available, run the main app and the Rewards app and walk the same stories
+   (Rewards: client only). If not, say so in the report and do not guess.
+4. Check what users see against spec 06 and the Stitch designs: layout, wording, colors and fonts from the tokens,
+   loading, error, empty and 403 states, 44px touch targets, keyboard focus, readable contrast.
+5. Check the rules a user can notice: agents, managers and admins never see reward data or payout dates; a role
+   cannot open another role's pages or another client's data; every reward screen says "Simulated for this course demo".
+For each problem: reproduce it twice, then add a row to docs/bug-log.md (date, role, screen, steps, expected with the
+spec line, actual, severity: blocker, major, minor, cosmetic) and, for blocker and major, a draft task file
+specs/tasks/BUG-<date>-<n>.md from the template with Owns set to the feature folder and "Suggested agent" set to the
+bot that owns that lane. Do not fix application code. Do not file the same bug twice: check the bug log first and
+add "seen again <date>" instead.
+Write docs/qa/<date>.md: what you tested, what passed, the new bugs, and anything you could not test and why.
+Branch agent/qa-<date>, open one PR with the bug log, the report and the draft bug tasks. Never merge.
+```
+
 ## 4. How bots hand off to each other
 1. **Atlas** writes the task file and sets `Status: Ready` and `Agent: <bot>`. It lists the task on `docs/orca/board.md`.
 2. **The builder bot** (Forge, Anvil, Pixel, Flutterby, Stride, Probe or Seedling) sets `Status: In progress`, works in its own worktree, and opens a PR. Then it sets `Status: In review` and fills the Handoff.
@@ -169,6 +197,23 @@ minutes). Keep sentences short and factual. You never edit code, specs or the co
 
 You start a bot's work by opening it in Orca and sending one line, for example: `Do specs/tasks/T020-register-login.md`. Automations (section 5) handle the routine parts.
 
+### 4.1 Running without waiting (decided Nov 26, 2026)
+The team lead chose: bots merge **low-risk** PRs themselves; **high-risk** PRs still wait for a human merge. This replaces spec 01 R7 (human review on every PR) for low-risk PRs only; update spec 01 once the group agrees.
+
+**High-risk** means the PR touches any of: `services/auth/**`, token, session or JWT code, the access module or authorization matrix, chat access or Socket.IO auth, `reports_to` and assignment, the service key, `POST /api/rewards/results` or reward data, `packages/contracts/openapi.yaml`, any `prisma/schema.prisma`, `.github/**`, `AGENTS.md`, `specs/00-constitution.md`, or a task file with `Tier: T1`. Everything else is low-risk.
+
+The **Merge gate** automation merges a PR only when all of these hold:
+1. It is not a draft and has no merge conflict.
+2. It is low-risk (list above). Otherwise it adds the label `needs-human` once and moves on.
+3. Its latest commit has a "Lens: approve" review or comment, and nothing newer says "changes needed".
+4. Every CI check on the latest commit passed (if there is CI), and the task's Done when tests were re-run by Lens.
+5. It has fewer than 3 "changes needed" rounds. From the third, it adds `needs-human` instead.
+Then it merges with a merge commit (`gh pr merge <n> --merge --admin`, owner bypass), and never touches a PR labeled `needs-human`.
+
+**Atlas** (Morning board, twice a day) marks tasks Done after their PR merges, sets the next tasks Ready when their Needs are merged, answers Blocked questions from the specs and decisions log, and turns Scout's draft bug files into Ready tasks for the right bot. It asks the team lead only when an answer would change what users see or how the course grades the work, and lists those in the daily summary.
+
+**Scribe** (Daily logs) also writes `docs/daily/<date>.md` every night: what merged, what is waiting for a human (`needs-human` PRs and open questions), new bugs from Scout, and which bots ran out of usage.
+
 ## 5. Automations
 Create each with **Create automation**. Settings for all of them:
 - **Workspace:** Worktree, based on `main`. Orca shows `master` by default; pick `main`.
@@ -177,11 +222,13 @@ Create each with **Create automation**. Settings for all of them:
 
 | Name | Agent (bot) | Schedule (Asia/Manila) | Prompt |
 |---|---|---|---|
-| Morning board | Claude (Atlas) | Weekdays 8:00 AM | Read docs/orca/board.md, open PRs and task files. Update the board: Ready, In progress, In review, Blocked, Done. List the next 5 Ready tasks whose Needs are merged, and answer Blocked questions in the specs if the answer is already decided. Commit only docs/orca/board.md and specs on branch agent/board-<date>, open a PR. |
-| PR first review | Copilot (Lens) | Weekdays 11:00 AM and 4:00 PM | Review every open PR without a "Lens:" review, following your role. Comment on the PR; do not push code. |
+| Morning board | Claude (Atlas) | Daily 8:00 AM and 4:00 PM | Follow section 4.1. Read docs/orca/board.md, open PRs, task files, docs/bug-log.md and new BUG-* drafts. Mark merged tasks Done, set Ready every task whose Needs are merged, answer Blocked questions from the specs and docs/decisions.md, and turn Scout's blocker and major bugs into Ready tasks for the right bot. Only questions that change what users see or how the course grades it go to the team lead, under "Needs the team lead" on the board. Commit only docs/orca/board.md, specs and task files on branch agent/board-<date>-<am|pm>, open a PR. |
+| PR first review | Copilot (Lens) | Daily 11:00 AM and 5:00 PM | Review every open PR without a "Lens:" review, following your role. Comment on the PR; do not push code. |
 | Security review | Antigravity (Sentinel) | Weekdays 5:00 PM | Review open PRs that touch auth, tokens, access, chat access, the service key or reward data and have no "Security:" review. Comment only. |
 | Nightly tests | OpenCode (Probe) | Daily 10:00 PM | On a fresh worktree of main, run npm ci, npm test, npm run contract:check and flutter test in each Flutter app. Add any failure to docs/bug-log.md on branch agent/bugs-<date> and open a PR. Do not fix application code. |
-| Daily logs | Grok (Scribe) | Daily 9:00 PM | For PRs merged today, add rows to docs/ai-use-log.md and docs/agent-log.md on branch agent/logs-<date>, open a PR. |
+| Daily logs | Grok (Scribe) | Daily 9:00 PM | For PRs merged today, add rows to docs/ai-use-log.md and docs/agent-log.md. Write docs/daily/<date>.md for the team lead in plain words: what merged, what waits for a human (needs-human PRs, "Needs the team lead" items), new bugs, bots that hit their usage limit. Branch agent/logs-<date>, open a PR. |
+| Merge gate | OpenCode (free model) | Daily 9:30 AM, 12:30, 3:30, 6:30 and 9:30 PM | Follow docs/orca-bots.md section 4.1 exactly. For each open PR to main: check the five conditions; merge only low-risk PRs that pass them, with a merge commit; label high-risk or thrice-rejected PRs needs-human. Never push code, never approve, never touch a needs-human PR. |
+| Nightly QA | Antigravity (Scout) | Daily 11:00 PM | Follow your role in docs/orca-bots.md section 3.12. |
 | Weekly dependency audit | Antigravity | Mondays 9:00 AM | Run npm audit and flutter pub outdated. Summarize risky changes in docs/security-review.md on a branch; do not upgrade anything. |
 
 ## 6. How many bots at once
