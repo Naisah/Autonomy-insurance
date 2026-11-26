@@ -202,7 +202,7 @@ Secrets: `.env` per service from `.env.example`; the Gemini key stays in the own
 3. **No CI and `main` is not protected.** Agents run with permission prompts skipped (spec 01 section 4). P0.6.
 4. **Time zone (answered: Asia/Manila).** Business dates (a step day closing at midnight, due dates, Overdue, approval dates) use Asia/Manila; timestamps are stored in UTC. Specs 03 and 04 and the reward vectors must say so.
 5. **Service tokens are scheduled too late** (T024 in Phase 6, needed in Phase 2). Fixed by the T024a split above once approved.
-6. **openapi.yaml does not exist.** A first draft was written on Nov 26 but not linted or committed; T014 can start from it or from scratch (Q8).
+6. **openapi.yaml is a draft.** The Nov 26 draft is in packages/contracts (0 lint errors, types generate); T014 reviews and finishes it.
 
 ### 10.2 Needed before the phase that uses it
 7. Test strategy doc and the contract-test harness (no task owns "validate responses against openapi.yaml" yet). Add to T003 to T005 or a new T016.
@@ -225,11 +225,12 @@ Answered on Nov 26, 2026:
 - **Q3 Platforms: answered.** Android only for the demo. iOS is out of scope.
 - **Q4 Team split: answered.** Reviewers are picked at random per pull request; there are no fixed lanes for humans.
 - **Q6 Time zone: answered.** Asia/Manila for business dates, UTC for stored timestamps.
+- **Q8 Contract draft: answered.** T014 starts from the draft in packages/contracts/openapi.yaml (see its README).
+- **Bots: answered.** Orca bots, roles, models and automations are in docs/orca-bots.md.
 
 Still open:
 - **Q5 Designs.** Build the missing screen states (waiting banner, availability toggle, bell, Rewards status) from spec 06 without new Stitch exports?
 - **Q7 Dart client.** Java-based openapi-generator, or a pure-Dart generator?
-- **Q8 Contract draft.** Should T014 start from the unreviewed openapi.yaml draft written on Nov 26?
 - **Q9 SSO fallback.** Keep the system-browser fallback, or rely on deep links plus email and password login in the Rewards app?
 - **Q10 Steps.** Is sample step data acceptable for the demo, or must a real phone count steps?
 - **Q11 Shared server code.** Copy per service, or a shared package?
