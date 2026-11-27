@@ -1,0 +1,50 @@
+import { describe, it, expect } from 'vitest';
+import { fileURLToPath } from 'node:url';
+import { io as client } from 'socket.io-client';
+import { buildApp } from '../src/app.js';
+
+const fixtures = fileURLToPath(new URL('./fixtures-modules', import.meta.url));
+
+describe('core-api scaffold', () => {
+  it('GET /health returns ok with a request id', async () => {
+    const app = await buildApp();
+    const res = await app.inject('/health');
+    expect(res.statusCode).toBe(200);
+    expect(res.json()).toEqual({ status: 'ok' });
+    expect(res.headers['x-request-id']).toBeTruthy();
+    await app.close();
+  });
+
+  it('serves a module folder with no shared-file edit', async () => {
+    const app = await buildApp({ modulesDir: fixtures });
+    const res = await app.inject('/probe');
+    expect(res.statusCode).toBe(200);
+    expect(res.json()).toEqual({ probe: true });
+    await app.close();
+  });
+
+  it('unknown route returns the Error shape with a request id', async () => {
+    const app = await buildApp();
+    const res = await app.inject({ url: '/nope', headers: { 'x-request-id': 'abc-123' } });
+    expect(res.statusCode).toBe(404);
+    expect(res.json()).toEqual({
+      error: { code: 'NOT_FOUND', message: 'Route not found', requestId: 'abc-123' },
+    });
+    expect(res.headers['x-request-id']).toBe('abc-123');
+    await app.close();
+  });
+
+  it('Socket.IO plugin loads and accepts a connection', async () => {
+    const app = await buildApp();
+    await app.listen({ port: 0, host: '127.0.0.1' });
+    expect(app.io).toBeDefined();
+    const port = (app.server.address() as { port: number }).port;
+    const sock = client(`http://127.0.0.1:${port}`, { transports: ['websocket'] });
+    await new Promise<void>((ok, bad) => {
+      sock.on('connect', () => ok());
+      sock.on('connect_error', bad);
+    });
+    sock.close();
+    await app.close();
+  });
+});
