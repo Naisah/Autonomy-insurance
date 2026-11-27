@@ -1,5 +1,5 @@
 # T004 Scaffold services/core-api
-Status: Ready. Specs 00 to 07 Approved Nov 26, 2026 (PR #2). Start only when PR #2 and every task in Needs are merged to main.
+Status: In review (Forge, branch agent/T004-core-api-scaffold; local only, push got 403).
 Phase: 1
 Tier: T3          Agent: Forge
 Stories: all             Needs: T000
@@ -26,4 +26,7 @@ Done when:
 - [ ] An unknown route returns the `Error` shape with a request id.
 - [ ] Socket.IO plugin loads without error.
 Questions: (agent writes here, sets Status to Blocked and stops if the spec is silent)
-Handoff: (agent fills in: what changed, how to run checks, what is left)
+Handoff: Added services/core-api: Fastify 4 + TypeScript + Zod + Vitest app (src/app.ts buildApp); auto-load of src/modules/*/routes.ts (K2); GET /health; Error shape with the C8 codes plus INTERNAL (src/errors.ts, matches the openapi Error enum); x-request-id on every response and requestId on every log line (a safe incoming id is honoured); Socket.IO placeholder plugin (src/plugins/socket.ts, no events); lazy Prisma client (src/db.ts, reads DATABASE_URL, loaded dynamically because prisma/** and `prisma generate` do not exist yet). Scripts: dev, build, test.
+Checks run: `npm test` in services/core-api: 4/4 pass (health, module auto-load via a test fixture folder, unknown route Error shape + request id, Socket.IO connects). `npm run build` ok.
+New dependencies (reason): fastify, fastify-plugin, zod, socket.io, @prisma/client, prisma, typescript, tsx, vitest, @types/node as the task lists; socket.io-client (dev only) to test the Socket.IO plugin. Root package-lock.json updated by npm install (outside Owns, unavoidable).
+Left: JWT plugin (T030), schema and prisma generate (T011). Based on origin/agent/T000-repo-hygiene (PR #8 unmerged), so the PR must target that branch. Push to origin failed with 403, so no PR is open yet.
