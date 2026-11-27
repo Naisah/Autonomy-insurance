@@ -1,5 +1,5 @@
 # T003 Scaffold services/auth
-Status: Ready. Specs 00 to 07 Approved Nov 26, 2026 (PR #2). Start only when PR #2 and every task in Needs are merged to main.
+Status: In progress.
 Phase: 1
 Tier: T3          Agent: Forge
 Stories: A1             Needs: T000
