@@ -1,5 +1,5 @@
 # T006 Scaffold apps/web
-Status: In progress (Pixel, branch agent/T006-web-scaffold; push blocked by GitHub HTTP 403).
+Status: In review (Pixel, branch agent/T006-web-scaffold, PR #16).
 Phase: 1
 Tier: T3          Agent: Pixel
 Stories: all             Needs: T000
@@ -22,4 +22,4 @@ Done when:
 - [x] Adding a folder under `src/features/` with a `route.ts` adds a route with no edit to a shared router file.
 - [x] Playwright config runs one smoke test.
 Questions: (agent writes here, sets Status to Blocked and stops if the spec is silent)
-Handoff: Added the Vite/React/TypeScript/Tailwind web workspace, a placeholder route discovered through `import.meta.glob`, Vitest coverage for discovery and rendering, and a Playwright smoke test. Added the requested workspace dependencies for this scaffold; no other packages were introduced. Checks: `npm test --workspace apps/web`, `npm run build --workspace apps/web`, and `npm run test:e2e --workspace apps/web` (the Playwright browser must be installed with `npx playwright install chromium`). All pass. GitHub rejected `git push -u origin agent/T006-web-scaffold` with HTTP 403 for the authenticated account, so no PR was created. After push access is available, push this branch and open a PR to `agent/T000-repo-hygiene` while PR #8 remains open, then set Status to In review. T060 owns replacing the placeholder with the role-aware app shell.
+Handoff: Added the Vite/React/TypeScript/Tailwind web workspace, a placeholder route discovered through `import.meta.glob`, Vitest coverage for discovery and rendering, and a Playwright smoke test. Added the requested workspace dependencies for this scaffold; no other packages were introduced. Checks pass: `npm test --workspace apps/web`, `npm run build --workspace apps/web`, and `npm run test:e2e --workspace apps/web` (install Chromium with `npx playwright install chromium` before running the browser test). PR #16 targets `agent/T000-repo-hygiene` while PR #8 remains open. T060 owns replacing the placeholder with the role-aware app shell.
