@@ -13,5 +13,8 @@
     "dev:core": "npm run dev --workspace services/core-api",
     "dev:rewards": "npm run dev --workspace services/rewards-api",
     "dev:web": "npm run dev --workspace apps/web"
+  },
+  "devDependencies": {
+    "vitest": "^3.2.4"
   }
 }
