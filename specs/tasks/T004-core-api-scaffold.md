@@ -1,5 +1,5 @@
 # T004 Scaffold services/core-api
-Status: In review (Forge, branch agent/T004-core-api-scaffold, PR #15).
+Status: Done. Merged to main (PR #15, Forge). Marked Done by Atlas Nov 28, 2026.
 Phase: 1
 Tier: T3          Agent: Forge
 Stories: all             Needs: T000

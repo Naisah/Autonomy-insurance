@@ -1,5 +1,5 @@
 # T014 Finish packages/contracts/openapi.yaml from spec 05
-Status: In review (Nov 28, 2026). Built by Claude Code from the project thread while the Orca fleet was offline; stacked on T001 (PR #21).
+Status: Done. Merged to main (PR #22, Atlas). Marked Done by Atlas Nov 28, 2026.
 Phase: 1
 Tier: T1          Agent: Atlas
 Stories: all             Needs: T001
