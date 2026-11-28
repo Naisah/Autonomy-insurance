@@ -4,13 +4,17 @@ import { join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import Fastify, { type FastifyInstance, type FastifyPluginAsync } from 'fastify';
 import { ZodError } from 'zod';
-import { AppError, errorBody } from './errors.js';
+import { AppError, errorBody, type ErrorCode } from './errors.js';
 import socketPlugin from './plugins/socket.js';
 
 export interface BuildOptions {
   modulesDir?: string;
   logger?: boolean;
 }
+
+const CODE_BY_STATUS: Record<number, ErrorCode> = {
+  400: 'VALIDATION', 401: 'UNAUTHORIZED', 403: 'FORBIDDEN', 404: 'NOT_FOUND', 429: 'RATE_LIMITED',
+};
 
 const here = fileURLToPath(new URL('.', import.meta.url));
 
@@ -47,7 +51,7 @@ export async function buildApp(opts: BuildOptions = {}): Promise<FastifyInstance
     reply.code(404).send(errorBody('NOT_FOUND', 'Route not found', req.id));
   });
 
-  app.setErrorHandler((err, req, reply) => {
+  app.setErrorHandler((err: Error, req, reply) => {
     if (err instanceof AppError) {
       return reply.code(err.statusCode).send(errorBody(err.code, err.message, req.id));
     }
@@ -56,7 +60,7 @@ export async function buildApp(opts: BuildOptions = {}): Promise<FastifyInstance
     }
     const status = (err as { statusCode?: number }).statusCode;
     if (status && status >= 400 && status < 500) {
-      const code = status === 400 ? 'VALIDATION' : 'INVALID_STATE';
+      const code = CODE_BY_STATUS[status] ?? 'INVALID_STATE';
       return reply.code(status).send(errorBody(code, 'Invalid request', req.id));
     }
     req.log.error({ errName: err.name }, 'unhandled error');

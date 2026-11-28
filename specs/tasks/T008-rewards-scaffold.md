@@ -17,5 +17,8 @@ Steps:
 Done when:
 - [ ] `flutter test` runs and passes.
 - [ ] App launches on the Android emulator.
+Notes (owner answer on T007, Nov 28, 2026):
+- Android `applicationId`: `com.autonomyinsurance.rewards`.
+- Base URLs come from `--dart-define`: `AUTH_BASE_URL` (default `http://10.0.2.2:4001`), the same name as apps/mobile. For rewards-api use `REWARDS_API_BASE_URL` (default `http://10.0.2.2:4003`, the `PORT` in `services/rewards-api/.env.example`), following the same pattern.
 Questions: (agent writes here, sets Status to Blocked and stops if the spec is silent)
 Handoff: (agent fills in: what changed, how to run checks, what is left)

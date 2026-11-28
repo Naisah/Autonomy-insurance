@@ -10,7 +10,7 @@ describe('core-api scaffold', () => {
     const app = await buildApp();
     const res = await app.inject('/health');
     expect(res.statusCode).toBe(200);
-    expect(res.json()).toEqual({ status: 'ok' });
+    expect(res.json()).toEqual({ status: 'ok', service: 'core-api' });
     expect(res.headers['x-request-id']).toBeTruthy();
     await app.close();
   });
@@ -31,6 +31,21 @@ describe('core-api scaffold', () => {
       error: { code: 'NOT_FOUND', message: 'Route not found', requestId: 'abc-123' },
     });
     expect(res.headers['x-request-id']).toBe('abc-123');
+    await app.close();
+  });
+
+  it('maps Fastify 401/403/404/429 errors to their own codes', async () => {
+    const app = await buildApp();
+    app.get('/e/:s', async (req) => {
+      const s = Number((req.params as { s: string }).s);
+      throw Object.assign(new Error('x'), { statusCode: s });
+    });
+    const want: Record<number, string> = { 401: 'UNAUTHORIZED', 403: 'FORBIDDEN', 404: 'NOT_FOUND', 429: 'RATE_LIMITED' };
+    for (const [s, code] of Object.entries(want)) {
+      const res = await app.inject(`/e/${s}`);
+      expect(res.statusCode).toBe(Number(s));
+      expect(res.json().error.code).toBe(code);
+    }
     await app.close();
   });
 
