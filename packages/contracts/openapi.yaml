@@ -1,7 +1,9 @@
 openapi: 3.1.0
 info:
   title: Autonomy Insurance API
-  version: 0.1.0-draft
+  version: 1.0.0
+  contact:
+    name: Autonomy Insurance team (ITS120P)
   summary: One contract for the three services of Autonomy Insurance (auth, core-api, rewards-api).
   description: |
     Source of truth for every request and response shape (spec 05). Code that disagrees with
@@ -53,7 +55,8 @@ info:
     - `conversation:read { conversationId, lastReadMessageId }`.
     Server to client:
     - `message:ack { clientMessageId, id, createdAt }` to the sender (persist first, then emit).
-    - `message:new Message` to room `conv:{conversationId}`.
+    - `message:new Message` to room `conv:{conversationId}`. A file message has `kind: Attachment` and
+      the same `attachment` field as the REST `Message` (files are sent over REST, not the socket).
     - `conversation:unread { conversationId, unreadCount }` to the other participant.
     - `access_revoked { conversationId }` when a client is reassigned away from this agent.
     - `escalation:opened` and `escalation:resolved { conversationId, escalationId }` to the manager.
@@ -452,7 +455,7 @@ paths:
       tags: [SSO]
       operationId: serviceToken
       summary: Get a service key (client credentials)
-      description: For rewards-api (`reward:write`, `reward:read-effects`), auth (`directory:write`) and core-api (`users:reassign`). A service token can never act as a user.
+      description: For rewards-api (`reward:write`, `reward:read-effects`), auth (`directory:write`) and core-api (`users:reassign`, `rewards:close-period`). A service token can never act as a user.
       security: []
       x-roles: [public]
       x-stories: [G4]
@@ -697,6 +700,80 @@ paths:
         '403': { $ref: '#/components/responses/Forbidden' }
         '404': { $ref: '#/components/responses/NotFound' }
         '409': { $ref: '#/components/responses/NoAgentAssigned' }
+  /conversations/{id}/attachments:
+    servers: *core
+    parameters:
+      - { $ref: '#/components/parameters/Id' }
+    post:
+      tags: [Chat]
+      operationId: sendAttachment
+      summary: Send one file in the chat, with an optional caption
+      description: |
+        One JPEG, PNG or PDF, at most 5,242,880 bytes (5 MB). The server checks the type by the
+        file signature, not the name or the declared type; a mismatch is FILE_TYPE_NOT_ALLOWED and
+        nothing is stored. A waiting client gets 409 NO_AGENT_ASSIGNED, as for a message. A resend
+        with the same `clientMessageId` returns the existing message. The new message is also sent
+        as `message:new` to the conversation room. Admin and the AI chatbot never receive files.
+      x-roles: [Client, Agent]
+      x-stories: [B5]
+      x-priority: Should
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema: { $ref: '#/components/schemas/SendAttachmentRequest' }
+            encoding:
+              file:
+                contentType: image/jpeg, image/png, application/pdf
+      responses:
+        '201':
+          description: Stored (or the existing message for a repeated clientMessageId)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Message' }
+        '400':
+          description: |
+            Invalid input (VALIDATION). `error.fields.file` is `FILE_TOO_LARGE` or
+            `FILE_TYPE_NOT_ALLOWED` when the file is the problem.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '409': { $ref: '#/components/responses/NoAgentAssigned' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+  /attachments/{id}/content:
+    servers: *core
+    parameters:
+      - { $ref: '#/components/parameters/Id' }
+    get:
+      tags: [Chat]
+      operationId: getAttachmentContent
+      summary: Download or preview a chat file
+      description: |
+        Allowed for the client of the conversation, the agent currently assigned to that client,
+        and a manager while an escalation of that conversation is Open. A reassigned-away agent
+        loses access at once. Anyone else, Admin included, gets 404 so the file's existence is not
+        revealed.
+      x-roles: [Client, Agent, Manager]
+      x-stories: [B5]
+      x-priority: Should
+      responses:
+        '200':
+          description: The file, with its stored content type
+          headers:
+            Content-Disposition:
+              description: '`inline` for images, `attachment` for PDFs, with the file name'
+              schema: { type: string }
+          content:
+            image/jpeg:
+              schema: { type: string, format: binary }
+            image/png:
+              schema: { type: string, format: binary }
+            application/pdf:
+              schema: { type: string, format: binary }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
   /conversations/{id}/read:
     servers: *core
     parameters:
@@ -1821,6 +1898,29 @@ paths:
         '401': { $ref: '#/components/responses/Unauthorized' }
         '403': { $ref: '#/components/responses/Forbidden' }
         '404': { $ref: '#/components/responses/NotFound' }
+  /admin/rewards/close-period:
+    servers: *core
+    post:
+      tags: [RewardEffects]
+      operationId: adminClosePeriodNow
+      summary: Close the current Rewards period for every client now (Demo only)
+      description: |
+        Admin's "Close period now" on the admin console (spec 02 F3, decision Q12). core-api calls
+        rewards-api `POST /internal/rewards/close-period` with a service token scoped
+        `rewards:close-period`; rewards-api then sends each client's result to
+        `POST /api/rewards/results` as usual. Available only when `DEMO_MODE=true`.
+      x-roles: [Admin]
+      x-stories: [F3, G3, G4]
+      x-priority: Should
+      x-demo: true
+      responses:
+        '200':
+          description: Closed; the results are queued for delivery
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ClosePeriodResult' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
   /me/reward-effects:
     servers: *core
     get:
@@ -2028,6 +2128,28 @@ paths:
         '401': { $ref: '#/components/responses/Unauthorized' }
         '403': { $ref: '#/components/responses/Forbidden' }
 
+  /internal/rewards/close-period:
+    servers: *rewards
+    post:
+      tags: [Internal]
+      operationId: internalClosePeriodNow
+      summary: Close the current period for every client (service key, Demo only)
+      description: Called only by core-api for Admin's "Close period now" (Q12). Available only when `DEMO_MODE=true`.
+      security:
+        - serviceKey: []
+      x-roles: [service]
+      x-scope: rewards:close-period
+      x-stories: [G3, G4]
+      x-priority: Should
+      x-demo: true
+      responses:
+        '200':
+          description: Closed; the results are queued for delivery
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ClosePeriodResult' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
 components:
   securitySchemes:
     bearerAuth:
@@ -2417,7 +2539,7 @@ components:
         openEscalation: { oneOf: [{ $ref: '#/components/schemas/Escalation' }, { type: 'null' }] }
     MessageKind:
       type: string
-      enum: [Text, System, Handoff]
+      enum: [Text, System, Handoff, Attachment]
     Message:
       type: object
       required: [id, conversationId, kind, body, createdAt]
@@ -2430,12 +2552,42 @@ components:
         body: { type: string }
         clientMessageId: { type: [string, 'null'] }
         createdAt: { type: string, format: date-time }
+        attachment:
+          description: Set when kind is Attachment; body is then the caption (may be empty)
+          oneOf:
+            - { $ref: '#/components/schemas/Attachment' }
+            - { type: 'null' }
     SendMessageRequest:
       type: object
       required: [body, clientMessageId]
       properties:
         body: { type: string, minLength: 1, maxLength: 2000 }
         clientMessageId: { type: string, minLength: 1, maxLength: 64 }
+    Attachment:
+      type: object
+      description: A chat file's metadata. The content is read with GET /attachments/{id}/content.
+      required: [id, fileName, mimeType, sizeBytes]
+      properties:
+        id: { type: string, format: uuid }
+        fileName: { type: string, maxLength: 255 }
+        mimeType: { type: string, enum: [image/jpeg, image/png, application/pdf] }
+        sizeBytes: { type: integer, minimum: 1, maximum: 5242880 }
+    SendAttachmentRequest:
+      type: object
+      required: [file, clientMessageId]
+      properties:
+        file:
+          type: string
+          format: binary
+          description: JPEG, PNG or PDF, at most 5,242,880 bytes
+        clientMessageId: { type: string, minLength: 1, maxLength: 64 }
+        body: { type: string, minLength: 0, maxLength: 2000, description: Optional caption }
+    ClosePeriodResult:
+      type: object
+      required: [period, clientsClosed]
+      properties:
+        period: { $ref: '#/components/schemas/Period' }
+        clientsClosed: { type: integer, minimum: 0 }
     EscalationStatus:
       type: string
       enum: [Open, Resolved]
