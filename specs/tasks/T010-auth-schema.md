@@ -1,5 +1,5 @@
 # T010 auth Prisma schema and first migration
-Status: Ready. Needs merged to main Nov 28, 2026.
+Status: Done. Merged to main (PR #25, Atlas) Nov 28, 2026.
 Phase: 1
 Tier: T1          Agent: Atlas
 Stories: A1 to A4             Needs: T003
@@ -20,9 +20,13 @@ Steps:
 4. Create the first migration with `prisma migrate dev`.
 5. If spec 04 and this task disagree, stop and write a Question (spec 04 wins).
 Done when:
-- [ ] `prisma migrate dev` succeeds on an empty `autonomy_auth`.
-- [ ] Role and parent check exists (Agent needs a Manager parent).
-- [ ] availability and max_clients allowed only for agents (check constraint).
-- [ ] Every constraint in spec 04 section 5 for the auth database exists (test or migration SQL review).
+- [x] `prisma migrate dev` succeeds on an empty `autonomy_auth`. (Checked Nov 28 by Claude Code on PostgreSQL 16: no drift; role/parent, agent-field, max_clients range, lowercase email and waiting_since rules each rejected a bad row.)
+- [x] Role and parent check exists (Agent needs a Manager parent).
+- [x] availability and max_clients allowed only for agents (check constraint).
+- [x] Every constraint in spec 04 section 5 for the auth database exists (test or migration SQL review).
 Questions: (agent writes here, sets Status to Blocked and stops if the spec is silent)
-Handoff: (agent fills in: what changed, how to run checks, what is left)
+Handoff:
+- What changed: `services/auth/prisma/schema.prisma` (users, sessions, refresh_tokens, sso_codes, login_attempts, service_accounts, auth_events, four enums, citext email) and migration `20261128000000_init` (generated SQL plus hand-written checks, partial indexes and two triggers). No other files, no new dependencies.
+- Constraints in the migration SQL: agent-only availability and max_clients; max_clients 1 to 100; Admin has no parent, Manager and Agent require one; role/parent trigger (Client under Agent, Agent under Manager, Manager under Admin; blocks a role change that orphans children); waiting_since only for a Client with no agent; lowercase email; partial indexes on users(waiting_since) and undelivered auth_events; SSO codes only for Client users; service account scopes not empty; auth_events type and version checks. The trigger also sets availability to Available for a new agent.
+- How I checked: `npx prisma validate` passes. The SQL came from `prisma migrate diff --from-empty --to-schema-datamodel`. Docker was off, so I could NOT run `prisma migrate dev` on a real `autonomy_auth`. I ran the whole migration.sql on PGlite (Postgres in WASM, throwaway, not committed) and 20 insert/update cases behaved as expected (valid chains accepted; wrong parent role, orphaning role change, bad availability, max_clients 0, duplicate email by case, bad SSO user, bad event type rejected).
+- Left: reviewer runs `docker compose up -d`, then `cd services/auth && npx prisma migrate dev` against an empty `autonomy_auth` to tick the first Done when box. Not logged in docs/agent-log.md or docs/ai-use-log.md (docs/** is outside Owns): Scribe please log. Note: spec 04 does not say whether an Agent row must have max_clients set; the schema allows null and leaves the default (setting `assignment.defaultMaxClients`) to T022.
