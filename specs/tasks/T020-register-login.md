@@ -1,5 +1,5 @@
 # T020 Register and login
-Status: Ready. Specs 00 to 07 Approved Nov 26, 2026 (PR #2). Start only when PR #2 and every task in Needs are merged to main.
+Status: In progress (Forge, branch agent/T020-register-login).
 Phase: 2
 Tier: T1          Agent: Forge
 Stories: A1             Needs: T010, T014
