@@ -1,0 +1,95 @@
+{
+  "source": "spec 02 section 6; spec 03 sections 9.2 and 9.3; spec 04 reward.rules, reward_status_history and period_summary",
+  "statusOnDateRule": "Premium uses the reward status on its due date; claim payout uses the status on the approval date. Status on date D is the latest reward_status_history row with effective_from on or before the end of D, otherwise Bronze. A resend appends a new history row, so the earlier status stays available for date lookups.",
+  "timeZone": "Asia/Manila",
+  "businessDates": "Timestamps are stored in UTC. Business dates (step days, premium due dates, claim approval dates and period YYYY-MM) are Asia/Manila calendar dates (Q6).",
+  "dailyPoints": {
+    "source": "spec 02 section 6; spec 03 section 9.2; reward.rules.dailyPoints",
+    "bands": [
+      { "minSteps": 0, "points": 0 },
+      { "minSteps": 5000, "points": 10 },
+      { "minSteps": 8000, "points": 20 },
+      { "minSteps": 12000, "points": 30 }
+    ],
+    "vectors": [
+      { "steps": 0, "expectedPoints": 0 },
+      { "steps": 4999, "expectedPoints": 0 },
+      { "steps": 5000, "expectedPoints": 10 },
+      { "steps": 7999, "expectedPoints": 10 },
+      { "steps": 8000, "expectedPoints": 20 },
+      { "steps": 11999, "expectedPoints": 20 },
+      { "steps": 12000, "expectedPoints": 30 },
+      { "steps": 12001, "expectedPoints": 30 }
+    ]
+  },
+  "levels": {
+    "source": "spec 02 section 6; spec 03 section 9.2; reward.rules.tiers",
+    "tiers": [
+      { "status": "Bronze", "minPoints": 0, "extensionDays": 0, "payoutDelayDays": 0 },
+      { "status": "Silver", "minPoints": 200, "extensionDays": 7, "payoutDelayDays": 3 },
+      { "status": "Gold", "minPoints": 400, "extensionDays": 14, "payoutDelayDays": 5 },
+      { "status": "Platinum", "minPoints": 600, "extensionDays": 21, "payoutDelayDays": 7 }
+    ],
+    "vectors": [
+      { "points": 199, "expectedStatus": "Bronze" },
+      { "points": 200, "expectedStatus": "Silver" },
+      { "points": 399, "expectedStatus": "Silver" },
+      { "points": 400, "expectedStatus": "Gold" },
+      { "points": 599, "expectedStatus": "Gold" },
+      { "points": 600, "expectedStatus": "Platinum" }
+    ]
+  },
+  "effects": {
+    "source": "spec 02 section 6; spec 03 section 9.3",
+    "vectors": [
+      { "status": "Bronze", "expectedExtensionDays": 0, "expectedPayoutDelayDays": 0 },
+      { "status": "Silver", "expectedExtensionDays": 7, "expectedPayoutDelayDays": 3 },
+      { "status": "Gold", "expectedExtensionDays": 14, "expectedPayoutDelayDays": 5 },
+      { "status": "Platinum", "expectedExtensionDays": 21, "expectedPayoutDelayDays": 7 }
+    ]
+  },
+  "statusOnDate": {
+    "source": "spec 03 section 9.3; spec 04 reward_status_history",
+    "note": "effectiveDate is the Asia/Manila calendar date of effective_from; UTC timestamps are converted to that date before lookup.",
+    "vectors": [
+      {
+        "history": [],
+        "date": "2026-01-01",
+        "expectedStatus": "Bronze"
+      },
+      {
+        "history": [
+          { "period": "2026-01", "effectiveDate": "2026-01-01", "status": "Silver", "points": 200 }
+        ],
+        "date": "2026-01-01",
+        "expectedStatus": "Silver"
+      },
+      {
+        "history": [
+          { "period": "2026-01", "effectiveDate": "2026-01-01", "status": "Silver", "points": 200 },
+          { "period": "2026-01", "effectiveDate": "2026-01-10", "status": "Gold", "points": 400 }
+        ],
+        "date": "2026-01-05",
+        "expectedStatus": "Silver"
+      },
+      {
+        "history": [
+          { "period": "2026-01", "effectiveDate": "2026-01-01", "status": "Silver", "points": 200 },
+          { "period": "2026-01", "effectiveDate": "2026-01-10", "status": "Gold", "points": 400 }
+        ],
+        "date": "2026-01-10",
+        "expectedStatus": "Gold"
+      }
+    ]
+  },
+  "payoutExample": {
+    "source": "spec 02 section 6; spec 03 section 9.3",
+    "status": "Platinum",
+    "approvalDate": "2026-01-01",
+    "standardProcessingDays": 7,
+    "expectedPayoutDelayDays": 7,
+    "approvalDayOffset": 0,
+    "expectedPayoutDayOffset": 14,
+    "expectedPayoutDate": "2026-01-15"
+  }
+}
