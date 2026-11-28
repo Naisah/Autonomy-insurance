@@ -285,7 +285,7 @@ export interface paths {
         put?: never;
         /**
          * Get a service key (client credentials)
-         * @description For rewards-api (`reward:write`, `reward:read-effects`), auth (`directory:write`) and core-api (`users:reassign`). A service token can never act as a user.
+         * @description For rewards-api (`reward:write`, `reward:read-effects`), auth (`directory:write`) and core-api (`users:reassign`, `rewards:close-period`). A service token can never act as a user.
          */
         post: operations["serviceToken"];
         delete?: never;
@@ -443,6 +443,57 @@ export interface paths {
          * @description A waiting client gets 409 NO_AGENT_ASSIGNED. A manager can write only while an escalation is Open.
          */
         post: operations["sendMessage"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/conversations/{id}/attachments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: components["parameters"]["Id"];
+            };
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Send one file in the chat, with an optional caption
+         * @description One JPEG, PNG or PDF, at most 5,242,880 bytes (5 MB). The server checks the type by the
+         *     file signature, not the name or the declared type; a mismatch is FILE_TYPE_NOT_ALLOWED and
+         *     nothing is stored. A waiting client gets 409 NO_AGENT_ASSIGNED, as for a message. A resend
+         *     with the same `clientMessageId` returns the existing message. The new message is also sent
+         *     as `message:new` to the conversation room. Admin and the AI chatbot never receive files.
+         */
+        post: operations["sendAttachment"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/attachments/{id}/content": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: components["parameters"]["Id"];
+            };
+            cookie?: never;
+        };
+        /**
+         * Download or preview a chat file
+         * @description Allowed for the client of the conversation, the agent currently assigned to that client,
+         *     and a manager while an escalation of that conversation is Open. A reassigned-away agent
+         *     loses access at once. Anyone else, Admin included, gets 404 so the file's existence is not
+         *     revealed.
+         */
+        get: operations["getAttachmentContent"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -1186,6 +1237,29 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/admin/rewards/close-period": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Close the current Rewards period for every client now (Demo only)
+         * @description Admin's "Close period now" on the admin console (spec 02 F3, decision Q12). core-api calls
+         *     rewards-api `POST /internal/rewards/close-period` with a service token scoped
+         *     `rewards:close-period`; rewards-api then sends each client's result to
+         *     `POST /api/rewards/results` as usual. Available only when `DEMO_MODE=true`.
+         */
+        post: operations["adminClosePeriodNow"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/me/reward-effects": {
         parameters: {
             query?: never;
@@ -1340,6 +1414,26 @@ export interface paths {
         put?: never;
         /** Close my current period now and send the result (Demo only) */
         post: operations["closePeriodNow"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/internal/rewards/close-period": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Close the current period for every client (service key, Demo only)
+         * @description Called only by core-api for Admin's "Close period now" (Q12). Available only when `DEMO_MODE=true`.
+         */
+        post: operations["internalClosePeriodNow"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1630,7 +1724,7 @@ export interface components {
             openEscalation?: components["schemas"]["Escalation"] | null;
         };
         /** @enum {string} */
-        MessageKind: "Text" | "System" | "Handoff";
+        MessageKind: "Text" | "System" | "Handoff" | "Attachment";
         Message: {
             /** Format: uuid */
             id: string;
@@ -1644,10 +1738,35 @@ export interface components {
             clientMessageId?: string | null;
             /** Format: date-time */
             createdAt: string;
+            /** @description Set when kind is Attachment; body is then the caption (may be empty) */
+            attachment?: components["schemas"]["Attachment"] | null;
         };
         SendMessageRequest: {
             body: string;
             clientMessageId: string;
+        };
+        /** @description A chat file's metadata. The content is read with GET /attachments/{id}/content. */
+        Attachment: {
+            /** Format: uuid */
+            id: string;
+            fileName: string;
+            /** @enum {string} */
+            mimeType: "image/jpeg" | "image/png" | "application/pdf";
+            sizeBytes: number;
+        };
+        SendAttachmentRequest: {
+            /**
+             * Format: binary
+             * @description JPEG, PNG or PDF, at most 5,242,880 bytes
+             */
+            file: string;
+            clientMessageId: string;
+            /** @description Optional caption */
+            body?: string;
+        };
+        ClosePeriodResult: {
+            period: components["schemas"]["Period"];
+            clientsClosed: number;
         };
         /** @enum {string} */
         EscalationStatus: "Open" | "Resolved";
@@ -2810,6 +2929,76 @@ export interface operations {
             403: components["responses"]["Forbidden"];
             404: components["responses"]["NotFound"];
             409: components["responses"]["NoAgentAssigned"];
+        };
+    };
+    sendAttachment: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: components["parameters"]["Id"];
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["SendAttachmentRequest"];
+            };
+        };
+        responses: {
+            /** @description Stored (or the existing message for a repeated clientMessageId) */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Message"];
+                };
+            };
+            /**
+             * @description Invalid input (VALIDATION). `error.fields.file` is `FILE_TOO_LARGE` or
+             *     `FILE_TYPE_NOT_ALLOWED` when the file is the problem.
+             */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            401: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
+            409: components["responses"]["NoAgentAssigned"];
+            429: components["responses"]["RateLimited"];
+        };
+    };
+    getAttachmentContent: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: components["parameters"]["Id"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description The file, with its stored content type */
+            200: {
+                headers: {
+                    /** @description `inline` for images, `attachment` for PDFs, with the file name */
+                    "Content-Disposition"?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "image/jpeg": string;
+                    "image/png": string;
+                    "application/pdf": string;
+                };
+            };
+            401: components["responses"]["Unauthorized"];
+            404: components["responses"]["NotFound"];
         };
     };
     markConversationRead: {
@@ -4137,6 +4326,28 @@ export interface operations {
             404: components["responses"]["NotFound"];
         };
     };
+    adminClosePeriodNow: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Closed; the results are queued for delivery */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ClosePeriodResult"];
+                };
+            };
+            401: components["responses"]["Unauthorized"];
+            403: components["responses"]["Forbidden"];
+        };
+    };
     getMyRewardEffects: {
         parameters: {
             query?: never;
@@ -4354,6 +4565,28 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["RewardSummary"];
+                };
+            };
+            401: components["responses"]["Unauthorized"];
+            403: components["responses"]["Forbidden"];
+        };
+    };
+    internalClosePeriodNow: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Closed; the results are queued for delivery */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ClosePeriodResult"];
                 };
             };
             401: components["responses"]["Unauthorized"];
