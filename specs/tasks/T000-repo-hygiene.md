@@ -1,5 +1,5 @@
 # T000 Repo hygiene: workspaces, docker-compose, env examples, PR template
-Status: Ready. Specs 00 to 07 Approved Nov 26, 2026 (PR #2). Start only when PR #2 and every task in Needs are merged to main.
+Status: In review. Specs 00 to 07 Approved Nov 26, 2026 (PR #2). Start only when PR #2 and every task in Needs are merged to main.
 Phase: 1
 Tier: T3          Agent: Forge
 Stories: all             Needs: none
@@ -31,4 +31,6 @@ Done when:
 Notes:
 - Branch protection on `main` is already done by the owner (decisions K5, R3).
 Questions: (agent writes here, sets Status to Blocked and stops if the spec is silent)
-Handoff: (agent fills in: what changed, how to run checks, what is left)
+Handoff: Added root package.json (workspaces apps/web, services/*, packages/contracts; forwarding scripts), package-lock.json, docker-compose.yml (postgres:16) with docker/postgres-init.sql creating autonomy_auth, autonomy_core, autonomy_rewards, .env.example for auth, core-api, rewards-api (placeholders only), .gitignore additions (node_modules, .env.*, !.env.example, Flutter build), .editorconfig, .github/pull_request_template.md. No new dependencies.
+Checks run: `npm install` ok; `git check-ignore services/auth/.env` ok; no .env tracked; `docker compose config` valid.
+Left: `docker compose up -d` + `psql -l` NOT run (Docker daemon was off). Reviewer please run it. Confirm the PR template shows on this PR. Env variable names beyond spec 03 section 12 (e.g. AUTH_JWKS_URL, JWT_ISSUER, REWARDS_API_URL) are my guesses; T003 to T005 may rename them.
