@@ -1,0 +1,62 @@
+# Spectral ruleset for packages/contracts/openapi.yaml (task T001, spec 05 sections 1 and 6).
+extends:
+  - spectral:oas
+functionsDir: functions
+functions:
+  - noRewardFieldsInStaff
+rules:
+  # Every operation declares who may call it, which stories it serves and its priority.
+  operation-x-roles:
+    description: Every operation must have a non-empty x-roles list.
+    message: "x-roles must be a non-empty list of public, Client, Agent, Manager, Admin or service. {{error}}"
+    severity: error
+    given: "$.paths[*][get,put,post,delete,patch,options,head,trace]"
+    then:
+      field: x-roles
+      function: schema
+      functionOptions:
+        schema:
+          type: array
+          minItems: 1
+          items:
+            enum: [public, Client, Agent, Manager, Admin, service]
+  operation-x-stories:
+    description: Every operation must have a non-empty x-stories list.
+    message: "x-stories must be a non-empty list of story ids. {{error}}"
+    severity: error
+    given: "$.paths[*][get,put,post,delete,patch,options,head,trace]"
+    then:
+      field: x-stories
+      function: schema
+      functionOptions:
+        schema:
+          type: array
+          minItems: 1
+          items:
+            type: string
+  operation-x-priority:
+    description: Every operation must have x-priority Must, Should or Could.
+    message: "x-priority must be Must, Should or Could. {{error}}"
+    severity: error
+    given: "$.paths[*][get,put,post,delete,patch,options,head,trace]"
+    then:
+      field: x-priority
+      function: enumeration
+      functionOptions:
+        values: [Must, Should, Could]
+  operation-x-priority-defined:
+    description: x-priority must be present.
+    message: "Operation is missing x-priority."
+    severity: error
+    given: "$.paths[*][get,put,post,delete,patch,options,head,trace]"
+    then:
+      field: x-priority
+      function: truthy
+  # Reward data boundary (X9): no *Staff schema may carry a reward field.
+  staff-schema-no-reward-fields:
+    description: Schemas ending in Staff never carry reward fields.
+    message: "{{error}}"
+    severity: error
+    given: "$.components.schemas"
+    then:
+      function: noRewardFieldsInStaff

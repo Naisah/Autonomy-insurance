@@ -1,0 +1,191 @@
+{
+  "formulaVersion": "v1",
+  "formulaVersionNumber": 1,
+  "currency": "PHP",
+  "moneyUnit": "centavos",
+  "inputs": {
+    "age": { "type": "integer", "minimum": 18, "maximum": 65 },
+    "coverageAmount": { "type": "integer", "minimum": 500000, "maximum": 20000000, "unit": "whole pesos" },
+    "termYears": { "type": "integer", "enum": [10, 20, 30] }
+  },
+  "formula": {
+    "units": "coverageAmount / 1000",
+    "baseRate": 0.70,
+    "ageFactor": "1 + max(0, age - 25) * 0.032",
+    "termFactor": "1 + (termYears - 10) * 0.012",
+    "monthlyPremium": "units * baseRate * ageFactor * termFactor",
+    "money": "integer centavos (1 peso = 100 centavos)"
+  },
+  "rounding": "Compute in integer centavos with round half up to the nearest whole centavo at the end. Worked on an exact rational: centavos = coverageAmount * 7 * (1000 + max(0, age - 25) * 32) * (1000 + (termYears - 10) * 12) / 100000000, then round half up. No floating-point money.",
+  "example": "coverageAmount 2000000, age 30, termYears 20 gives 181888 centavos = \"1818.88\".",
+  "vectors": [
+    {
+      "age": 18,
+      "coverageAmount": 500000,
+      "termYears": 10,
+      "expectedCentavos": 35000,
+      "expectedMonthlyPremium": "350.00"
+    },
+    {
+      "age": 18,
+      "coverageAmount": 500000,
+      "termYears": 20,
+      "expectedCentavos": 39200,
+      "expectedMonthlyPremium": "392.00"
+    },
+    {
+      "age": 18,
+      "coverageAmount": 500000,
+      "termYears": 30,
+      "expectedCentavos": 43400,
+      "expectedMonthlyPremium": "434.00"
+    },
+    {
+      "age": 25,
+      "coverageAmount": 2000000,
+      "termYears": 20,
+      "expectedCentavos": 156800,
+      "expectedMonthlyPremium": "1568.00"
+    },
+    {
+      "age": 26,
+      "coverageAmount": 2000000,
+      "termYears": 20,
+      "expectedCentavos": 161818,
+      "expectedMonthlyPremium": "1618.18"
+    },
+    {
+      "age": 30,
+      "coverageAmount": 2000000,
+      "termYears": 20,
+      "expectedCentavos": 181888,
+      "expectedMonthlyPremium": "1818.88"
+    },
+    {
+      "age": 30,
+      "coverageAmount": 2000000,
+      "termYears": 10,
+      "expectedCentavos": 162400,
+      "expectedMonthlyPremium": "1624.00"
+    },
+    {
+      "age": 30,
+      "coverageAmount": 2000000,
+      "termYears": 30,
+      "expectedCentavos": 201376,
+      "expectedMonthlyPremium": "2013.76"
+    },
+    {
+      "age": 18,
+      "coverageAmount": 20000000,
+      "termYears": 30,
+      "expectedCentavos": 1736000,
+      "expectedMonthlyPremium": "17360.00"
+    },
+    {
+      "age": 65,
+      "coverageAmount": 20000000,
+      "termYears": 30,
+      "expectedCentavos": 3958080,
+      "expectedMonthlyPremium": "39580.80"
+    },
+    {
+      "age": 65,
+      "coverageAmount": 500000,
+      "termYears": 10,
+      "expectedCentavos": 79800,
+      "expectedMonthlyPremium": "798.00"
+    },
+    {
+      "age": 65,
+      "coverageAmount": 500000,
+      "termYears": 20,
+      "expectedCentavos": 89376,
+      "expectedMonthlyPremium": "893.76"
+    },
+    {
+      "age": 40,
+      "coverageAmount": 1000000,
+      "termYears": 20,
+      "expectedCentavos": 116032,
+      "expectedMonthlyPremium": "1160.32"
+    },
+    {
+      "age": 40,
+      "coverageAmount": 1000000,
+      "termYears": 30,
+      "expectedCentavos": 128464,
+      "expectedMonthlyPremium": "1284.64"
+    },
+    {
+      "age": 50,
+      "coverageAmount": 5000000,
+      "termYears": 30,
+      "expectedCentavos": 781200,
+      "expectedMonthlyPremium": "7812.00"
+    },
+    {
+      "age": 18,
+      "coverageAmount": 500050,
+      "termYears": 10,
+      "expectedCentavos": 35004,
+      "expectedMonthlyPremium": "350.04"
+    },
+    {
+      "age": 18,
+      "coverageAmount": 500001,
+      "termYears": 10,
+      "expectedCentavos": 35000,
+      "expectedMonthlyPremium": "350.00"
+    },
+    {
+      "age": 18,
+      "coverageAmount": 500099,
+      "termYears": 10,
+      "expectedCentavos": 35007,
+      "expectedMonthlyPremium": "350.07"
+    },
+    {
+      "age": 30,
+      "coverageAmount": 1234567,
+      "termYears": 20,
+      "expectedCentavos": 112276,
+      "expectedMonthlyPremium": "1122.76"
+    },
+    {
+      "age": 45,
+      "coverageAmount": 7654321,
+      "termYears": 30,
+      "expectedCentavos": 1089608,
+      "expectedMonthlyPremium": "10896.08"
+    },
+    {
+      "age": 25,
+      "coverageAmount": 500000,
+      "termYears": 10,
+      "expectedCentavos": 35000,
+      "expectedMonthlyPremium": "350.00"
+    },
+    {
+      "age": 25,
+      "coverageAmount": 20000000,
+      "termYears": 30,
+      "expectedCentavos": 1736000,
+      "expectedMonthlyPremium": "17360.00"
+    },
+    {
+      "age": 26,
+      "coverageAmount": 500000,
+      "termYears": 10,
+      "expectedCentavos": 36120,
+      "expectedMonthlyPremium": "361.20"
+    },
+    {
+      "age": 33,
+      "coverageAmount": 1999999,
+      "termYears": 30,
+      "expectedCentavos": 218041,
+      "expectedMonthlyPremium": "2180.41"
+    }
+  ]
+}

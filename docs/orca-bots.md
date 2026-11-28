@@ -215,6 +215,8 @@ Then it merges with a merge commit (`gh pr merge <n> --merge --admin`, owner byp
 **Scribe** (Daily logs) also writes `docs/daily/<date>.md` every night: what merged, what is waiting for a human (`needs-human` PRs and open questions), new bugs from Scout, and which bots ran out of usage.
 
 ## 5. Automations
+The exact settings that were configured (cron, grace, precheck, prompts), and how to rebuild them on another computer, are in docs/orca-setup-guide.md.
+
 Create each with **Create automation**. Settings for all of them:
 - **Workspace:** Worktree, based on `main`. Orca shows `master` by default; pick `main`.
 - **Session:** Fresh.

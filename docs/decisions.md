@@ -123,6 +123,7 @@ Totals: 54 IDs. Decided 52. Retired 2 (D5, D7).
 | H8 | Secrets | Decided | Only in the hosts' env settings and local git-ignored `.env`; `render.yaml` uses `sync: false`; secret scan before deploy PRs | Atlas for the team lead, Nov 26 | deployment plan s4 |
 | H9 | Background jobs on free hosts | Decided | Outbox and day-close jobs run in the web process and catch up on start (no free workers) | Atlas for the team lead, Nov 26 | deployment plan s3 |
 | H10 | Migrations on deploy | Decided | `prisma migrate deploy` in each start command; pooled `DATABASE_URL`, direct `DIRECT_URL` | Atlas for the team lead, Nov 26 | deployment plan s3 |
+| FW | Fastify version for auth, core-api and rewards-api | Decided | Fastify 5 in all three services; core-api (#15) and rewards-api (#17) move up from 4 to match auth (#14) | Team lead, Nov 28 | none |
 
 ## What is still open
 Specs 00 to 07 are Approved, and B5 and the demo are decided (Nov 26, 2026). No product or grading decision is open.
