@@ -1,0 +1,48 @@
+openapi: 3.1.0
+info:
+  title: Lint fixture
+  version: 0.0.0
+  description: Fixture for the contract lint rules (T001).
+  contact:
+    name: Autonomy Insurance team
+servers:
+  - url: http://localhost:4002
+tags:
+  - name: health
+    description: Health
+paths:
+  /health:
+    get:
+      operationId: getHealth
+      summary: Health check
+      description: Health check.
+      tags: [health]
+      x-roles: [Everyone]
+      x-stories: [A1]
+      x-priority: Must
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClaimStaff'
+components:
+  schemas:
+    RewardBits:
+      type: object
+      properties:
+        rewardNote:
+          type: string
+    ClaimClient:
+      type: object
+      properties:
+        id:
+          type: string
+        rewardNote:
+          type: string
+    ClaimStaff:
+      type: object
+      properties:
+        id:
+          type: string
