@@ -1,5 +1,5 @@
 # T005 Scaffold services/rewards-api
-Status: Ready. Specs 00 to 07 Approved Nov 26, 2026 (PR #2). Start only when PR #2 and every task in Needs are merged to main.
+Status: In review
 Phase: 1
 Tier: T3          Agent: Forge
 Stories: G2             Needs: T000
@@ -19,9 +19,12 @@ Steps:
 5. npm scripts `dev`, `build`, `test`.
 6. Shared server code is copied per service (Q11); no shared package.
 Done when:
-- [ ] `npm test` passes.
-- [ ] `GET /health` returns ok.
-- [ ] A test module folder added under `src/modules/` is served with no edit to a shared file.
-- [ ] An unknown route returns the `Error` shape with a request id.
+- [x] `npm test` passes.
+- [x] `GET /health` returns ok.
+- [x] A test module folder added under `src/modules/` is served with no edit to a shared file.
+- [x] An unknown route returns the `Error` shape with a request id.
 Questions: (agent writes here, sets Status to Blocked and stops if the spec is silent)
-Handoff: (agent fills in: what changed, how to run checks, what is left)
+Handoff: Added services/rewards-api: Fastify 5 + TypeScript + Zod + Vitest app (src/app.ts buildApp), copied from the core-api scaffold per Q11 minus Socket.IO. Auto-loads src/modules/*/routes.ts (K2); GET /health returns {status:'ok', service:'rewards-api'}; Error shape with C8 codes plus INTERNAL (src/errors.ts); x-request-id on every response and requestId on every log line; lazy Prisma client (src/db.ts, reads DATABASE_URL, dynamic import because prisma/** and `prisma generate` do not exist yet). Default PORT 4003. Scripts: dev, build, test.
+Checks run: `npm test` in services/rewards-api: 3/3 pass (health, module auto-load via a test fixture folder, unknown route Error shape + request id). `tsc -p tsconfig.build.json` ok.
+New dependencies (reason): fastify, zod, @prisma/client, prisma, typescript, tsx, vitest, @types/node as the task lists. Root package-lock.json updated by npm install (outside Owns, unavoidable).
+Left: JWT/auth plugin and routes (later tasks), schema and prisma generate (T012). Branch merged with current main; PR #17 targets main. Lens round 1 fixed: health returns service, 4xx mapping for 401/403/404/429, Fastify 5.
