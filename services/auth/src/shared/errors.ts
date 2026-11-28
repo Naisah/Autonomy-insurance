@@ -9,7 +9,8 @@ export type ErrorCode =
   | 'RATE_LIMITED'
   | 'AI_UNAVAILABLE'
   | 'NO_AGENT_ASSIGNED'
-  | 'INVALID_STATE';
+  | 'INVALID_STATE'
+  | 'INTERNAL';
 
 export const STATUS_BY_CODE: Record<ErrorCode, number> = {
   UNAUTHORIZED: 401,
@@ -22,24 +23,25 @@ export const STATUS_BY_CODE: Record<ErrorCode, number> = {
   AI_UNAVAILABLE: 503,
   NO_AGENT_ASSIGNED: 409,
   INVALID_STATE: 409,
+  INTERNAL: 500,
 };
 
 export class AppError extends Error {
   readonly code: ErrorCode;
   readonly statusCode: number;
-  readonly details?: unknown;
-  constructor(code: ErrorCode, message: string, details?: unknown) {
+  readonly fields?: Record<string, string>;
+  constructor(code: ErrorCode, message: string, fields?: Record<string, string>) {
     super(message);
     this.code = code;
     this.statusCode = STATUS_BY_CODE[code];
-    this.details = details;
+    this.fields = fields;
   }
 }
 
 export interface ErrorBody {
-  error: { code: ErrorCode; message: string; requestId: string; details?: unknown };
+  error: { code: ErrorCode; message: string; requestId: string; fields?: Record<string, string> };
 }
 
-export function errorBody(code: ErrorCode, message: string, requestId: string, details?: unknown): ErrorBody {
-  return { error: { code, message, requestId, ...(details === undefined ? {} : { details }) } };
+export function errorBody(code: ErrorCode, message: string, requestId: string, fields?: Record<string, string>): ErrorBody {
+  return { error: { code, message, requestId, ...(fields === undefined ? {} : { fields }) } };
 }

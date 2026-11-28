@@ -25,8 +25,9 @@ Done when:
 - [ ] An unknown route returns the `Error` shape with a request id.
 Questions: (agent writes here, sets Status to Blocked and stops if the spec is silent)
 Handoff:
-- Changed: services/auth scaffold. Fastify 5 + TypeScript + Zod + Vitest; Prisma client is lazy (`src/shared/db.ts`, reads DATABASE_URL, typed loosely until T010 adds the schema). `src/shared/modules.ts` autoloads `src/modules/*/routes.(ts|js)` (K2). `src/shared/errors.ts` has the C8 Error shape and codes; every response carries `x-request-id` and logs carry `reqId`. `GET /health` returns `{status:"ok"}`. Scripts: dev, build, start, test.
+- Changed: services/auth scaffold. Fastify 5 + TypeScript + Zod + Vitest; Prisma client is lazy (`src/shared/db.ts`, reads DATABASE_URL, typed loosely until T010 adds the schema). `src/shared/modules.ts` autoloads `src/modules/*/routes.(ts|js)` (K2). `src/shared/errors.ts` has the C8 Error shape and codes; every response carries `x-request-id` and logs carry `reqId`. `GET /health` returns `{status:"ok", service:"auth"}`. Scripts: dev, build, start, test.
 - New dependencies (reasons): fastify (framework, spec 00 s4), zod (validation), @prisma/client and prisma (ORM, schema comes in T010), vitest (tests), tsx (dev runner), typescript and @types/node (build).
 - Run checks: `npm install` at root, then `npm test --workspace services/auth` (3 tests pass), `npx tsc --noEmit` in services/auth.
 - Notes: root package-lock.json updated by npm install (outside Owns but unavoidable). Shared code lives in `src/shared/` because root .gitignore ignores `lib/`. docs/agent-log.md and docs/ai-use-log.md not updated (docs/** is off limits in this task); please log them.
 - Left: Prisma generate and DB use wait for T010; PR review by Sentinel.
+- Lens fixes (PR #14): health returns service; 500 code is INTERNAL; field errors use `fields` string map (contract Error). Fastify version (5 here, 4 in T004/T005) left for the team to decide.
