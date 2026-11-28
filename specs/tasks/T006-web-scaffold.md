@@ -1,5 +1,5 @@
 # T006 Scaffold apps/web
-Status: In review (Pixel, branch agent/T006-web-scaffold, PR #16).
+Status: Done. Merged to main (PR #16, Pixel). Marked Done by Atlas Nov 28, 2026.
 Phase: 1
 Tier: T3          Agent: Pixel
 Stories: all             Needs: T000

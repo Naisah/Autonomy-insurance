@@ -1,5 +1,5 @@
 # T005 Scaffold services/rewards-api
-Status: In review
+Status: Done. Merged to main (PR #17, Forge). Marked Done by Atlas Nov 28, 2026.
 Phase: 1
 Tier: T3          Agent: Forge
 Stories: G2             Needs: T000

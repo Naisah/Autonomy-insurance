@@ -1,5 +1,5 @@
 # T015 Reward test vectors and TS reference
-Status: In review (Probe, branch agent/T015-reward-vectors).
+Status: Done. Merged to main (PR #13, Probe). Marked Done by Atlas Nov 28, 2026.
 Phase: 1
 Tier: T2          Agent: Probe
 Stories: G2, G3, G5             Needs: none

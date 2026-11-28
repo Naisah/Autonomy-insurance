@@ -1,5 +1,5 @@
 # T012 rewards-api Prisma schema and first migration
-Status: Ready. Specs 00 to 07 Approved Nov 26, 2026 (PR #2). Start only when PR #2 and every task in Needs are merged to main.
+Status: Ready. Needs merged to main Nov 28, 2026.
 Phase: 1
 Tier: T2          Agent: Atlas
 Stories: G2 to G4             Needs: T005

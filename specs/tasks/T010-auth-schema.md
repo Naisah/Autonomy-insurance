@@ -1,5 +1,5 @@
 # T010 auth Prisma schema and first migration
-Status: In review (Atlas, branch agent/T010-auth-schema).
+Status: Done. Merged to main (PR #25, Atlas) Nov 28, 2026.
 Phase: 1
 Tier: T1          Agent: Atlas
 Stories: A1 to A4             Needs: T003
@@ -20,7 +20,7 @@ Steps:
 4. Create the first migration with `prisma migrate dev`.
 5. If spec 04 and this task disagree, stop and write a Question (spec 04 wins).
 Done when:
-- [ ] `prisma migrate dev` succeeds on an empty `autonomy_auth`.
+- [x] `prisma migrate dev` succeeds on an empty `autonomy_auth`. (Checked Nov 28 by Claude Code on PostgreSQL 16: no drift; role/parent, agent-field, max_clients range, lowercase email and waiting_since rules each rejected a bad row.)
 - [x] Role and parent check exists (Agent needs a Manager parent).
 - [x] availability and max_clients allowed only for agents (check constraint).
 - [x] Every constraint in spec 04 section 5 for the auth database exists (test or migration SQL review).

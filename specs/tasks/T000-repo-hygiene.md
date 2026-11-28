@@ -1,5 +1,5 @@
 # T000 Repo hygiene: workspaces, docker-compose, env examples, PR template
-Status: In review. Specs 00 to 07 Approved Nov 26, 2026 (PR #2). Start only when PR #2 and every task in Needs are merged to main.
+Status: Done. Merged to main (PR #8, Forge). Marked Done by Atlas Nov 28, 2026.
 Phase: 1
 Tier: T3          Agent: Forge
 Stories: all             Needs: none

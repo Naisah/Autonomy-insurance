@@ -1,5 +1,5 @@
 # T001 Contract tooling: Spectral lint, type generation, Prism mock, contract:check
-Status: In review (Nov 28, 2026). Built by Claude Code from the project thread while the Orca fleet was offline.
+Status: Done. Merged to main (PR #21, Atlas). Marked Done by Atlas Nov 28, 2026.
 Phase: 1
 Tier: T2          Agent: Atlas
 Stories: all             Needs: T000

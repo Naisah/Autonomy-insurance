@@ -1,5 +1,5 @@
 # T003 Scaffold services/auth
-Status: In review.
+Status: Done. Merged to main (PR #14, Forge). Marked Done by Atlas Nov 28, 2026.
 Phase: 1
 Tier: T3          Agent: Forge
 Stories: A1             Needs: T000
