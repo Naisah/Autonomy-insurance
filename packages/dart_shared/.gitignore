@@ -1,0 +1,2 @@
+# The repository root's Python gitignore excludes every directory named lib.
+!/lib/
