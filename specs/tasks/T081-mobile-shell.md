@@ -22,5 +22,7 @@ Steps:
 Done when:
 - [ ] Widget test: expired session shows the session-expired state.
 - [ ] Widget test: tabs match the role.
+Notes (owner answer on T007, Nov 28, 2026):
+- Read base URLs from `AUTH_BASE_URL` and `CORE_API_BASE_URL` (`--dart-define`, defaults `http://10.0.2.2:4001` and `http://10.0.2.2:4002`), as T007 set up in `apps/mobile/lib/app/app_config.dart`. Register the shell's routes in `apps/mobile/lib/app/routes.dart`.
 Questions: (agent writes here, sets Status to Blocked and stops if the spec is silent)
 Handoff: (agent fills in: what changed, how to run checks, what is left)

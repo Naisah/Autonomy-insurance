@@ -22,5 +22,8 @@ Done when:
 - [ ] Both hosted APKs install on a clean Android device and sign in against the hosted stack.
 - [ ] SSO from the main app opens the Rewards app on the same device.
 - [ ] No keystore, `key.properties` or password in git (secret scan clean).
+Notes (owner answer on T007, Nov 28, 2026):
+- Application IDs: `com.autonomyinsurance.mobile` (main app) and `com.autonomyinsurance.rewards` (Rewards app).
+- `--dart-define` names: `AUTH_BASE_URL` and `CORE_API_BASE_URL` for the main app; `AUTH_BASE_URL` and `REWARDS_API_BASE_URL` for the Rewards app.
 Questions: (agent writes here, sets Status to Blocked and stops if the spec is silent)
 Handoff: (agent fills in: what changed, how to run checks, what is left)

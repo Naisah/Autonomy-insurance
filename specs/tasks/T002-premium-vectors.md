@@ -1,5 +1,5 @@
 # T002 Premium formula test vectors and TS reference
-Status: In review (Probe, branch agent/T002-premium-vectors).
+Status: Done. Merged Nov 26, 2026 (PR #9, Probe).
 Phase: 1
 Tier: T2          Agent: Anvil, Probe and Pixel (trial, P0.7); keep the best
 Stories: C1, C2             Needs: none
